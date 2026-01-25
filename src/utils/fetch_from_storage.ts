@@ -6,7 +6,7 @@ const fetchFromStorage = async (url: string, storage_name: string) => {
     .download(url);
 
   if (error != null) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 
