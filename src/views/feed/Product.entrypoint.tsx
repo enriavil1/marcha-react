@@ -7,7 +7,7 @@ import {
 } from 'react-relay';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import ProductDetailPageQuery from '../../components/Cards/Products/__generated__/ProductDetailPageQuery.graphql';
+import ProductDetailPageQuery from '../../components//Products/__generated__/ProductDetailPageQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
