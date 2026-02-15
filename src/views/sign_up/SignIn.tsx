@@ -9,9 +9,10 @@ import {
   notification,
 } from 'antd';
 import { Header } from 'antd/es/layout/layout';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { CommunityContext } from '../../App';
 import { invalidateRelayStore } from '../../lib/relay_environment';
 import { supabase } from '../../lib/supabase';
 import { Paths } from '../paths';
@@ -22,14 +23,11 @@ type TSignInForm = {
   remember?: boolean;
 };
 
-type Props = {
-  setIsUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-const SignIn = ({ setIsUserLoggedIn }: Props): React.ReactElement => {
+const SignIn = (): React.ReactElement => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [api, contextHolder] = notification.useNotification();
+  const context = useContext(CommunityContext);
 
   const navigate = useNavigate();
 
@@ -52,8 +50,10 @@ const SignIn = ({ setIsUserLoggedIn }: Props): React.ReactElement => {
     }
 
     api.success({ title: 'Sign in successful!' });
+
+    context.setIsUserLoggedIn(true);
+
     invalidateRelayStore();
-    setIsUserLoggedIn(true);
     navigate(Paths.Main);
   };
 
