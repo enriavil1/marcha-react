@@ -1,115 +1,172 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Checkbox,
-  Flex,
-  Form,
-  Input,
-  Typography,
-  notification,
-} from 'antd';
-import { Header } from 'antd/es/layout/layout';
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { BankOutlined, MessageOutlined, ToolOutlined } from '@ant-design/icons';
+import { Col, Flex, Image, Row, Space, Typography, notification } from 'antd';
 
-import { CommunityContext } from '../../App';
-import { invalidateRelayStore } from '../../lib/relay_environment';
-import { supabase } from '../../lib/supabase';
-import { Paths } from '../paths';
-
-type TSignInForm = {
-  email: string;
-  password: string;
-  remember?: boolean;
-};
+import { BRAND_COLOR, BRAND_GRADIENT } from '../..';
+import FeatureBullet from './FeatureBullet';
+import SignInCard from './SignInCard';
 
 const SignIn = (): React.ReactElement => {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [api, contextHolder] = notification.useNotification();
-  const context = useContext(CommunityContext);
-
-  const navigate = useNavigate();
-
-  const onFinish = async (form: TSignInForm) => {
-    setIsLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: form.email,
-      password: form.password,
-    });
-    setIsLoading(false);
-
-    if (error != null) {
-      api.error({
-        title: `(${error.name}) Failed to sign in`,
-        description: error.message,
-        duration: 5,
-        pauseOnHover: true,
-      });
-      return;
-    }
-
-    api.success({ title: 'Sign in successful!' });
-
-    context.setIsUserLoggedIn(true);
-
-    invalidateRelayStore();
-    navigate(Paths.Main);
-  };
+  const [_, contextHolder] = notification.useNotification();
 
   return (
     <>
       {contextHolder}
-      <Flex gap={24} wrap="wrap" align="center" justify="center" vertical>
-        <Header>
-          <Typography.Title>Sign In</Typography.Title>{' '}
-        </Header>
-        <Form
-          size="large"
-          name="login"
-          initialValues={{ remember: true }}
-          onFinish={onFinish}
+      <style>{`
+        html, body, #root { height: 100%; margin: 0; }
+        .signin-hero { display: flex !important; }
+        .signin-mobile-logo { display: none !important; }
+        @media (max-width: 767px) {
+          .signin-hero { display: none !important; }
+          .signin-mobile-logo { display: flex !important; }
+        }
+      `}</style>
+      <Row style={{ height: '100vh', overflow: 'hidden' }}>
+        <Col
+          xs={0}
+          md={12}
+          lg={13}
+          className="signin-hero"
+          style={{
+            background: BRAND_GRADIENT,
+            padding: '60px 56px',
+            position: 'relative',
+            overflow: 'hidden',
+            height: '100%',
+          }}
         >
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your email',
-              },
-            ]}
+          <Flex
+            style={{
+              position: 'absolute',
+              top: -80,
+              right: -80,
+              width: 320,
+              height: 320,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.07)',
+              pointerEvents: 'none',
+            }}
+          />
+          <Flex
+            style={{
+              position: 'absolute',
+              bottom: -120,
+              left: -60,
+              width: 400,
+              height: 400,
+              borderRadius: '50%',
+              background: 'rgba(255,255,255,0.05)',
+              pointerEvents: 'none',
+            }}
+          />
+          <Flex
+            vertical
+            justify="center"
+            style={{ height: '100%', position: 'relative', zIndex: 1 }}
+            gap={48}
           >
-            <Input prefix={<UserOutlined />} placeholder="Email" />
-          </Form.Item>
-          <Form.Item>
-            <Form.Item
-              name="password"
-              rules={[
-                { required: true, message: 'Please input your password' },
-              ]}
-              style={{ marginBottom: 0 }}
-            >
-              <Input
-                prefix={<LockOutlined />}
-                type="password"
-                placeholder="Password"
+            <Image
+              src="/assets/marcha_logo.png"
+              preview={false}
+              style={{
+                height: 48,
+                width: 'auto',
+                objectFit: 'contain',
+                display: 'block',
+                filter: 'brightness(0) invert(1)',
+              }}
+            />
+
+            <Space direction="vertical" size={12}>
+              <Typography.Title
+                level={2}
+                style={{ color: '#fff', margin: 0, lineHeight: 1.2 }}
+              >
+                Your community,
+                <br />
+                all in one place.
+              </Typography.Title>
+              <Typography.Text
+                style={{ color: 'rgba(255,255,255,0.8)', fontSize: 16 }}
+              >
+                Manage your home, stay connected with neighbours, and handle
+                everything your building needs — effortlessly.
+              </Typography.Text>
+            </Space>
+
+            <Space vertical size={24}>
+              <FeatureBullet
+                icon={<BankOutlined />}
+                title="Service Charges & Finances"
+                description="Track payments and view your account balance at a glance"
               />
-            </Form.Item>
-            <a href="">Forgot password</a>
-          </Form.Item>
+              <FeatureBullet
+                icon={<ToolOutlined />}
+                title="Maintenance Requests"
+                description="Submit and follow up on repairs without the back-and-forth"
+              />
+              <FeatureBullet
+                icon={<MessageOutlined />}
+                title="Community Messaging"
+                description="Stay in the loop with announcements and neighbour updates"
+              />
+            </Space>
+          </Flex>
+        </Col>
 
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
+        <Col
+          xs={24}
+          md={12}
+          lg={11}
+          style={{ background: '#fafafa', height: '100%', overflow: 'auto' }}
+        >
+          <Flex
+            align="center"
+            justify="center"
+            style={{ minHeight: '100%', padding: '40px 24px' }}
+          >
+            <Flex vertical style={{ width: '100%', maxWidth: 420 }} gap={0}>
+              <Flex
+                justify="center"
+                className="signin-mobile-logo"
+                style={{ marginBottom: 32 }}
+              >
+                <Image
+                  src="/assets/marcha_logo.png"
+                  preview={false}
+                  style={{
+                    height: 40,
+                    width: 'auto',
+                    objectFit: 'contain',
+                    display: 'block',
+                  }}
+                />
+              </Flex>
 
-          <Form.Item>
-            <Button block type="primary" htmlType="submit" disabled={isLoading}>
-              Log in
-            </Button>
-            or <a href="">Register now!</a>
-          </Form.Item>
-        </Form>{' '}
-      </Flex>
+              <SignInCard />
+
+              <Typography.Text
+                type="secondary"
+                style={{
+                  textAlign: 'center',
+                  fontSize: 12,
+                  marginTop: 24,
+                  display: 'block',
+                }}
+              >
+                By signing in you agree to Marcha's{' '}
+                <Typography.Link href="" style={{ color: BRAND_COLOR }}>
+                  Terms of Service
+                </Typography.Link>{' '}
+                and{' '}
+                <Typography.Link href="" style={{ color: BRAND_COLOR }}>
+                  Privacy Policy
+                </Typography.Link>
+                .
+              </Typography.Text>
+            </Flex>
+          </Flex>
+        </Col>
+      </Row>
     </>
   );
 };
