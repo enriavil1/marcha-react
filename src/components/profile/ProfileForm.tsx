@@ -28,6 +28,12 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
   return (
     <>
       <style>{`
+        .profile-card-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          width: 100%;
+        }
         @media (max-width: 767px) {
           .profile-form-card .ant-card-head {
             padding: 0 16px !important;
@@ -38,13 +44,6 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
           }
           .profile-form-card .ant-card-body {
             padding: 16px !important;
-          }
-          .profile-card-header {
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-            width: 100% !important;
-            min-height: 24px !important;
           }
         }
       `}</style>

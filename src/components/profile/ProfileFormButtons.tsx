@@ -18,7 +18,7 @@ const ProfileFormButtons = ({
   setIsEditing,
 }: Props) => {
   return isEditing ? (
-    <Flex justify="flex-end" gap={12} style={{ marginTop: 8 }}>
+    <Flex justify="flex-end" gap={12} align="center">
       <Button
         onClick={() => {
           setIsEditing(false);
