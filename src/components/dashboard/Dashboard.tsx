@@ -103,7 +103,26 @@ const Dashboard: EntryPointComponent<
 
   return (
     <div>
+      <style>{`
+        @media (max-width: 767px) {
+          .dashboard-hero .ant-card-body {
+            padding: 20px !important;
+          }
+          .dashboard-hero-row {
+            flex-direction: column !important;
+          }
+          .dashboard-hero-name {
+            font-size: 22px !important;
+            word-break: break-word;
+            overflow-wrap: break-word;
+          }
+          .dashboard-hero-btn {
+            margin-top: 12px;
+          }
+        }
+      `}</style>
       <Card
+        className="dashboard-hero"
         style={{
           background:
             'linear-gradient(135deg, #F06543 0%, #E8553D 50%, #D94530 100%)',
@@ -113,7 +132,11 @@ const Dashboard: EntryPointComponent<
         }}
         styles={{ body: { padding: '32px' } }}
       >
-        <Row justify="space-between" align="middle">
+        <Row
+          className="dashboard-hero-row"
+          justify="space-between"
+          align="middle"
+        >
           <Col>
             <Typography.Text
               style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14 }}
@@ -122,7 +145,13 @@ const Dashboard: EntryPointComponent<
             </Typography.Text>
             <Typography.Title
               level={2}
-              style={{ color: '#fff', margin: '4px 0 12px' }}
+              className="dashboard-hero-name"
+              style={{
+                color: '#fff',
+                margin: '4px 0 12px',
+                wordBreak: 'break-word',
+                overflowWrap: 'break-word',
+              }}
             >
               {fullName}
             </Typography.Title>
@@ -140,7 +169,7 @@ const Dashboard: EntryPointComponent<
               {addressDisplay ? ` — ${addressDisplay}` : ''}
             </Tag>
           </Col>
-          <Col>
+          <Col className="dashboard-hero-btn">
             <Button
               type="primary"
               size="large"
