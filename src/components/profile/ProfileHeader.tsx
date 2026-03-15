@@ -30,17 +30,25 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
     <style>{`
       @media (max-width: 767px) {
         .profile-header-card {
-          border-radius: 0 !important;
-          margin-left: -12px !important;
-          margin-right: -12px !important;
+          border-radius: 12px !important;
           margin-bottom: 16px !important;
         }
         .profile-header-banner {
-          height: 100px !important;
+          height: 90px !important;
         }
         .profile-header-body {
           padding-bottom: 16px !important;
-          margin-top: -50px !important;
+          margin-top: -44px !important;
+        }
+        .profile-header-avatar {
+          width: 88px !important;
+          height: 88px !important;
+          line-height: 88px !important;
+          font-size: 36px !important;
+        }
+        .profile-header-name {
+          font-size: 18px !important;
+          margin-top: 8px !important;
         }
       }
     `}</style>
@@ -68,11 +76,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         className="profile-header-body"
         style={{ marginTop: -60, paddingBottom: 24 }}
       >
-        <div style={{ position: 'relative', marginBottom: 16 }}>
+        <div style={{ position: 'relative', marginBottom: 12 }}>
           <Avatar
             size={120}
             src={avatarUrl || undefined}
             icon={!avatarUrl ? <UserOutlined /> : undefined}
+            className="profile-header-avatar"
             style={{
               border: `4px solid ${WHITE}`,
               boxShadow: SHADOW_AVATAR,
@@ -102,7 +111,11 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             />
           </Upload>
         </div>
-        <Typography.Title level={3} style={{ margin: 0 }}>
+        <Typography.Title
+          level={3}
+          className="profile-header-name"
+          style={{ margin: 0 }}
+        >
           {displayName}
         </Typography.Title>
         {username && (
