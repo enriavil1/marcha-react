@@ -60,9 +60,7 @@ const MobileLayout = ({ communityId }: Props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
-    <div
-      style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}
-    >
+    <Flex vertical style={{ minHeight: '100vh' }}>
       {/* Fixed top header bar */}
       <div
         style={{
@@ -131,7 +129,7 @@ const MobileLayout = ({ communityId }: Props) => {
           <AppRoutes />
         </div>
       </div>
-    </div>
+    </Flex>
   );
 };
 
