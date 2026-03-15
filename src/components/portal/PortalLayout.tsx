@@ -38,6 +38,7 @@ import { useCommunity } from '../../contexts/CommunityContext';
 import { supabase } from '../../lib/supabase';
 import Dashboard from '../../views/dashboard/Dashboard.entrypoint';
 import { Paths } from '../../views/paths';
+import Profile from '../../views/profile/Profile.entrypoint';
 import AppSidebar from './AppSidebar';
 
 const { Content, Header } = Layout;
@@ -73,6 +74,8 @@ const PortalLayout = ({ communityId }: Props): React.ReactElement => {
     setDrawerOpen(false);
   };
 
+  // TODO: Make the phone sidebar the same as the desktop
+  //
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Header
@@ -383,10 +386,7 @@ const PortalLayout = ({ communityId }: Props): React.ReactElement => {
                 path={Paths.Subletting}
                 element={<div>Subletting - Coming Soon</div>}
               />
-              <Route
-                path={Paths.Profile}
-                element={<div>Profile - Coming Soon</div>}
-              />
+              <Route path={Paths.Profile} element={<Profile />} />
               <Route
                 path={Paths.Notifications}
                 element={<div>Notifications - Coming Soon</div>}
