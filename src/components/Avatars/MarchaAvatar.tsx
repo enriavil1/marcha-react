@@ -1,6 +1,6 @@
 import { Flex } from 'antd';
 
-import { BRAND_COLOR } from '../..';
+import { BRAND_PRIMARY, WHITE } from '../../design';
 
 const MarchaAvatar = () => {
   return (
@@ -11,8 +11,8 @@ const MarchaAvatar = () => {
         width: 40,
         height: 40,
         borderRadius: '50%',
-        background: BRAND_COLOR,
-        color: '#fff',
+        background: BRAND_PRIMARY,
+        color: WHITE,
         fontWeight: 'bold',
         fontSize: 18,
       }}

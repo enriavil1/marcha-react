@@ -1,7 +1,7 @@
 import { HomeOutlined } from '@ant-design/icons';
 import { Flex } from 'antd';
 
-import { BRAND_COLOR } from '../..';
+import { BRAND_PRIMARY, RADIUS_LG, WHITE } from '../../design';
 
 type Props = {
   communityImg?: string | null;
@@ -17,7 +17,7 @@ const BuildingAvatar = ({ communityImg = null }: Props) => {
           style={{
             width: 48,
             height: 48,
-            borderRadius: 12,
+            borderRadius: RADIUS_LG,
             objectFit: 'cover',
           }}
         />
@@ -28,11 +28,11 @@ const BuildingAvatar = ({ communityImg = null }: Props) => {
           style={{
             width: 48,
             height: 48,
-            borderRadius: 12,
-            background: BRAND_COLOR,
+            borderRadius: RADIUS_LG,
+            background: BRAND_PRIMARY,
           }}
         >
-          <HomeOutlined style={{ fontSize: 24, color: '#fff' }} />
+          <HomeOutlined style={{ fontSize: 24, color: WHITE }} />
         </Flex>
       )}
     </>

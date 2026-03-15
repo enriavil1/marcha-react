@@ -3,6 +3,7 @@ import { Avatar, Button, Drawer, Flex, Layout, Typography } from 'antd';
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+import { BORDER_LIGHT, BRAND_PRIMARY, RADIUS_MD, WHITE } from '../../design';
 import Dashboard from '../../views/dashboard/Dashboard.entrypoint';
 import { Paths } from '../../views/paths';
 import Profile from '../../views/profile/Profile.entrypoint';
@@ -21,8 +22,8 @@ const PortalLayout = ({ communityId }: Props): React.ReactElement => {
     <Layout style={{ minHeight: '100vh' }}>
       <Header
         style={{
-          background: '#fff',
-          borderBottom: '1px solid #f0f0f0',
+          background: WHITE,
+          borderBottom: `1px solid ${BORDER_LIGHT}`,
           padding: '0 16px',
           display: 'flex',
           alignItems: 'center',
@@ -37,7 +38,7 @@ const PortalLayout = ({ communityId }: Props): React.ReactElement => {
           <Avatar
             shape="circle"
             size={32}
-            style={{ backgroundColor: '#F06543', fontWeight: 700 }}
+            style={{ backgroundColor: BRAND_PRIMARY, fontWeight: 700 }}
           >
             M
           </Avatar>
@@ -100,8 +101,8 @@ const PortalLayout = ({ communityId }: Props): React.ReactElement => {
               padding: 24,
               margin: 0,
               minHeight: 280,
-              background: '#fff',
-              borderRadius: 8,
+              background: WHITE,
+              borderRadius: RADIUS_MD,
             }}
           >
             <Routes>

@@ -2,7 +2,7 @@ import { EditOutlined } from '@ant-design/icons';
 import { Button, Flex } from 'antd';
 import { FormInstance } from 'antd/es/form';
 
-import { BRAND_COLOR } from '../..';
+import { BRAND_PRIMARY } from '../../design';
 
 type Props = {
   form: FormInstance;
@@ -31,7 +31,7 @@ const ProfileFormButtons = ({
         type={'primary'}
         onClick={() => form.submit()}
         loading={isMutating}
-        style={{ backgroundColor: BRAND_COLOR, borderColor: BRAND_COLOR }}
+        style={{ backgroundColor: BRAND_PRIMARY, borderColor: BRAND_PRIMARY }}
       >
         Save
       </Button>

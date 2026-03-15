@@ -1,7 +1,7 @@
 import { Card, Flex, Space, Typography } from 'antd';
 import React from 'react';
 
-import { BORDER } from '../..';
+import { BORDER_DEFAULT, RADIUS_XL } from '../../design';
 
 type AccountInfoProps = {
   onboarded: boolean;
@@ -11,8 +11,8 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ onboarded = false }) => {
   return (
     <Card
       style={{
-        borderRadius: 16,
-        border: `1px solid ${BORDER}`,
+        borderRadius: RADIUS_XL,
+        border: `1px solid ${BORDER_DEFAULT}`,
         marginTop: 24,
       }}
       title={

@@ -1,7 +1,7 @@
 import { Card, Col, Flex, Form, Input, Row, Typography } from 'antd';
 import React, { useState } from 'react';
 
-import { BORDER } from '../..';
+import { BORDER_DEFAULT, RADIUS_MD, RADIUS_XL } from '../../design';
 import ProfileFormButtons from './ProfileFormButtons';
 
 type ProfileFormValues = {
@@ -27,7 +27,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
 
   return (
     <Card
-      style={{ borderRadius: 16, border: `1px solid ${BORDER}` }}
+      style={{ borderRadius: RADIUS_XL, border: `1px solid ${BORDER_DEFAULT}` }}
       title={
         <Flex justify="space-between" align="center">
           <Typography.Title level={5} style={{ margin: 0 }}>
@@ -65,7 +65,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
               <Input
                 placeholder="Enter your first name"
                 size="large"
-                style={{ borderRadius: 8 }}
+                style={{ borderRadius: RADIUS_MD }}
               />
             </Form.Item>
           </Col>
@@ -81,7 +81,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
               <Input
                 placeholder="Enter your last name"
                 size="large"
-                style={{ borderRadius: 8 }}
+                style={{ borderRadius: RADIUS_MD }}
               />
             </Form.Item>
           </Col>
@@ -99,7 +99,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             prefix={<Typography.Text type="secondary">@</Typography.Text>}
             placeholder="Choose a username"
             size="large"
-            style={{ borderRadius: 8 }}
+            style={{ borderRadius: RADIUS_MD }}
           />
         </Form.Item>
 
@@ -116,7 +116,7 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
             rows={4}
             maxLength={300}
             showCount
-            style={{ borderRadius: 8 }}
+            style={{ borderRadius: RADIUS_MD }}
           />
         </Form.Item>
       </Form>

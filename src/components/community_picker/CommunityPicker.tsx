@@ -8,6 +8,7 @@ import {
   usePreloadedQuery,
 } from 'react-relay';
 
+import { NEUTRAL_200, NEUTRAL_400, NEUTRAL_700, RADIUS_LG } from '../../design';
 import MarchaAvatar from '../Avatars/MarchaAvatar';
 import CommunityCardContainer from './CommunityCardContainer';
 import { CommunityPickerComponentQuery } from './__generated__/CommunityPickerComponentQuery.graphql';
@@ -85,8 +86,8 @@ const CommunityPicker: EntryPointComponent<
         <Col xs={24} md={12}>
           <Card
             style={{
-              borderRadius: 12,
-              border: '2px dashed #d9d9d9',
+              borderRadius: RADIUS_LG,
+              border: `2px dashed ${NEUTRAL_200}`,
               textAlign: 'center',
               height: '100%',
               display: 'flex',
@@ -97,9 +98,9 @@ const CommunityPicker: EntryPointComponent<
             hoverable
           >
             <PlusOutlined
-              style={{ fontSize: 32, color: '#bfbfbf', marginBottom: 12 }}
+              style={{ fontSize: 32, color: NEUTRAL_400, marginBottom: 12 }}
             />
-            <Typography.Title level={5} style={{ color: '#595959' }}>
+            <Typography.Title level={5} style={{ color: NEUTRAL_700 }}>
               Join a Community
             </Typography.Title>
             <Typography.Text type="secondary">

@@ -2,7 +2,14 @@ import { CameraOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Flex, Spin, Typography, Upload } from 'antd';
 import React from 'react';
 
-import { BRAND_COLOR, BRAND_DARK } from '../..';
+import {
+  BRAND_GRADIENT_SIMPLE,
+  BRAND_PRIMARY,
+  RADIUS_XL,
+  SHADOW_AVATAR,
+  SHADOW_BUTTON,
+  WHITE,
+} from '../../design';
 
 type ProfileHeaderProps = {
   displayName: string;
@@ -21,7 +28,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
 }) => (
   <Card
     style={{
-      borderRadius: 16,
+      borderRadius: RADIUS_XL,
       overflow: 'hidden',
       marginBottom: 24,
       border: 'none',
@@ -30,7 +37,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   >
     <div
       style={{
-        background: `linear-gradient(135deg, ${BRAND_COLOR} 0%, ${BRAND_DARK} 100%)`,
+        background: BRAND_GRADIENT_SIMPLE,
         height: 140,
       }}
     />
@@ -41,9 +48,9 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
           src={avatarUrl || undefined}
           icon={!avatarUrl ? <UserOutlined /> : undefined}
           style={{
-            border: '4px solid #fff',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            backgroundColor: avatarUrl ? undefined : BRAND_COLOR,
+            border: `4px solid ${WHITE}`,
+            boxShadow: SHADOW_AVATAR,
+            backgroundColor: avatarUrl ? undefined : BRAND_PRIMARY,
           }}
         />
         <Upload
@@ -61,10 +68,10 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
               position: 'absolute',
               bottom: 4,
               right: 4,
-              backgroundColor: BRAND_COLOR,
-              borderColor: BRAND_COLOR,
-              color: '#fff',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              backgroundColor: BRAND_PRIMARY,
+              borderColor: BRAND_PRIMARY,
+              color: WHITE,
+              boxShadow: SHADOW_BUTTON,
             }}
           />
         </Upload>

@@ -3,33 +3,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';
+import { marchaTheme } from './design';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-export const BRAND_COLOR = '#F65E44';
-export const BRAND_DARK = '#D94530';
-
-export const BORDER = '#E5E7EB';
-
-export const BRAND_GRADIENT = `linear-gradient(145deg, #F65E44 0%, #D94530 100%)`;
-
 root.render(
   <React.StrictMode>
-    <ConfigProvider
-      theme={{
-        token: {
-          colorPrimary: '#F65E44',
-        },
-        components: {
-          Layout: {
-            headerBg: 'white',
-          },
-        },
-      }}
-    >
+    <ConfigProvider theme={marchaTheme}>
       <App />
     </ConfigProvider>
   </React.StrictMode>

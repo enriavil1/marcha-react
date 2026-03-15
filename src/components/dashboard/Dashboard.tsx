@@ -27,6 +27,21 @@ import {
 } from 'react-relay';
 import { useNavigate, useParams } from 'react-router-dom';
 
+import {
+  BRAND_GRADIENT,
+  BRAND_PRIMARY,
+  COLOR_INFO,
+  COLOR_SUCCESS,
+  OVERLAY_BORDER,
+  OVERLAY_LIGHT,
+  OVERLAY_TEXT,
+  RADIUS_LG,
+  RADIUS_MD,
+  RADIUS_SM,
+  RADIUS_XL,
+  STAT_MESSAGES,
+  WHITE,
+} from '../../design';
 import { getParseJsonAddress } from '../../utils/get_address';
 import { Paths } from '../../views/paths';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
@@ -124,9 +139,8 @@ const Dashboard: EntryPointComponent<
       <Card
         className="dashboard-hero"
         style={{
-          background:
-            'linear-gradient(135deg, #F06543 0%, #E8553D 50%, #D94530 100%)',
-          borderRadius: 16,
+          background: BRAND_GRADIENT,
+          borderRadius: RADIUS_XL,
           border: 'none',
           marginBottom: 24,
         }}
@@ -138,16 +152,14 @@ const Dashboard: EntryPointComponent<
           align="middle"
         >
           <Col>
-            <Typography.Text
-              style={{ color: 'rgba(255,255,255,0.8)', fontSize: 14 }}
-            >
+            <Typography.Text style={{ color: OVERLAY_TEXT, fontSize: 14 }}>
               {greeting}
             </Typography.Text>
             <Typography.Title
               level={2}
               className="dashboard-hero-name"
               style={{
-                color: '#fff',
+                color: WHITE,
                 margin: '4px 0 12px',
                 wordBreak: 'break-word',
                 overflowWrap: 'break-word',
@@ -157,10 +169,10 @@ const Dashboard: EntryPointComponent<
             </Typography.Title>
             <Tag
               style={{
-                background: 'rgba(255,255,255,0.2)',
+                background: OVERLAY_LIGHT,
                 border: 'none',
-                color: '#fff',
-                borderRadius: 6,
+                color: WHITE,
+                borderRadius: RADIUS_SM,
                 padding: '4px 12px',
               }}
             >
@@ -175,9 +187,9 @@ const Dashboard: EntryPointComponent<
               size="large"
               icon={<PlusOutlined />}
               style={{
-                background: 'rgba(255,255,255,0.2)',
-                border: '1px solid rgba(255,255,255,0.3)',
-                borderRadius: 8,
+                background: OVERLAY_LIGHT,
+                border: `1px solid ${OVERLAY_BORDER}`,
+                borderRadius: RADIUS_MD,
               }}
               onClick={() => navigate(`${basePath}/${Paths.Maintenance}`)}
             >
@@ -191,13 +203,13 @@ const Dashboard: EntryPointComponent<
         <Col xs={24} sm={12} md={6}>
           <Card
             hoverable
-            style={{ borderRadius: 12 }}
+            style={{ borderRadius: RADIUS_LG }}
             onClick={() => navigate(`${basePath}/${Paths.ServiceCharges}`)}
           >
             <Space vertical size={4}>
               <Space>
                 <DollarCircleOutlined
-                  style={{ fontSize: 20, color: '#1890ff' }}
+                  style={{ fontSize: 20, color: COLOR_INFO }}
                 />
                 <Tag color="green">Paid</Tag>
               </Space>
@@ -216,12 +228,12 @@ const Dashboard: EntryPointComponent<
         <Col xs={24} sm={12} md={6}>
           <Card
             hoverable
-            style={{ borderRadius: 12 }}
+            style={{ borderRadius: RADIUS_LG }}
             onClick={() => navigate(`${basePath}/${Paths.Maintenance}`)}
           >
             <Space vertical size={4}>
               <Space>
-                <ToolOutlined style={{ fontSize: 20, color: '#F06543' }} />
+                <ToolOutlined style={{ fontSize: 20, color: BRAND_PRIMARY }} />
                 <Tag color="orange">Active</Tag>
               </Space>
               <Statistic value={0} style={{ fontSize: 28, fontWeight: 600 }} />
@@ -234,12 +246,14 @@ const Dashboard: EntryPointComponent<
         <Col xs={24} sm={12} md={6}>
           <Card
             hoverable
-            style={{ borderRadius: 12 }}
+            style={{ borderRadius: RADIUS_LG }}
             onClick={() => navigate(`${basePath}/${Paths.Messages}`)}
           >
             <Space vertical size={4}>
               <Space>
-                <MessageOutlined style={{ fontSize: 20, color: '#722ed1' }} />
+                <MessageOutlined
+                  style={{ fontSize: 20, color: STAT_MESSAGES }}
+                />
               </Space>
               <Statistic value={0} style={{ fontSize: 28, fontWeight: 600 }} />
               <Typography.Text type="secondary" style={{ fontSize: 12 }}>
@@ -251,12 +265,14 @@ const Dashboard: EntryPointComponent<
         <Col xs={24} sm={12} md={6}>
           <Card
             hoverable
-            style={{ borderRadius: 12 }}
+            style={{ borderRadius: RADIUS_LG }}
             onClick={() => navigate(`${basePath}/${Paths.Documents}`)}
           >
             <Space vertical size={4}>
               <Space>
-                <FileTextOutlined style={{ fontSize: 20, color: '#52c41a' }} />
+                <FileTextOutlined
+                  style={{ fontSize: 20, color: COLOR_SUCCESS }}
+                />
                 <Tag color="green">1 New</Tag>
               </Space>
               <Statistic value={0} style={{ fontSize: 28, fontWeight: 600 }} />
@@ -279,7 +295,7 @@ const Dashboard: EntryPointComponent<
                 See all &gt;
               </Typography.Link>
             }
-            style={{ borderRadius: 12, marginBottom: 24 }}
+            style={{ borderRadius: RADIUS_LG, marginBottom: 24 }}
           >
             <List
               dataSource={[]}
@@ -297,7 +313,7 @@ const Dashboard: EntryPointComponent<
                 See all &gt;
               </Typography.Link>
             }
-            style={{ borderRadius: 12 }}
+            style={{ borderRadius: RADIUS_LG }}
           >
             <List
               dataSource={[]}
@@ -317,7 +333,7 @@ const Dashboard: EntryPointComponent<
                 View all
               </Typography.Link>
             }
-            style={{ borderRadius: 12, marginBottom: 24 }}
+            style={{ borderRadius: RADIUS_LG, marginBottom: 24 }}
           >
             <List
               dataSource={[]}
@@ -335,7 +351,7 @@ const Dashboard: EntryPointComponent<
                 Browse
               </Typography.Link>
             }
-            style={{ borderRadius: 12, marginBottom: 24 }}
+            style={{ borderRadius: RADIUS_LG, marginBottom: 24 }}
           >
             <List
               dataSource={[]}
@@ -344,7 +360,7 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          <Card title="Upcoming Events" style={{ borderRadius: 12 }}>
+          <Card title="Upcoming Events" style={{ borderRadius: RADIUS_LG }}>
             <List
               dataSource={[]}
               locale={{ emptyText: 'No upcoming events' }}

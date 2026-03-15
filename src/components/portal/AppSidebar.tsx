@@ -17,6 +17,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useCommunity } from '../../contexts/CommunityContext';
+import { BORDER_LIGHT, NEUTRAL_500, WHITE } from '../../design';
 import { supabase } from '../../lib/supabase';
 import { Paths } from '../../views/paths';
 import BuildingAvatar from '../Avatars/BuildingAvatar';
@@ -61,8 +62,8 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
     <Sider
       width={250}
       style={{
-        background: '#fff',
-        borderRight: '1px solid #f0f0f0',
+        background: WHITE,
+        borderRight: `1px solid ${BORDER_LIGHT}`,
         height: '100vh',
         position: 'sticky',
         top: 0,
@@ -76,7 +77,7 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
           align="center"
           style={{
             padding: '16px',
-            borderBottom: '1px solid #f0f0f0',
+            borderBottom: `1px solid ${BORDER_LIGHT}`,
             gap: 12,
           }}
         >
@@ -92,7 +93,7 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
           </div>
           <SwapOutlined
             onClick={handleSwitchCommunity}
-            style={{ cursor: 'pointer', fontSize: 16, color: '#8c8c8c' }}
+            style={{ cursor: 'pointer', fontSize: 16, color: NEUTRAL_500 }}
             title="Switch Community"
           />
         </Flex>
@@ -233,9 +234,9 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
 
       <div
         style={{
-          borderTop: '1px solid #f0f0f0',
+          borderTop: `1px solid ${BORDER_LIGHT}`,
           padding: '12px 16px',
-          background: '#fff',
+          background: WHITE,
         }}
       >
         <Space vertical style={{ width: '100%' }} size={0}>
