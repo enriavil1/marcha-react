@@ -121,18 +121,25 @@ const Dashboard: EntryPointComponent<
       <style>{`
         @media (max-width: 767px) {
           .dashboard-hero .ant-card-body {
-            padding: 20px !important;
+            padding: 16px !important;
           }
           .dashboard-hero-row {
             flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 0 !important;
           }
           .dashboard-hero-name {
-            font-size: 22px !important;
+            font-size: 20px !important;
             word-break: break-word;
             overflow-wrap: break-word;
+            margin: 2px 0 8px !important;
           }
           .dashboard-hero-btn {
-            margin-top: 12px;
+            margin-top: 10px !important;
+          }
+          .dashboard-hero-btn .ant-btn {
+            height: 36px !important;
+            font-size: 14px !important;
           }
         }
       `}</style>
