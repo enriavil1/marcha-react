@@ -63,6 +63,12 @@ const PortalLayout = ({ communityId }: Props): React.ReactElement => {
           .desktop-sidebar {
             display: none !important;
           }
+          .portal-content-layout {
+            padding: 8px !important;
+          }
+          .portal-content {
+            padding: 12px !important;
+          }
         }
       `}</style>
 
@@ -87,8 +93,9 @@ const PortalLayout = ({ communityId }: Props): React.ReactElement => {
           <AppSidebar communityId={communityId} />
         </div>
 
-        <Layout style={{ padding: '24px' }}>
+        <Layout className="portal-content-layout" style={{ padding: '24px' }}>
           <Content
+            className="portal-content"
             style={{
               padding: 24,
               margin: 0,
