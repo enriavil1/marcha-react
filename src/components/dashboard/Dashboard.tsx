@@ -190,6 +190,7 @@ const Dashboard: EntryPointComponent<
                 background: OVERLAY_LIGHT,
                 border: `1px solid ${OVERLAY_BORDER}`,
                 borderRadius: RADIUS_MD,
+                marginTop: 16,
               }}
               onClick={() => navigate(`${basePath}/${Paths.Maintenance}`)}
             >
