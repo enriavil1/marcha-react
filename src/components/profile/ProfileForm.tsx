@@ -27,7 +27,11 @@ const ProfileForm: React.FC<ProfileFormProps> = ({
 
   return (
     <Card
-      style={{ borderRadius: RADIUS_XL, border: `1px solid ${BORDER_DEFAULT}` }}
+      style={{
+        borderRadius: RADIUS_XL,
+        border: `1px solid ${BORDER_DEFAULT}`,
+        width: '100%',
+      }}
       title={
         <Flex justify="space-between" align="center">
           <Typography.Title level={5} style={{ margin: 0 }}>

@@ -147,7 +147,7 @@ const ProfilePage: EntryPointComponent<
     'Marcha User';
 
   return (
-    <div style={{ margin: '0 auto', padding: '0 16px' }}>
+    <div style={{ width: '100%', boxSizing: 'border-box' }}>
       <ProfileHeader
         displayName={displayName}
         username={profile.username ?? null}
