@@ -14,6 +14,7 @@ const AccountInfo: React.FC<AccountInfoProps> = ({ onboarded = false }) => {
         borderRadius: RADIUS_XL,
         border: `1px solid ${BORDER_DEFAULT}`,
         marginTop: 24,
+        marginBottom: 24,
         width: '100%',
       }}
       title={

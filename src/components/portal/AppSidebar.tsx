@@ -11,7 +11,7 @@ import {
   ToolOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Divider, Flex, Layout, Menu, Space, Typography } from 'antd';
+import { Button, Divider, Flex, Menu, Space, Typography } from 'antd';
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
@@ -22,11 +22,9 @@ import { supabase } from '../../lib/supabase';
 import { Paths } from '../../views/paths';
 import BuildingAvatar from '../Avatars/BuildingAvatar';
 
-const { Sider } = Layout;
-
 type Props = {
   communityId: string;
-  onNavigate?: () => void;
+  onNavigate: () => void;
 };
 
 const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
@@ -46,11 +44,11 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
     await supabase.auth.signOut();
     setIsUserLoggedIn(false);
     navigate(Paths.SignIn);
-    onNavigate?.();
+    onNavigate();
   };
 
   const handleMenuClick = () => {
-    onNavigate?.();
+    onNavigate();
   };
 
   const pathSegments = location.pathname.split('/');
@@ -59,19 +57,7 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
   const basePath = `${Paths.Portal}/${communityId}`;
 
   return (
-    <Sider
-      width={250}
-      style={{
-        background: WHITE,
-        borderRight: `1px solid ${BORDER_LIGHT}`,
-        height: '100vh',
-        position: 'sticky',
-        top: 0,
-        left: 0,
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <>
       <Flex vertical style={{ overflow: 'auto' }}>
         <Flex
           align="center"
@@ -83,14 +69,14 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
         >
           <BuildingAvatar communityImg={communityImg} />
 
-          <div style={{ flex: 1, minWidth: 0 }}>
+          <Flex vertical style={{ minWidth: 0 }}>
             <Typography.Text strong style={{ display: 'block' }}>
               Community
             </Typography.Text>
             <Typography.Text type="secondary" style={{ fontSize: 12 }}>
               Resident
             </Typography.Text>
-          </div>
+          </Flex>
           <SwapOutlined
             onClick={handleSwitchCommunity}
             style={{ cursor: 'pointer', fontSize: 16, color: NEUTRAL_500 }}
@@ -260,7 +246,7 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
           </Button>
         </Space>
       </div>
-    </Sider>
+    </>
   );
 };
 
