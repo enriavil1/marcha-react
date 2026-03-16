@@ -37,7 +37,7 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
   const handleSwitchCommunity = () => {
     setCommunityId(null);
     navigate(Paths.Main);
-    onNavigate?.();
+    onNavigate();
   };
 
   const handleLogout = async () => {
