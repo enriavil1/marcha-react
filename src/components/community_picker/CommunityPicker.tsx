@@ -50,20 +50,13 @@ const CommunityPicker: EntryPointComponent<
   return (
     <>
       <style>{`
-        /* Desktop: full-height flex container to vertically center content */
         .community-picker-page {
           min-height: 100vh;
           display: flex;
-          align-items: center;
           justify-content: center;
           padding: 40px 20px;
           box-sizing: border-box;
         }
-        .community-picker-content {
-          width: 100%;
-          max-width: 900px;
-        }
-        /* Mobile: top-aligned, no vertical centering */
         @media (max-width: 767px) {
           .community-picker-page {
             min-height: unset;
@@ -73,14 +66,17 @@ const CommunityPicker: EntryPointComponent<
         }
       `}</style>
       <div className="community-picker-page">
-        <div className="community-picker-content">
-          <div style={{ marginBottom: 32 }}>
-            <Flex
-              gap="small"
-              style={{
-                marginBottom: 16,
-              }}
-            >
+        <Flex
+          vertical
+          gap={32}
+          style={{
+            width: '100%',
+            maxWidth: '900px',
+            marginTop: '11.5%',
+          }}
+        >
+          <Flex vertical gap={0}>
+            <Flex gap="small">
               <MarchaAvatar />{' '}
               <div>
                 <Typography.Text strong style={{ fontSize: 16 }}>
@@ -98,7 +94,7 @@ const CommunityPicker: EntryPointComponent<
             <Typography.Text type="secondary">
               Select a community to continue
             </Typography.Text>
-          </div>
+          </Flex>
           <Row gutter={[24, 24]}>
             <CommunityCardContainer fragmentRef={query} />
             <Col xs={24} md={12}>
@@ -127,7 +123,7 @@ const CommunityPicker: EntryPointComponent<
               </Card>
             </Col>
           </Row>
-        </div>
+        </Flex>
       </div>
     </>
   );
