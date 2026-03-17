@@ -49,13 +49,17 @@ const CommunityPicker: EntryPointComponent<
 
   return (
     <div
+      className="community-picker-wrapper"
       style={{
         maxWidth: 900,
         margin: 'auto',
-        marginTop: 200,
         padding: '40px 20px',
       }}
     >
+      <style>{`
+        .community-picker-wrapper { margin-top: 200px; }
+        @media (max-width: 767px) { .community-picker-wrapper { margin-top: 24px; } }
+      `}</style>
       <div style={{ marginBottom: 32 }}>
         <Flex
           gap="small"
