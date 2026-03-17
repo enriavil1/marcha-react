@@ -48,72 +48,88 @@ const CommunityPicker: EntryPointComponent<
     query.profilesCollection?.edges[0]?.node.firstName ?? 'User';
 
   return (
-    <div
-      className="community-picker-wrapper"
-      style={{
-        maxWidth: 900,
-        margin: 'auto',
-        padding: '40px 20px',
-      }}
-    >
+    <>
       <style>{`
-        .community-picker-wrapper { margin-top: 200px; }
-        @media (max-width: 767px) { .community-picker-wrapper { margin-top: 24px; } }
+        /* Desktop: full-height flex container to vertically center content */
+        .community-picker-page {
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 40px 20px;
+          box-sizing: border-box;
+        }
+        .community-picker-content {
+          width: 100%;
+          max-width: 900px;
+        }
+        /* Mobile: top-aligned, no vertical centering */
+        @media (max-width: 767px) {
+          .community-picker-page {
+            min-height: unset;
+            display: block;
+            padding: 24px 20px 40px;
+          }
+        }
       `}</style>
-      <div style={{ marginBottom: 32 }}>
-        <Flex
-          gap="small"
-          style={{
-            marginBottom: 16,
-          }}
-        >
-          <MarchaAvatar />{' '}
-          <div>
-            <Typography.Text strong style={{ fontSize: 16 }}>
-              Marcha
-            </Typography.Text>
-            <br />
-            <Typography.Text type="secondary" style={{ fontSize: 12 }}>
-              Resident Portal
-            </Typography.Text>
-          </div>
-        </Flex>
-        <Typography.Title level={2} style={{ marginBottom: 4 }}>
-          Welcome back, {firstName}
-        </Typography.Title>
-        <Typography.Text type="secondary">
-          Select a community to continue
-        </Typography.Text>
-      </div>
-      <Row gutter={[24, 24]}>
-        <CommunityCardContainer fragmentRef={query} />
-        <Col xs={24} md={12}>
-          <Card
-            style={{
-              borderRadius: RADIUS_LG,
-              border: `2px dashed ${NEUTRAL_200}`,
-              textAlign: 'center',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-            }}
-            hoverable
-          >
-            <PlusOutlined
-              style={{ fontSize: 32, color: NEUTRAL_400, marginBottom: 12 }}
-            />
-            <Typography.Title level={5} style={{ color: NEUTRAL_700 }}>
-              Join a Community
+      <div className="community-picker-page">
+        <div className="community-picker-content">
+          <div style={{ marginBottom: 32 }}>
+            <Flex
+              gap="small"
+              style={{
+                marginBottom: 16,
+              }}
+            >
+              <MarchaAvatar />{' '}
+              <div>
+                <Typography.Text strong style={{ fontSize: 16 }}>
+                  Marcha
+                </Typography.Text>
+                <br />
+                <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                  Resident Portal
+                </Typography.Text>
+              </div>
+            </Flex>
+            <Typography.Title level={2} style={{ marginBottom: 4 }}>
+              Welcome back, {firstName}
             </Typography.Title>
             <Typography.Text type="secondary">
-              Enter an invite code or request access to another property
+              Select a community to continue
             </Typography.Text>
-          </Card>
-        </Col>
-      </Row>
-    </div>
+          </div>
+          <Row gutter={[24, 24]}>
+            <CommunityCardContainer fragmentRef={query} />
+            <Col xs={24} md={12}>
+              <Card
+                style={{
+                  borderRadius: RADIUS_LG,
+                  border: `2px dashed ${NEUTRAL_200}`,
+                  textAlign: 'center',
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer',
+                }}
+                hoverable
+              >
+                <PlusOutlined
+                  style={{ fontSize: 32, color: NEUTRAL_400, marginBottom: 12 }}
+                />
+                <Typography.Title level={5} style={{ color: NEUTRAL_700 }}>
+                  Join a Community
+                </Typography.Title>
+                <Typography.Text type="secondary">
+                  Enter an invite code or request access to another property
+                </Typography.Text>
+              </Card>
+            </Col>
+          </Row>
+        </div>
+      </div>
+    </>
   );
 };
 
