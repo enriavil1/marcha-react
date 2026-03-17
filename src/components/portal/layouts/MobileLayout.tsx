@@ -53,6 +53,7 @@ const MobileLayout = ({ communityId }: Props) => {
         open={drawerOpen}
         width={280}
         closable={false}
+        push={false}
         styles={{ body: { padding: 0 } }}
       >
         <AppSidebar
