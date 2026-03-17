@@ -55,7 +55,6 @@ const ProfilePage: EntryPointComponent<
 
   const [uploading, setUploading] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl ?? '');
-  console.log(avatarUrl);
 
   const [commitMutation, isMutating] =
     useMutation<UpdateProfileMutationMutation>(UpdateProfileMutation);
@@ -147,7 +146,7 @@ const ProfilePage: EntryPointComponent<
     'Marcha User';
 
   return (
-    <div style={{ margin: '0 auto', padding: '0 16px' }}>
+    <div style={{ width: '100%', boxSizing: 'border-box' }}>
       <ProfileHeader
         displayName={displayName}
         username={profile.username ?? null}
@@ -168,8 +167,6 @@ const ProfilePage: EntryPointComponent<
       />
 
       <AccountInfo onboarded={profile.onboarded ?? null} />
-
-      <div style={{ height: 32 }} />
     </div>
   );
 };

@@ -11,21 +11,20 @@ import {
   ToolOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Divider, Flex, Layout, Menu, Space, Typography } from 'antd';
+import { Button, Divider, Flex, Menu, Space, Typography } from 'antd';
 import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/AuthContext';
 import { useCommunity } from '../../contexts/CommunityContext';
+import { BORDER_LIGHT, NEUTRAL_500, WHITE } from '../../design';
 import { supabase } from '../../lib/supabase';
 import { Paths } from '../../views/paths';
 import BuildingAvatar from '../Avatars/BuildingAvatar';
 
-const { Sider } = Layout;
-
 type Props = {
   communityId: string;
-  onNavigate?: () => void;
+  onNavigate: () => void;
 };
 
 const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
@@ -38,18 +37,18 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
   const handleSwitchCommunity = () => {
     setCommunityId(null);
     navigate(Paths.Main);
-    onNavigate?.();
+    onNavigate();
   };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
     setIsUserLoggedIn(false);
     navigate(Paths.SignIn);
-    onNavigate?.();
+    onNavigate();
   };
 
   const handleMenuClick = () => {
-    onNavigate?.();
+    onNavigate();
   };
 
   const pathSegments = location.pathname.split('/');
@@ -58,41 +57,29 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
   const basePath = `${Paths.Portal}/${communityId}`;
 
   return (
-    <Sider
-      width={250}
-      style={{
-        background: '#fff',
-        borderRight: '1px solid #f0f0f0',
-        height: '100vh',
-        position: 'sticky',
-        top: 0,
-        left: 0,
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <>
       <Flex vertical style={{ overflow: 'auto' }}>
         <Flex
           align="center"
           style={{
             padding: '16px',
-            borderBottom: '1px solid #f0f0f0',
+            borderBottom: `1px solid ${BORDER_LIGHT}`,
             gap: 12,
           }}
         >
           <BuildingAvatar communityImg={communityImg} />
 
-          <div style={{ flex: 1, minWidth: 0 }}>
+          <Flex vertical style={{ minWidth: 0 }}>
             <Typography.Text strong style={{ display: 'block' }}>
               Community
             </Typography.Text>
             <Typography.Text type="secondary" style={{ fontSize: 12 }}>
               Resident
             </Typography.Text>
-          </div>
+          </Flex>
           <SwapOutlined
             onClick={handleSwitchCommunity}
-            style={{ cursor: 'pointer', fontSize: 16, color: '#8c8c8c' }}
+            style={{ cursor: 'pointer', fontSize: 16, color: NEUTRAL_500 }}
             title="Switch Community"
           />
         </Flex>
@@ -211,6 +198,7 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
             mode="inline"
             selectedKeys={[activeKey]}
             style={{ borderRight: 0 }}
+            onClick={handleMenuClick}
             items={[
               {
                 key: Paths.Profile,
@@ -233,9 +221,9 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
 
       <div
         style={{
-          borderTop: '1px solid #f0f0f0',
+          borderTop: `1px solid ${BORDER_LIGHT}`,
           padding: '12px 16px',
-          background: '#fff',
+          background: WHITE,
         }}
       >
         <Space vertical style={{ width: '100%' }} size={0}>
@@ -259,7 +247,7 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
           </Button>
         </Space>
       </div>
-    </Sider>
+    </>
   );
 };
 

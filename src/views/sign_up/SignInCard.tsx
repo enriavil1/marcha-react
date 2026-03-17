@@ -14,8 +14,15 @@ import {
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { BRAND_COLOR } from '../..';
 import { useAuth } from '../../contexts/AuthContext';
+import {
+  BRAND_PRIMARY,
+  NEUTRAL_400,
+  NEUTRAL_900,
+  RADIUS_MD,
+  RADIUS_XL,
+  SHADOW_CARD,
+} from '../../design';
 import { invalidateRelayStore } from '../../lib/relay_environment';
 import { supabase } from '../../lib/supabase';
 import { Paths } from '../paths';
@@ -59,13 +66,13 @@ const SignInCard = () => {
   return (
     <Card
       style={{
-        borderRadius: 16,
-        boxShadow: '0 4px 24px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04)',
+        borderRadius: RADIUS_XL,
+        boxShadow: SHADOW_CARD,
       }}
       styles={{ body: { padding: '40px 40px 32px' } }}
     >
       <Space vertical size={4} style={{ marginBottom: 32 }}>
-        <Typography.Title level={3} style={{ margin: 0, color: '#1a1a1a' }}>
+        <Typography.Title level={3} style={{ margin: 0, color: NEUTRAL_900 }}>
           Sign in to Marcha
         </Typography.Title>
         <Typography.Text type="secondary">
@@ -93,9 +100,9 @@ const SignInCard = () => {
           ]}
         >
           <Input
-            prefix={<UserOutlined style={{ color: '#bfbfbf' }} />}
+            prefix={<UserOutlined style={{ color: NEUTRAL_400 }} />}
             placeholder="you@example.com"
-            style={{ borderRadius: 8 }}
+            style={{ borderRadius: RADIUS_MD }}
           />
         </Form.Item>
 
@@ -110,16 +117,16 @@ const SignInCard = () => {
           style={{ marginBottom: 4 }}
         >
           <Input.Password
-            prefix={<LockOutlined style={{ color: '#bfbfbf' }} />}
+            prefix={<LockOutlined style={{ color: NEUTRAL_400 }} />}
             placeholder="••••••••"
-            style={{ borderRadius: 8 }}
+            style={{ borderRadius: RADIUS_MD }}
           />
         </Form.Item>
         <Form.Item style={{ marginBottom: 16, marginTop: 0 }}>
           <Flex justify="flex-end">
             <Typography.Link
               href=""
-              style={{ fontSize: 13, color: BRAND_COLOR }}
+              style={{ fontSize: 13, color: BRAND_PRIMARY }}
             >
               Forgot password?
             </Typography.Link>
@@ -140,9 +147,9 @@ const SignInCard = () => {
             loading={isLoading}
             size="large"
             style={{
-              background: BRAND_COLOR,
-              borderColor: BRAND_COLOR,
-              borderRadius: 8,
+              background: BRAND_PRIMARY,
+              borderColor: BRAND_PRIMARY,
+              borderRadius: RADIUS_MD,
               height: 48,
               fontWeight: 600,
               fontSize: 15,
@@ -164,12 +171,12 @@ const SignInCard = () => {
         size="large"
         href=""
         style={{
-          borderRadius: 8,
+          borderRadius: RADIUS_MD,
           height: 48,
           fontWeight: 600,
           fontSize: 15,
-          borderColor: BRAND_COLOR,
-          color: BRAND_COLOR,
+          borderColor: BRAND_PRIMARY,
+          color: BRAND_PRIMARY,
         }}
       >
         Create an account

@@ -2,7 +2,14 @@ import { CameraOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Flex, Spin, Typography, Upload } from 'antd';
 import React from 'react';
 
-import { BRAND_COLOR, BRAND_DARK } from '../..';
+import {
+  BRAND_GRADIENT_SIMPLE,
+  BRAND_PRIMARY,
+  RADIUS_XL,
+  SHADOW_AVATAR,
+  SHADOW_BUTTON,
+  WHITE,
+} from '../../design';
 
 type ProfileHeaderProps = {
   displayName: string;
@@ -19,69 +26,109 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
   uploading,
   onAvatarUpload,
 }) => (
-  <Card
-    style={{
-      borderRadius: 16,
-      overflow: 'hidden',
-      marginBottom: 24,
-      border: 'none',
-    }}
-    styles={{ body: { padding: 0 } }}
-  >
-    <div
+  <>
+    <style>{`
+      @media (max-width: 767px) {
+        .profile-header-card {
+          border-radius: 12px !important;
+          margin-bottom: 16px !important;
+        }
+        .profile-header-banner {
+          height: 90px !important;
+        }
+        .profile-header-body {
+          padding-bottom: 16px !important;
+          margin-top: -44px !important;
+        }
+        .profile-header-avatar {
+          width: 88px !important;
+          height: 88px !important;
+          line-height: 88px !important;
+          font-size: 36px !important;
+        }
+        .profile-header-name {
+          font-size: 18px !important;
+          margin-top: 8px !important;
+        }
+      }
+    `}</style>
+    <Card
+      className="profile-header-card"
       style={{
-        background: `linear-gradient(135deg, ${BRAND_COLOR} 0%, ${BRAND_DARK} 100%)`,
-        height: 140,
+        borderRadius: RADIUS_XL,
+        overflow: 'hidden',
+        marginBottom: 24,
+        border: 'none',
+        width: '100%',
       }}
-    />
-    <Flex vertical align="center" style={{ marginTop: -60, paddingBottom: 24 }}>
-      <div style={{ position: 'relative', marginBottom: 16 }}>
-        <Avatar
-          size={120}
-          src={avatarUrl || undefined}
-          icon={!avatarUrl ? <UserOutlined /> : undefined}
-          style={{
-            border: '4px solid #fff',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            backgroundColor: avatarUrl ? undefined : BRAND_COLOR,
-          }}
-        />
-        <Upload
-          accept="image/jpeg"
-          showUploadList={false}
-          beforeUpload={(file) => {
-            onAvatarUpload(file);
-          }}
-        >
-          <Button
-            shape="circle"
-            icon={uploading ? <Spin size="small" /> : <CameraOutlined />}
-            size="small"
+      styles={{ body: { padding: 0 } }}
+    >
+      <div
+        className="profile-header-banner"
+        style={{
+          background: BRAND_GRADIENT_SIMPLE,
+          height: 140,
+        }}
+      />
+      <Flex
+        vertical
+        align="center"
+        className="profile-header-body"
+        style={{ marginTop: -60, paddingBottom: 24 }}
+      >
+        <div style={{ position: 'relative', marginBottom: 12 }}>
+          <Avatar
+            size={120}
+            src={avatarUrl || undefined}
+            icon={!avatarUrl ? <UserOutlined /> : undefined}
+            className="profile-header-avatar"
             style={{
-              position: 'absolute',
-              bottom: 4,
-              right: 4,
-              backgroundColor: BRAND_COLOR,
-              borderColor: BRAND_COLOR,
-              color: '#fff',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+              border: `4px solid ${WHITE}`,
+              boxShadow: SHADOW_AVATAR,
+              backgroundColor: avatarUrl ? undefined : BRAND_PRIMARY,
             }}
           />
-        </Upload>
-      </div>
-      <Typography.Title level={3} style={{ margin: 0 }}>
-        {displayName}
-      </Typography.Title>
-      {username && (
-        <Typography.Text
-          type="secondary"
-          style={{ fontSize: 14, marginTop: 4 }}
+          <Upload
+            accept="image/jpeg"
+            showUploadList={false}
+            beforeUpload={(file) => {
+              onAvatarUpload(file);
+            }}
+          >
+            <Button
+              shape="circle"
+              icon={uploading ? <Spin size="small" /> : <CameraOutlined />}
+              size="small"
+              style={{
+                position: 'absolute',
+                bottom: 4,
+                right: 4,
+                backgroundColor: BRAND_PRIMARY,
+                borderColor: BRAND_PRIMARY,
+                color: WHITE,
+                boxShadow: SHADOW_BUTTON,
+              }}
+            />
+          </Upload>
+        </div>
+        <Typography.Title
+          level={3}
+          className="profile-header-name"
+          style={{ margin: 0 }}
         >
-          @{username}
-        </Typography.Text>
-      )}
-    </Flex>
-  </Card>
+          {displayName}
+        </Typography.Title>
+        {username && (
+          <Typography.Text
+            type="secondary"
+            style={{ fontSize: 14, marginTop: 4 }}
+          >
+            @{username}
+          </Typography.Text>
+        )}
+      </Flex>
+    </Card>
+  </>
 );
 
 export default ProfileHeader;

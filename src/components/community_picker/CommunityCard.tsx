@@ -4,7 +4,7 @@ import graphql from 'babel-plugin-relay/macro';
 import { useEffect, useState } from 'react';
 import { useFragment } from 'react-relay';
 
-import { BRAND_COLOR } from '../..';
+import { BRAND_PRIMARY, RADIUS_LG } from '../../design';
 import fetchFromStorage from '../../utils/fetch_from_storage';
 import { getParseJsonAddress } from '../../utils/get_address';
 import BuildingAvatar from '../Avatars/BuildingAvatar';
@@ -57,7 +57,7 @@ const CommunityCard = ({
         onClick={() =>
           handleSelectCommunity(communityFragment?.communityId, imageBlob)
         }
-        style={{ borderRadius: 12 }}
+        style={{ borderRadius: RADIUS_LG }}
       >
         <Card.Meta
           avatar={
@@ -94,7 +94,7 @@ const CommunityCard = ({
               value={0}
               precision={2}
               prefix="£"
-              styles={{ content: { color: BRAND_COLOR } }}
+              styles={{ content: { color: BRAND_PRIMARY } }}
             />
           </Col>
         </Row>

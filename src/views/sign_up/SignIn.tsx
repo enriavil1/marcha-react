@@ -1,7 +1,15 @@
 import { BankOutlined, MessageOutlined, ToolOutlined } from '@ant-design/icons';
 import { Col, Flex, Image, Row, Space, Typography, notification } from 'antd';
 
-import { BRAND_COLOR, BRAND_GRADIENT } from '../..';
+import {
+  BRAND_GRADIENT,
+  BRAND_PRIMARY,
+  NEUTRAL_50,
+  OVERLAY_FAINT,
+  OVERLAY_SUBTLE,
+  OVERLAY_TEXT,
+  WHITE,
+} from '../../design';
 import FeatureBullet from './FeatureBullet';
 import SignInCard from './SignInCard';
 
@@ -42,7 +50,7 @@ const SignIn = (): React.ReactElement => {
               width: 320,
               height: 320,
               borderRadius: '50%',
-              background: 'rgba(255,255,255,0.07)',
+              background: OVERLAY_SUBTLE,
               pointerEvents: 'none',
             }}
           />
@@ -54,7 +62,7 @@ const SignIn = (): React.ReactElement => {
               width: 400,
               height: 400,
               borderRadius: '50%',
-              background: 'rgba(255,255,255,0.05)',
+              background: OVERLAY_FAINT,
               pointerEvents: 'none',
             }}
           />
@@ -79,15 +87,13 @@ const SignIn = (): React.ReactElement => {
             <Space vertical size={12}>
               <Typography.Title
                 level={2}
-                style={{ color: '#fff', margin: 0, lineHeight: 1.2 }}
+                style={{ color: WHITE, margin: 0, lineHeight: 1.2 }}
               >
                 Your community,
                 <br />
                 all in one place.
               </Typography.Title>
-              <Typography.Text
-                style={{ color: 'rgba(255,255,255,0.8)', fontSize: 16 }}
-              >
+              <Typography.Text style={{ color: OVERLAY_TEXT, fontSize: 16 }}>
                 Manage your home, stay connected with neighbours, and handle
                 everything your building needs — effortlessly.
               </Typography.Text>
@@ -117,7 +123,7 @@ const SignIn = (): React.ReactElement => {
           xs={24}
           md={12}
           lg={11}
-          style={{ background: '#fafafa', height: '100%', overflow: 'auto' }}
+          style={{ background: NEUTRAL_50, height: '100%', overflow: 'auto' }}
         >
           <Flex
             align="center"
@@ -154,11 +160,11 @@ const SignIn = (): React.ReactElement => {
                 }}
               >
                 By signing in you agree to Marcha's{' '}
-                <Typography.Link href="" style={{ color: BRAND_COLOR }}>
+                <Typography.Link href="" style={{ color: BRAND_PRIMARY }}>
                   Terms of Service
                 </Typography.Link>{' '}
                 and{' '}
-                <Typography.Link href="" style={{ color: BRAND_COLOR }}>
+                <Typography.Link href="" style={{ color: BRAND_PRIMARY }}>
                   Privacy Policy
                 </Typography.Link>
                 .

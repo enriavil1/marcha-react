@@ -1,5 +1,7 @@
 import { Flex, Space, Typography } from 'antd';
 
+import { OVERLAY_LIGHTER, OVERLAY_TEXT_MUTED, WHITE } from '../../design';
+
 const FeatureBullet = ({
   icon,
   title,
@@ -17,21 +19,19 @@ const FeatureBullet = ({
         width: 40,
         height: 40,
         borderRadius: 10,
-        background: 'rgba(255,255,255,0.18)',
+        background: OVERLAY_LIGHTER,
         flexShrink: 0,
         fontSize: 18,
-        color: '#fff',
+        color: WHITE,
       }}
     >
       {icon}
     </Flex>
     <Space vertical size={2}>
-      <Typography.Text strong style={{ color: '#fff', fontSize: 14 }}>
+      <Typography.Text strong style={{ color: WHITE, fontSize: 14 }}>
         {title}
       </Typography.Text>
-      <Typography.Text
-        style={{ color: 'rgba(255,255,255,0.75)', fontSize: 13 }}
-      >
+      <Typography.Text style={{ color: OVERLAY_TEXT_MUTED, fontSize: 13 }}>
         {description}
       </Typography.Text>
     </Space>
