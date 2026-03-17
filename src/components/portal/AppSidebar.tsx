@@ -198,6 +198,7 @@ const AppSidebar = ({ communityId, onNavigate }: Props): React.ReactElement => {
             mode="inline"
             selectedKeys={[activeKey]}
             style={{ borderRight: 0 }}
+            onClick={handleMenuClick}
             items={[
               {
                 key: Paths.Profile,
