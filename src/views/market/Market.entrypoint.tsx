@@ -5,25 +5,53 @@ import {
   useEntryPointLoader,
   useRelayEnvironment,
 } from 'react-relay';
+import { useSearchParams } from 'react-router-dom';
 
-import ProductsContainerWrapperQuery from '../../components/Products/__generated__/ProductsContainerWrapperQuery.graphql';
+import MarketplaceWrapperQueryQuery from '../../components/marketplace/__generated__/MarketplaceWrapperQueryQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
-const FeedEntryPoint = createEntryPoint({
-  root: JSResource('ProductCardsContainerWrapper', () =>
-    import('../../components/Products/ProductsContainerWrapper').then(
-      (module) => {
-        return module.default;
-      }
+type EntryPointParams = {
+  q?: string;
+  category?: string;
+  condition?: string;
+};
+
+const MarketplaceEntryPoint = createEntryPoint({
+  root: JSResource('MarketplaceWrapper', () =>
+    import('../../components/marketplace/MarketplaceWrapper').then(
+      (module) => module.default
     )
   ),
-  getPreloadProps() {
+  getPreloadProps(params: EntryPointParams) {
+    // Build the ProductsFilter from URL search params
+    const filters: Record<string, unknown>[] = [];
+
+    // Always show only public listings
+    filters.push({ isPublic: { eq: true } });
+
+    if (params.q) {
+      filters.push({ name: { ilike: `%${params.q}%` } });
+    }
+
+    if (params.category) {
+      filters.push({ categoryId: { eq: params.category } });
+    }
+
+    if (params.condition) {
+      filters.push({ condition: { eq: params.condition } });
+    }
+
+    const filter = filters.length > 0 ? { and: filters } : undefined;
+
     return {
       queries: {
-        productsContainerWrapperQuery: {
-          parameters: ProductsContainerWrapperQuery,
-          variables: {},
+        marketplaceQuery: {
+          parameters: MarketplaceWrapperQueryQuery,
+          variables: {
+            filter,
+            orderBy: [{ createdAt: 'DescNullsLast' }],
+          },
         },
       },
     } as const;
@@ -32,6 +60,7 @@ const FeedEntryPoint = createEntryPoint({
 
 const Market = (): React.ReactElement | null => {
   const relayEnvironment = useRelayEnvironment();
+  const [searchParams] = useSearchParams();
 
   const environmentProvider = useMemo(
     () => ({ getEnvironment: () => relayEnvironment }),
@@ -40,22 +69,26 @@ const Market = (): React.ReactElement | null => {
 
   const [entryPointRef, loadEntryPoint] = useEntryPointLoader(
     environmentProvider,
-    FeedEntryPoint
+    MarketplaceEntryPoint
   );
 
+  // Extract filter params from URL
+  const q = searchParams.get('q') ?? undefined;
+  const category = searchParams.get('category') ?? undefined;
+  const condition = searchParams.get('condition') ?? undefined;
+
   useEffect(() => {
-    if (entryPointRef == null) {
-      loadEntryPoint({});
-    }
-  }, []);
+    // Reload the entrypoint whenever filters change
+    loadEntryPoint({ q, category, condition });
+  }, [q, category, condition]);
 
   if (!entryPointRef) return null;
 
   return (
     <Suspense
       fallback={
-        <Flex gap={12} wrap="wrap" justify="center">
-          <Spin tip="Loading Products..." size="large" />{' '}
+        <Flex justify="center" align="center" style={{ height: '40vh' }}>
+          <Spin tip="Loading Marketplace..." size="large" />
         </Flex>
       }
     >
