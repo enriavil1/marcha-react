@@ -1,6 +1,6 @@
 import { PlusOutlined, ShopOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Empty, Flex, Row, Spin, Typography } from 'antd';
-import React, { Suspense, useCallback } from 'react';
+import React, { Suspense, useCallback, useEffect, useRef } from 'react';
 import { usePaginationFragment } from 'react-relay';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
@@ -21,8 +21,8 @@ import type { MarketplacePaginationQuery } from './__generated__/MarketplacePagi
 import type { MarketplaceWrapperQueryQuery$data } from './__generated__/MarketplaceWrapperQueryQuery.graphql';
 
 /**
- * The page size used for both the initial load and each "Load More" request.
- * 12 fills a 4-column grid with exactly 3 rows.
+ * Number of listings fetched per page (initial load and each infinite-scroll
+ * trigger). 12 fills a 4-column grid with exactly 3 rows.
  */
 const PAGE_SIZE = 12;
 
@@ -60,17 +60,13 @@ const MarketplaceContainer = ({
   const edges = data.productsCollection?.edges ?? [];
 
   /**
-   * When the user clicks "Load More" we:
-   *  1. Ask Relay to fetch the next page (loadNext appends edges to the
-   *     @connection store).
-   *  2. Store the current endCursor in the URL so the page is bookmarkable
-   *     and shareable at the current scroll position.
+   * Fetch the next page and write the resulting endCursor to the URL so the
+   * current scroll position is bookmarkable / shareable.
    */
-  const handleLoadMore = useCallback(() => {
+  const handleLoadNext = useCallback(() => {
+    if (!hasNext || isLoadingNext) return;
     loadNext(PAGE_SIZE, {
       onComplete: () => {
-        // After Relay appends the new page, update the URL cursor param so
-        // the current position is reflected in the address bar.
         const endCursor = data.productsCollection?.pageInfo?.endCursor;
         if (endCursor) {
           setSearchParams((prev) => {
@@ -81,7 +77,43 @@ const MarketplaceContainer = ({
         }
       },
     });
-  }, [loadNext, data.productsCollection, setSearchParams]);
+  }, [
+    hasNext,
+    isLoadingNext,
+    loadNext,
+    data.productsCollection,
+    setSearchParams,
+  ]);
+
+  /**
+   * Sentinel element placed just below the product grid.
+   * An IntersectionObserver watches it; when it enters the viewport we
+   * trigger the next page load automatically.
+   */
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          handleLoadNext();
+        }
+      },
+      {
+        // Start loading when the sentinel is within 200 px of the viewport
+        // bottom so the next batch arrives before the user actually hits the
+        // end of the list.
+        rootMargin: '0px 0px 200px 0px',
+        threshold: 0,
+      }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [handleLoadNext]);
 
   return (
     <div>
@@ -156,27 +188,21 @@ const MarketplaceContainer = ({
         )}
       </Row>
 
-      {/* Load More */}
-      {hasNext && (
-        <Flex justify="center" style={{ marginTop: 32 }}>
-          <Button
-            size="large"
-            onClick={handleLoadMore}
-            loading={isLoadingNext}
-            disabled={isLoadingNext}
-            style={{ minWidth: 160 }}
-          >
-            {isLoadingNext ? 'Loading\u2026' : 'Load More'}
-          </Button>
-        </Flex>
-      )}
+      {/*
+       * Sentinel div — invisible, zero-height element at the bottom of the
+       * list. The IntersectionObserver fires when this enters the viewport
+       * (with a 200 px bottom margin) and triggers the next page fetch.
+       * It is only rendered while there are more pages to load so the
+       * observer is automatically disconnected once all pages are shown.
+       */}
+      {hasNext && <div ref={sentinelRef} style={{ height: 1 }} />}
 
-      {/* Subtle spinner shown below the grid while fetching the next page */}
+      {/* Spinner shown while the next page is in-flight */}
       {isLoadingNext && (
-        <Flex justify="center" align="center" style={{ marginTop: 16 }}>
+        <Flex justify="center" align="center" style={{ marginTop: 24 }}>
           <Spin size="small" />
           <Typography.Text style={{ marginLeft: 8, color: NEUTRAL_500 }}>
-            Loading more listings\u2026
+            Loading more listings&hellip;
           </Typography.Text>
         </Flex>
       )}
