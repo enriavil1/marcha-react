@@ -73,7 +73,7 @@ const MarketplaceWrapper: EntryPointComponent<
       name: e.node.name,
     })) ?? [];
 
-  return <MarketplaceContainer queryRef={data} categories={categories} />;
+  return <MarketplaceContainer fragmentRef={data} categories={categories} />;
 };
 
 export default MarketplaceWrapper;

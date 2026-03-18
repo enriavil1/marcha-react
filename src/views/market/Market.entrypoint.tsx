@@ -8,14 +8,9 @@ import {
 import { useSearchParams } from 'react-router-dom';
 
 import MarketplaceWrapperQueryQuery from '../../components/marketplace/__generated__/MarketplaceWrapperQueryQuery.graphql';
+import { PAGE_SIZE } from '../../components/marketplace/constants';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
-
-/**
- * Number of listings to load per page.
- * Must match the PAGE_SIZE constant in MarketplaceContainer.
- */
-const PAGE_SIZE = 12;
 
 type EntryPointParams = {
   q?: string;

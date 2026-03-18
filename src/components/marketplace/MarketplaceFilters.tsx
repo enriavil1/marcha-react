@@ -4,6 +4,7 @@ import React, { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { RADIUS_MD } from '../../design';
+import { CONDITIONS } from './constants';
 
 type Category = {
   id: string;
@@ -13,13 +14,6 @@ type Category = {
 type Props = {
   categories: Category[];
 };
-
-const CONDITIONS = [
-  { label: 'New', value: 'New' },
-  { label: 'Like New', value: 'Like_new' },
-  { label: 'Good', value: 'Good' },
-  { label: 'Used', value: 'Used' },
-];
 
 const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -89,7 +83,7 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
           allowClear
           onClear={() => updateParam('condition', undefined)}
           style={{ width: '100%', borderRadius: RADIUS_MD }}
-          options={CONDITIONS}
+          options={[...CONDITIONS]}
         />
       </Col>
       {hasFilters && (
