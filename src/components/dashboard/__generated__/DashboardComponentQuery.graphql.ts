@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7d273df17e182d203a5ad6ad5accbaee>>
+ * @generated SignedSource<<8058b5bb5ce258ff16535aa3d1546818>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,6 +9,7 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
 export type FilterIs = "NOT_NULL" | "NULL" | "%future added value";
 export type BigIntFilter = {
   eq?: string | null | undefined;
@@ -47,6 +48,7 @@ export type DashboardComponentQuery$data = {
       };
     }>;
   } | null | undefined;
+  readonly " $fragmentSpreads": FragmentRefs<"DashboardMarketplacePreviewFragment">;
 };
 export type DashboardComponentQuery = {
   response: DashboardComponentQuery$data;
@@ -252,6 +254,11 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "DashboardMarketplacePreviewFragment"
       }
     ],
     "type": "Query",
@@ -351,20 +358,95 @@ return {
           }
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": [
+          {
+            "kind": "Literal",
+            "name": "filter",
+            "value": {
+              "isPublic": {
+                "eq": true
+              }
+            }
+          },
+          {
+            "kind": "Literal",
+            "name": "first",
+            "value": 3
+          },
+          {
+            "kind": "Literal",
+            "name": "orderBy",
+            "value": [
+              {
+                "createdAt": "DescNullsLast"
+              }
+            ]
+          }
+        ],
+        "concreteType": "ProductsConnection",
+        "kind": "LinkedField",
+        "name": "productsCollection",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "ProductsEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Products",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v8/*: any*/),
+                  (v9/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "price",
+                    "storageKey": null
+                  },
+                  (v12/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "createdAt",
+                    "storageKey": null
+                  },
+                  (v13/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": "productsCollection(filter:{\"isPublic\":{\"eq\":true}},first:3,orderBy:[{\"createdAt\":\"DescNullsLast\"}])"
       }
     ]
   },
   "params": {
-    "cacheID": "303177cb4b2b8eb1879ce7dc5627184b",
+    "cacheID": "c6d18e8f5878193587e25b3a8f3487d7",
     "id": null,
     "metadata": {},
     "name": "DashboardComponentQuery",
     "operationKind": "query",
-    "text": "query DashboardComponentQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query DashboardComponentQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n  ...DashboardMarketplacePreviewFragment\n}\n\nfragment DashboardMarketplacePreviewFragment on Query {\n  productsCollection(first: 3, orderBy: [{createdAt: DescNullsLast}], filter: {isPublic: {eq: true}}) {\n    edges {\n      node {\n        id\n        name\n        price\n        image\n        createdAt\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "f00526055141e7fb29b983577ba15c0b";
+(node as any).hash = "ef1525fd58b2335bb774c8993953366f";
 
 export default node;

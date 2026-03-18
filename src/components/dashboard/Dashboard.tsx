@@ -44,6 +44,7 @@ import {
 } from '../../design';
 import { getParseJsonAddress } from '../../utils/get_address';
 import { Paths } from '../../views/paths';
+import DashboardMarketplacePreview from './DashboardMarketplacePreview';
 import { DashboardComponentQuery } from './__generated__/DashboardComponentQuery.graphql';
 
 const dashboardComponentQuery = graphql`
@@ -74,6 +75,9 @@ const dashboardComponentQuery = graphql`
         }
       }
     }
+    # Co-locate the marketplace preview data via fragment spread so the
+    # DashboardMarketplacePreview component owns its own data requirements.
+    ...DashboardMarketplacePreviewFragment
   }
 `;
 
@@ -293,6 +297,7 @@ const Dashboard: EntryPointComponent<
       </Row>
 
       <Row gutter={[24, 24]}>
+        {/* ── Left column: Active Requests + Community Updates ─────────── */}
         <Col xs={24} lg={16}>
           <Card
             title="Active Requests"
@@ -331,6 +336,14 @@ const Dashboard: EntryPointComponent<
           </Card>
         </Col>
 
+        {/*
+         * ── Right column: Recent Messages + Marketplace + Upcoming Events ──
+         *
+         * xs={24} means this stacks below the main content on mobile.
+         * lg={8}  means it sits alongside on desktop (≥992 px).
+         * The mobile design does not show the marketplace preview in the right
+         * column — it is accessible via the bottom-nav "Market" tab instead.
+         */}
         <Col xs={24} lg={8}>
           <Card
             title="Recent Messages"
@@ -350,23 +363,18 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          <Card
-            title="Marketplace"
-            extra={
-              <Typography.Link
-                onClick={() => navigate(`${basePath}/${Paths.Market}`)}
-              >
-                Browse
-              </Typography.Link>
+          {/*
+           * Marketplace preview — uses a Relay fragment to co-locate its own
+           * data requirements with the component. The fragment is spread into
+           * dashboardComponentQuery above so it's fetched in the same request.
+           */}
+          <DashboardMarketplacePreview
+            fragmentRef={data}
+            onBrowse={() => navigate(`${basePath}/${Paths.Market}`)}
+            onNavigateToListing={(id) =>
+              navigate(`${basePath}/${Paths.Market}/${id}`)
             }
-            style={{ borderRadius: RADIUS_LG, marginBottom: 24 }}
-          >
-            <List
-              dataSource={[]}
-              locale={{ emptyText: 'No marketplace items yet' }}
-              renderItem={() => null}
-            />
-          </Card>
+          />
 
           <Card title="Upcoming Events" style={{ borderRadius: RADIUS_LG }}>
             <List
