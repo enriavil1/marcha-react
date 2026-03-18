@@ -5,10 +5,18 @@ import { RADIUS_MD, WHITE } from '../../design';
 import Dashboard from '../../views/dashboard/Dashboard.entrypoint';
 import { Paths } from '../../views/paths';
 import Profile from '../../views/profile/Profile.entrypoint';
+import { ListingDetailPage, MarketplacePage } from '../marketplace';
 
 /**
  * Shared route definitions used by both mobile and desktop layouts.
  */
+
+const MarketplaceRoutes = () => (
+  <Routes>
+    <Route index element={<MarketplacePage />} />
+    <Route path="listing/:listingId" element={<ListingDetailPage />} />
+  </Routes>
+);
 
 const PortalRoutes = () => (
   <Content
@@ -42,10 +50,7 @@ const PortalRoutes = () => (
         path={Paths.Community}
         element={<div>Noticeboard - Coming Soon</div>}
       />
-      <Route
-        path={Paths.Market}
-        element={<div>Marketplace - Coming Soon</div>}
-      />
+      <Route path={`${Paths.Market}/*`} element={<MarketplaceRoutes />} />
       <Route
         path={Paths.Subletting}
         element={<div>Subletting - Coming Soon</div>}
