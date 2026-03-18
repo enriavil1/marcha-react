@@ -1,5 +1,5 @@
 import { Content } from 'antd/es/layout/layout';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { RADIUS_MD, WHITE } from '../../design';
 import Dashboard from '../../views/dashboard/Dashboard.entrypoint';
@@ -11,6 +11,13 @@ import Profile from '../../views/profile/Profile.entrypoint';
 
 /**
  * Shared route definitions used by both mobile and desktop layouts.
+ *
+ * All paths here are relative to the parent `/portal/:communityId/*` route.
+ * React Router v6 matches routes by specificity: static segments beat dynamic
+ * segments, so `market/new` always wins over `market/:product_id`.
+ *
+ * The index route redirects the bare `/portal/:communityId` URL to the
+ * dashboard so users always land on a meaningful page.
  */
 
 const PortalRoutes = () => (
@@ -24,6 +31,9 @@ const PortalRoutes = () => (
     }}
   >
     <Routes>
+      {/* Redirect bare /portal/:communityId to dashboard */}
+      <Route index element={<Navigate to={Paths.Dashboard} replace />} />
+
       <Route path={Paths.Dashboard} element={<Dashboard />} />
       <Route
         path={Paths.Documents}
@@ -45,9 +55,19 @@ const PortalRoutes = () => (
         path={Paths.Community}
         element={<div>Noticeboard - Coming Soon</div>}
       />
+
+      {/*
+       * Marketplace routes — listed as siblings (not nested) so each path is
+       * matched independently. React Router v6 only renders the first match
+       * inside a <Routes>, so these three routes are mutually exclusive:
+       *   market        → browse listings
+       *   market/new    → create a listing
+       *   market/:id    → view a listing detail
+       */}
       <Route path={Paths.Market} element={<Market />} />
       <Route path={`${Paths.Market}/new`} element={<CreateListing />} />
       <Route path={`${Paths.Market}/:product_id`} element={<ProductDetail />} />
+
       <Route
         path={Paths.Subletting}
         element={<div>Subletting - Coming Soon</div>}

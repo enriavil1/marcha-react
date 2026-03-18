@@ -1,5 +1,5 @@
 import { Flex, Spin } from 'antd';
-import React, { Suspense, useEffect, useMemo } from 'react';
+import React, { Suspense, useEffect, useMemo, useRef } from 'react';
 import {
   EntryPointContainer,
   useEntryPointLoader,
@@ -51,7 +51,7 @@ const MarketplaceEntryPoint = createEntryPoint({
           variables: {
             count: PAGE_SIZE,
             // `cursor` is the opaque Relay cursor stored in the URL after the
-            // user clicks "Load More". When present, the initial query starts
+            // user loads more pages. When present, the initial query starts
             // from that position so a bookmarked/shared URL restores the page.
             cursor: params.cursor ?? null,
             filter,
@@ -83,11 +83,22 @@ const Market = (): React.ReactElement | null => {
   const condition = searchParams.get('condition') ?? undefined;
   const cursor = searchParams.get('cursor') ?? undefined;
 
+  // Track previous filter values so we only reload when they actually change.
+  // Using refs avoids stale-closure issues and prevents double-firing in
+  // React Strict Mode (which runs effects twice in development).
+  const prevFiltersRef = useRef<string | null>(null);
+
   useEffect(() => {
-    // Reload the entrypoint whenever filters or cursor change.
-    // When filters change, MarketplaceFilters clears `cursor` from the URL
-    // first, so this will always start from page 1 for new filter combos.
-    loadEntryPoint({ q, category, condition, cursor });
+    // Serialize current filter state for comparison
+    const currentFilters = JSON.stringify({ q, category, condition, cursor });
+
+    // On the initial mount (entryPointRef is null) OR when filters change,
+    // load/reload the entrypoint. This matches the pattern used by Dashboard,
+    // Profile, CommunitiesFeed, and all other entrypoints in the codebase.
+    if (entryPointRef == null || prevFiltersRef.current !== currentFilters) {
+      prevFiltersRef.current = currentFilters;
+      loadEntryPoint({ q, category, condition, cursor });
+    }
   }, [q, category, condition, cursor]);
 
   if (!entryPointRef) return null;
