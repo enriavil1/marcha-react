@@ -5,18 +5,12 @@
  */
 
 /* tslint:disable */
-
 /* eslint-disable */
 // @ts-nocheck
-import { ConcreteRequest, Mutation } from 'relay-runtime';
 
-export type FilterIs = 'NOT_NULL' | 'NULL' | '%future added value';
-export type ProductCondition =
-  | 'Good'
-  | 'Like_new'
-  | 'New'
-  | 'Used'
-  | '%future added value';
+import { ConcreteRequest, Mutation } from 'relay-runtime';
+export type FilterIs = "NOT_NULL" | "NULL" | "%future added value";
+export type ProductCondition = "Good" | "Like_new" | "New" | "Used" | "%future added value";
 export type ProductsFilter = {
   and?: ReadonlyArray<ProductsFilter> | null | undefined;
   categoryId?: UUIDFilter | null | undefined;
@@ -111,76 +105,82 @@ export type DeleteProductMutationMutation = {
   variables: DeleteProductMutationMutation$variables;
 };
 
-const node: ConcreteRequest = (function () {
-  var v0 = {
-      defaultValue: null,
-      kind: 'LocalArgument',
-      name: 'atMost',
-    },
-    v1 = {
-      defaultValue: null,
-      kind: 'LocalArgument',
-      name: 'filter',
-    },
-    v2 = [
+const node: ConcreteRequest = (function(){
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "atMost"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "filter"
+},
+v2 = [
+  {
+    "alias": null,
+    "args": [
       {
-        alias: null,
-        args: [
-          {
-            kind: 'Variable',
-            name: 'atMost',
-            variableName: 'atMost',
-          },
-          {
-            kind: 'Variable',
-            name: 'filter',
-            variableName: 'filter',
-          },
-        ],
-        concreteType: 'ProductsDeleteResponse',
-        kind: 'LinkedField',
-        name: 'deleteFromProductsCollection',
-        plural: false,
-        selections: [
-          {
-            alias: null,
-            args: null,
-            kind: 'ScalarField',
-            name: 'affectedCount',
-            storageKey: null,
-          },
-        ],
-        storageKey: null,
+        "kind": "Variable",
+        "name": "atMost",
+        "variableName": "atMost"
       },
-    ];
-  return {
-    fragment: {
-      argumentDefinitions: [v0 /*: any*/, v1 /*: any*/],
-      kind: 'Fragment',
-      metadata: null,
-      name: 'DeleteProductMutationMutation',
-      selections: v2 /*: any*/,
-      type: 'Mutation',
-      abstractKey: null,
-    },
-    kind: 'Request',
-    operation: {
-      argumentDefinitions: [v1 /*: any*/, v0 /*: any*/],
-      kind: 'Operation',
-      name: 'DeleteProductMutationMutation',
-      selections: v2 /*: any*/,
-    },
-    params: {
-      cacheID: '54154641035a50eb95e50bdb2aa1deb1',
-      id: null,
-      metadata: {},
-      name: 'DeleteProductMutationMutation',
-      operationKind: 'mutation',
-      text: 'mutation DeleteProductMutationMutation(\n  $filter: ProductsFilter!\n  $atMost: Int!\n) {\n  deleteFromProductsCollection(filter: $filter, atMost: $atMost) {\n    affectedCount\n  }\n}\n',
-    },
-  };
+      {
+        "kind": "Variable",
+        "name": "filter",
+        "variableName": "filter"
+      }
+    ],
+    "concreteType": "ProductsDeleteResponse",
+    "kind": "LinkedField",
+    "name": "deleteFromProductsCollection",
+    "plural": false,
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "kind": "ScalarField",
+        "name": "affectedCount",
+        "storageKey": null
+      }
+    ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "DeleteProductMutationMutation",
+    "selections": (v2/*: any*/),
+    "type": "Mutation",
+    "abstractKey": null
+  },
+  "kind": "Request",
+  "operation": {
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
+    "kind": "Operation",
+    "name": "DeleteProductMutationMutation",
+    "selections": (v2/*: any*/)
+  },
+  "params": {
+    "cacheID": "54154641035a50eb95e50bdb2aa1deb1",
+    "id": null,
+    "metadata": {},
+    "name": "DeleteProductMutationMutation",
+    "operationKind": "mutation",
+    "text": "mutation DeleteProductMutationMutation(\n  $filter: ProductsFilter!\n  $atMost: Int!\n) {\n  deleteFromProductsCollection(filter: $filter, atMost: $atMost) {\n    affectedCount\n  }\n}\n"
+  }
+};
 })();
 
-(node as any).hash = 'b0f1dd68b67def2cb1e8d3b0895bb9fa';
+(node as any).hash = "b0f1dd68b67def2cb1e8d3b0895bb9fa";
 
 export default node;

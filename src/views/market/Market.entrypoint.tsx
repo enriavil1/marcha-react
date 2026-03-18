@@ -11,10 +11,17 @@ import MarketplaceWrapperQueryQuery from '../../components/marketplace/__generat
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
+/**
+ * Number of listings to load per page.
+ * Must match the PAGE_SIZE constant in MarketplaceContainer.
+ */
+const PAGE_SIZE = 12;
+
 type EntryPointParams = {
   q?: string;
   category?: string;
   condition?: string;
+  cursor?: string;
 };
 
 const MarketplaceEntryPoint = createEntryPoint({
@@ -33,11 +40,9 @@ const MarketplaceEntryPoint = createEntryPoint({
     if (params.q) {
       filters.push({ name: { ilike: `%${params.q}%` } });
     }
-
     if (params.category) {
       filters.push({ categoryId: { eq: params.category } });
     }
-
     if (params.condition) {
       filters.push({ condition: { eq: params.condition } });
     }
@@ -49,6 +54,11 @@ const MarketplaceEntryPoint = createEntryPoint({
         marketplaceQuery: {
           parameters: MarketplaceWrapperQueryQuery,
           variables: {
+            count: PAGE_SIZE,
+            // `cursor` is the opaque Relay cursor stored in the URL after the
+            // user clicks "Load More". When present, the initial query starts
+            // from that position so a bookmarked/shared URL restores the page.
+            cursor: params.cursor ?? null,
             filter,
             orderBy: [{ createdAt: 'DescNullsLast' }],
           },
@@ -72,15 +82,18 @@ const Market = (): React.ReactElement | null => {
     MarketplaceEntryPoint
   );
 
-  // Extract filter params from URL
+  // Extract filter + pagination params from URL
   const q = searchParams.get('q') ?? undefined;
   const category = searchParams.get('category') ?? undefined;
   const condition = searchParams.get('condition') ?? undefined;
+  const cursor = searchParams.get('cursor') ?? undefined;
 
   useEffect(() => {
-    // Reload the entrypoint whenever filters change
-    loadEntryPoint({ q, category, condition });
-  }, [q, category, condition]);
+    // Reload the entrypoint whenever filters or cursor change.
+    // When filters change, MarketplaceFilters clears `cursor` from the URL
+    // first, so this will always start from page 1 for new filter combos.
+    loadEntryPoint({ q, category, condition, cursor });
+  }, [q, category, condition, cursor]);
 
   if (!entryPointRef) return null;
 

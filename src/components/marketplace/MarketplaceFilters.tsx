@@ -28,6 +28,10 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
   const currentCategory = searchParams.get('category') ?? undefined;
   const currentCondition = searchParams.get('condition') ?? undefined;
 
+  /**
+   * Update a single URL param. When a filter changes we also clear the
+   * `cursor` param so the user always starts from page 1 of the new results.
+   */
   const updateParam = useCallback(
     (key: string, value: string | undefined) => {
       setSearchParams((prev) => {
@@ -37,6 +41,8 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
         } else {
           next.delete(key);
         }
+        // Reset pagination whenever filters change
+        next.delete('cursor');
         return next;
       });
     },

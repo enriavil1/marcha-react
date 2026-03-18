@@ -9,22 +9,34 @@ import {
 import MarketplaceContainer from './MarketplaceContainer';
 import type { MarketplaceWrapperQueryQuery } from './__generated__/MarketplaceWrapperQueryQuery.graphql';
 
+/**
+ * Root query for the marketplace page.
+ *
+ * $count / $cursor are forwarded into the @refetchable pagination fragment
+ * via @arguments so Relay knows the initial page size and starting cursor.
+ * $filter / $orderBy are product filter and sort, driven by URL search params.
+ *
+ * The productsCollection is owned by MarketplacePaginationFragment (spread
+ * below) so usePaginationFragment can manage cursor-based pagination inside
+ * MarketplaceContainer.
+ *
+ * categoriesCollection is fetched here (non-paginated) to populate the
+ * category filter dropdown.
+ */
 export const marketplaceWrapperQuery = graphql`
   query MarketplaceWrapperQueryQuery(
+    $count: Int
+    $cursor: Cursor
     $filter: ProductsFilter
     $orderBy: [ProductsOrderBy!]
   ) {
-    productsCollection(filter: $filter, orderBy: $orderBy) {
-      edges {
-        node {
-          ...ProductCardFragmentQuery
-          category {
-            id
-            name
-          }
-        }
-      }
-    }
+    ...MarketplacePaginationFragment
+      @arguments(
+        count: $count
+        cursor: $cursor
+        filter: $filter
+        orderBy: $orderBy
+      )
     categoriesCollection {
       edges {
         node {
@@ -55,7 +67,13 @@ const MarketplaceWrapper: EntryPointComponent<
     props.queries.marketplaceQuery
   );
 
-  return <MarketplaceContainer data={data} />;
+  const categories =
+    data.categoriesCollection?.edges?.map((e) => ({
+      id: e.node.id,
+      name: e.node.name,
+    })) ?? [];
+
+  return <MarketplaceContainer queryRef={data} categories={categories} />;
 };
 
 export default MarketplaceWrapper;
