@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<602ad18d945e87f8a8b4b54bb1881298>>
+ * @generated SignedSource<<fd05fc67cda73f02eb1ba1c4470835a2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -256,6 +256,20 @@ return {
                             "name": "username",
                             "storageKey": null
                           },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "firstName",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "lastName",
+                            "storageKey": null
+                          },
                           (v3/*: any*/)
                         ],
                         "storageKey": null
@@ -333,12 +347,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7840519e9209875014efe35a21f09464",
+    "cacheID": "a23277b986f37cbb4e1ee9fd00a8aa7f",
     "id": null,
     "metadata": {},
     "name": "CommunitiesProductsContainerWrapperQuery",
     "operationKind": "query",
-    "text": "query CommunitiesProductsContainerWrapperQuery(\n  $id: BigInt\n) {\n  productsCommunitiesCollection(filter: {communityId: {eq: $id}}) {\n    __typename\n    edges {\n      node {\n        product {\n          ...ProductCardFragmentQuery\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  id\n  isPublic\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query CommunitiesProductsContainerWrapperQuery(\n  $id: BigInt\n) {\n  productsCommunitiesCollection(filter: {communityId: {eq: $id}}) {\n    __typename\n    edges {\n      node {\n        product {\n          ...ProductCardFragmentQuery\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  id\n  isPublic\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    firstName\n    lastName\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();

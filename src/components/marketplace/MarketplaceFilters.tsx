@@ -1,10 +1,15 @@
-import { ClearOutlined, SearchOutlined } from '@ant-design/icons';
-import { Button, Col, Input, Row, Select } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Input } from 'antd';
 import React, { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { RADIUS_MD } from '../../design';
-import { CONDITIONS } from './constants';
+import {
+  BORDER_DEFAULT,
+  BRAND_PRIMARY,
+  NEUTRAL_700,
+  RADIUS_LG,
+  WHITE,
+} from '../../design';
 
 type Category = {
   id: string;
@@ -15,17 +20,18 @@ type Props = {
   categories: Category[];
 };
 
+/**
+ * Marketplace filter bar matching the design:
+ * - Full-width search input
+ * - Horizontal scrollable pill buttons: "All" (filled orange when active),
+ *   then category names (outlined grey when inactive)
+ */
 const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const currentQuery = searchParams.get('q') ?? '';
-  const currentCategory = searchParams.get('category') ?? undefined;
-  const currentCondition = searchParams.get('condition') ?? undefined;
+  const currentCategory = searchParams.get('category') ?? '';
 
-  /**
-   * Update a single URL param. When a filter changes we also clear the
-   * `cursor` param so the user always starts from page 1 of the new results.
-   */
   const updateParam = useCallback(
     (key: string, value: string | undefined) => {
       setSearchParams((prev) => {
@@ -35,7 +41,6 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
         } else {
           next.delete(key);
         }
-        // Reset pagination whenever filters change
         next.delete('cursor');
         return next;
       });
@@ -43,61 +48,74 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
     [setSearchParams]
   );
 
-  const handleClear = useCallback(() => {
-    setSearchParams({});
-  }, [setSearchParams]);
+  const handleCategorySelect = useCallback(
+    (categoryId: string) => {
+      updateParam('category', categoryId || undefined);
+    },
+    [updateParam]
+  );
 
-  const hasFilters = currentQuery || currentCategory || currentCondition;
+  const allCategories = [{ id: '', name: 'All' }, ...categories];
 
   return (
-    <Row gutter={[12, 12]} align="middle">
-      <Col xs={24} sm={24} md={8}>
-        <Input
-          placeholder="Search listings..."
-          prefix={<SearchOutlined />}
-          value={currentQuery}
-          onChange={(e) => updateParam('q', e.target.value || undefined)}
-          allowClear
-          style={{ borderRadius: RADIUS_MD }}
-        />
-      </Col>
-      <Col xs={12} sm={8} md={5}>
-        <Select
-          placeholder="Category"
-          value={currentCategory}
-          onChange={(val) => updateParam('category', val)}
-          allowClear
-          onClear={() => updateParam('category', undefined)}
-          style={{ width: '100%', borderRadius: RADIUS_MD }}
-          options={categories.map((c) => ({
-            label: c.name,
-            value: c.id,
-          }))}
-        />
-      </Col>
-      <Col xs={12} sm={8} md={5}>
-        <Select
-          placeholder="Condition"
-          value={currentCondition}
-          onChange={(val) => updateParam('condition', val)}
-          allowClear
-          onClear={() => updateParam('condition', undefined)}
-          style={{ width: '100%', borderRadius: RADIUS_MD }}
-          options={[...CONDITIONS]}
-        />
-      </Col>
-      {hasFilters && (
-        <Col xs={24} sm={8} md={4}>
-          <Button
-            icon={<ClearOutlined />}
-            onClick={handleClear}
-            style={{ width: '100%' }}
-          >
-            Clear Filters
-          </Button>
-        </Col>
-      )}
-    </Row>
+    <div style={{ marginBottom: 8 }}>
+      {/* Full-width search bar */}
+      <Input
+        placeholder="Search items..."
+        prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
+        value={currentQuery}
+        onChange={(e) => updateParam('q', e.target.value || undefined)}
+        allowClear
+        style={{
+          borderRadius: RADIUS_LG,
+          marginBottom: 12,
+          height: 40,
+          fontSize: 14,
+        }}
+      />
+
+      {/* Horizontally scrollable category pills */}
+      <div
+        style={{
+          display: 'flex',
+          gap: 8,
+          overflowX: 'auto',
+          paddingBottom: 4,
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none',
+        }}
+      >
+        <style>{`
+          .marketplace-category-pills::-webkit-scrollbar { display: none; }
+        `}</style>
+        {allCategories.map((cat) => {
+          const isActive = currentCategory === cat.id;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => handleCategorySelect(cat.id)}
+              style={{
+                flexShrink: 0,
+                padding: '6px 16px',
+                borderRadius: 20,
+                border: isActive ? 'none' : `1.5px solid ${BORDER_DEFAULT}`,
+                background: isActive ? BRAND_PRIMARY : WHITE,
+                color: isActive ? WHITE : NEUTRAL_700,
+                fontSize: 13,
+                fontWeight: isActive ? 600 : 400,
+                cursor: 'pointer',
+                lineHeight: '20px',
+                transition: 'background 0.15s, color 0.15s, border 0.15s',
+                outline: 'none',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {cat.name}
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 

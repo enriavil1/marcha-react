@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Empty, Row } from 'antd';
+import { Button, Empty } from 'antd';
 import React, { Suspense } from 'react';
 
 import ProductCard from '../Products/ProductCard';
@@ -20,10 +20,12 @@ type MarketplaceProductGridProps = {
 };
 
 /**
- * Responsive grid of product cards with an empty-state fallback.
+ * Responsive product card grid.
  *
- * Each edge comes from productsCommunitiesCollection, so the product
- * fragment ref is accessed via `edge.node.product`.
+ * Desktop: 4 columns  (≥ 768 px)
+ * Mobile:  2 columns  (< 768 px)
+ *
+ * Cards have equal-width columns with a 16 px gap, matching the design.
  */
 const MarketplaceProductGrid: React.FC<MarketplaceProductGridProps> = ({
   edges,
@@ -31,33 +33,59 @@ const MarketplaceProductGrid: React.FC<MarketplaceProductGridProps> = ({
 }) => {
   const validEdges = edges.filter((edge) => edge.node.product != null);
 
+  if (validEdges.length === 0) {
+    return (
+      <Empty description="No listings found" style={{ padding: '48px 0' }}>
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
+          onClick={onCreateListing}
+        >
+          Create the first listing
+        </Button>
+      </Empty>
+    );
+  }
+
   return (
-    <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-      {validEdges.length > 0 ? (
-        validEdges.map((edge, i) => (
-          <Col xs={24} sm={12} md={8} lg={6} key={i}>
-            <Suspense fallback={<Card loading />}>
-              <ProductCard
-                fragmentRef={edge.node.product as ProductCardFragmentQuery$key}
-                hoverable
+    <>
+      <style>{`
+        .marketplace-grid {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 16px;
+          margin-top: 16px;
+        }
+        @media (max-width: 767px) {
+          .marketplace-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+          }
+        }
+      `}</style>
+      <div className="marketplace-grid">
+        {validEdges.map((edge, i) => (
+          <Suspense
+            key={i}
+            fallback={
+              <div
+                style={{
+                  borderRadius: 12,
+                  background: '#f0f0f0',
+                  paddingTop: '75%',
+                  position: 'relative',
+                }}
               />
-            </Suspense>
-          </Col>
-        ))
-      ) : (
-        <Col span={24}>
-          <Empty description="No listings found" style={{ padding: '48px 0' }}>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={onCreateListing}
-            >
-              Create the first listing
-            </Button>
-          </Empty>
-        </Col>
-      )}
-    </Row>
+            }
+          >
+            <ProductCard
+              fragmentRef={edge.node.product as ProductCardFragmentQuery$key}
+              hoverable
+            />
+          </Suspense>
+        ))}
+      </div>
+    </>
   );
 };
 
