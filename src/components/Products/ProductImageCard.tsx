@@ -2,6 +2,8 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { Button, Card, Image } from 'antd';
 import React, { useMemo, useState } from 'react';
 
+import { BRAND_PRIMARY } from '../../design';
+
 type ProductImageCardProps = {
   name: string;
   imageBlobs: Blob[];
@@ -93,7 +95,9 @@ const ProductImageCard: React.FC<ProductImageCardProps> = ({
                   height: 8,
                   borderRadius: '50%',
                   background:
-                    idx === currentIndex ? '#1890ff' : 'rgba(255,255,255,0.7)',
+                    idx === currentIndex
+                      ? BRAND_PRIMARY
+                      : 'rgba(255,255,255,0.7)',
                   cursor: 'pointer',
                   border: '1px solid rgba(0,0,0,0.2)',
                 }}

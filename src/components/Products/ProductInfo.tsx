@@ -18,7 +18,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
   <>
     <Card title="Product Information">
       <Descriptions column={2}>
-        <Descriptions.Item label="Price">${price}</Descriptions.Item>
+        <Descriptions.Item label="Price">£{price}</Descriptions.Item>
         <Descriptions.Item label="Status">
           <Tag color="green">{condition}</Tag>
         </Descriptions.Item>
