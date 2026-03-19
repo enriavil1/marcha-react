@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a043cc18b03c146b4527972d7ac7c4e6>>
+ * @generated SignedSource<<70b62ac7224591734e8c740d28299805>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,6 +19,13 @@ export type DashboardMarketplacePreviewFragment$data = {
         readonly image: string;
         readonly name: string;
         readonly price: number;
+        readonly productImagesCollection: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly imageUrl: string;
+            };
+          }>;
+        } | null | undefined;
       };
     }>;
   } | null | undefined;
@@ -117,6 +124,61 @@ const node: ReaderFragment = {
                   "kind": "ScalarField",
                   "name": "createdAt",
                   "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": [
+                    {
+                      "kind": "Literal",
+                      "name": "first",
+                      "value": 1
+                    },
+                    {
+                      "kind": "Literal",
+                      "name": "orderBy",
+                      "value": [
+                        {
+                          "displayOrder": "AscNullsLast"
+                        }
+                      ]
+                    }
+                  ],
+                  "concreteType": "ProductImagesConnection",
+                  "kind": "LinkedField",
+                  "name": "productImagesCollection",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "ProductImagesEdge",
+                      "kind": "LinkedField",
+                      "name": "edges",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "ProductImages",
+                          "kind": "LinkedField",
+                          "name": "node",
+                          "plural": false,
+                          "selections": [
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "imageUrl",
+                              "storageKey": null
+                            }
+                          ],
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
                 }
               ],
               "storageKey": null
@@ -132,6 +194,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "0a483838b7dfab804b378191f17d30fb";
+(node as any).hash = "5f6482eb76dd51306a1d87f448f288ad";
 
 export default node;

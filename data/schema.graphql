@@ -693,6 +693,17 @@ type Mutation {
     atMost: Int! = 1
   ): ProductsDeleteResponse!
 
+  """Deletes zero or more records from the `ProductImages` collection"""
+  deleteFromProductImagesCollection(
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProductImagesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProductImagesDeleteResponse!
+
   """Deletes zero or more records from the `ProductsCommunities` collection"""
   deleteFromProductsCommunitiesCollection(
     """Restricts the mutation's impact to records matching the criteria"""
@@ -740,6 +751,9 @@ type Mutation {
 
   """Adds one or more `Products` records to the collection"""
   insertIntoProductsCollection(objects: [ProductsInsertInput!]!): ProductsInsertResponse
+
+  """Adds one or more `ProductImages` records to the collection"""
+  insertIntoProductImagesCollection(objects: [ProductImagesInsertInput!]!): ProductImagesInsertResponse
 
   """Adds one or more `ProductsCommunities` records to the collection"""
   insertIntoProductsCommunitiesCollection(objects: [ProductsCommunitiesInsertInput!]!): ProductsCommunitiesInsertResponse
@@ -829,6 +843,22 @@ type Mutation {
     """
     atMost: Int! = 1
   ): ProductsUpdateResponse!
+
+  """Updates zero or more records in the `ProductImages` collection"""
+  updateProductImagesCollection(
+    """
+    Fields that are set will be updated for all records matching the `filter`
+    """
+    set: ProductImagesUpdateInput!
+
+    """Restricts the mutation's impact to records matching the criteria"""
+    filter: ProductImagesFilter
+
+    """
+    The maximum number of records in the collection permitted to be affected
+    """
+    atMost: Int! = 1
+  ): ProductImagesUpdateResponse!
 
   """Updates zero or more records in the `ProductsCommunities` collection"""
   updateProductsCommunitiesCollection(
@@ -998,6 +1028,117 @@ type Products implements Node {
     """Sort order to apply to the collection"""
     orderBy: [ProductsCommunitiesOrderBy!]
   ): ProductsCommunitiesConnection
+  productImagesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductImagesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProductImagesOrderBy!]
+  ): ProductImagesConnection
+}
+
+type ProductImages implements Node {
+  """Globally Unique Record Identifier"""
+  nodeId: ID!
+  id: BigInt!
+  createdAt: Datetime!
+  productId: BigInt!
+  imageUrl: String!
+  displayOrder: Int!
+  product: Products
+}
+
+type ProductImagesConnection {
+  edges: [ProductImagesEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ProductImagesDeleteResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProductImages!]!
+}
+
+type ProductImagesEdge {
+  cursor: String!
+  node: ProductImages!
+}
+
+input ProductImagesFilter {
+  id: BigIntFilter
+  createdAt: DatetimeFilter
+  productId: BigIntFilter
+  imageUrl: StringFilter
+  displayOrder: IntFilter
+  nodeId: IDFilter
+
+  """
+  Returns true only if all its inner filters are true, otherwise returns false
+  """
+  and: [ProductImagesFilter!]
+
+  """
+  Returns true if at least one of its inner filters is true, otherwise returns false
+  """
+  or: [ProductImagesFilter!]
+
+  """Negates a filter"""
+  not: ProductImagesFilter
+}
+
+input ProductImagesInsertInput {
+  productId: BigInt
+  imageUrl: String
+  displayOrder: Int
+}
+
+type ProductImagesInsertResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProductImages!]!
+}
+
+input ProductImagesOrderBy {
+  id: OrderByDirection
+  createdAt: OrderByDirection
+  productId: OrderByDirection
+  imageUrl: OrderByDirection
+  displayOrder: OrderByDirection
+}
+
+input ProductImagesUpdateInput {
+  productId: BigInt
+  imageUrl: String
+  displayOrder: Int
+}
+
+type ProductImagesUpdateResponse {
+  """Count of the records impacted by the mutation"""
+  affectedCount: Int!
+
+  """Array of records impacted by the mutation"""
+  records: [ProductImages!]!
 }
 
 type ProductsCommunities implements Node {
@@ -1581,6 +1722,32 @@ type Query {
     """The record's `ID`"""
     nodeId: ID!
   ): Node
+
+  """A pagable collection of type `ProductImages`"""
+  productImagesCollection(
+    """Query the first `n` records in the collection"""
+    first: Int
+
+    """Query the last `n` records in the collection"""
+    last: Int
+
+    """Query values in the collection before the provided cursor"""
+    before: Cursor
+
+    """Query values in the collection after the provided cursor"""
+    after: Cursor
+
+    """
+    Skip n values from the after cursor. Alternative to cursor pagination. Backward pagination not supported.
+    """
+    offset: Int
+
+    """Filters to apply to the results set when querying from the collection"""
+    filter: ProductImagesFilter
+
+    """Sort order to apply to the collection"""
+    orderBy: [ProductImagesOrderBy!]
+  ): ProductImagesConnection
 
   """A pagable collection of type `Products`"""
   productsCollection(

@@ -19,7 +19,11 @@ import CreateListingForm from './CreateListingForm';
 import type { ListingFormValues } from './CreateListingForm';
 import ListingTips from './ListingTips';
 import type { CreateListingPageQuery } from './__generated__/CreateListingPageQuery.graphql';
+import InsertProductCommunityMutation from './graphql/InsertProductCommunityMutation.graphql';
+import InsertProductImagesMutation from './graphql/InsertProductImagesMutation.graphql';
 import InsertProductMutation from './graphql/InsertProductMutation.graphql';
+import type { InsertProductCommunityMutationMutation } from './graphql/__generated__/InsertProductCommunityMutationMutation.graphql';
+import type { InsertProductImagesMutationMutation } from './graphql/__generated__/InsertProductImagesMutationMutation.graphql';
 import type { InsertProductMutationMutation } from './graphql/__generated__/InsertProductMutationMutation.graphql';
 
 export const createListingCategoriesQuery = graphql`
@@ -68,8 +72,18 @@ const CreateListingPage: EntryPointComponent<
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [uploading, setUploading] = useState(false);
 
-  const [commitMutation, isMutating] =
+  const [commitProductMutation, isMutating] =
     useMutation<InsertProductMutationMutation>(InsertProductMutation);
+
+  const [commitCommunityMutation] =
+    useMutation<InsertProductCommunityMutationMutation>(
+      InsertProductCommunityMutation
+    );
+
+  const [commitImagesMutation] =
+    useMutation<InsertProductImagesMutationMutation>(
+      InsertProductImagesMutation
+    );
 
   const handleSubmit = useCallback(
     async (values: ListingFormValues) => {
@@ -80,26 +94,30 @@ const CreateListingPage: EntryPointComponent<
 
       setUploading(true);
       try {
-        let imagePath = '';
+        // Upload all images to Supabase storage
+        const uploadedPaths: string[] = [];
 
-        // Upload image to Supabase storage if provided
-        if (fileList.length > 0 && fileList[0].originFileObj) {
-          const file = fileList[0].originFileObj;
-          const fileExt = file.name.split('.').pop();
-          const fileName = `${userId}/${crypto.randomUUID()}.${fileExt}`;
+        for (const file of fileList) {
+          if (file.originFileObj) {
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${userId}/${crypto.randomUUID()}.${fileExt}`;
 
-          const { error: uploadError } = await supabase.storage
-            .from('product-images')
-            .upload(fileName, file, {
-              upsert: false,
-              contentType: file.type,
-            });
+            const { error: uploadError } = await supabase.storage
+              .from('product-images')
+              .upload(fileName, file.originFileObj, {
+                upsert: false,
+                contentType: file.originFileObj.type,
+              });
 
-          if (uploadError) throw uploadError;
-          imagePath = fileName;
+            if (uploadError) throw uploadError;
+            uploadedPaths.push(fileName);
+          }
         }
 
-        commitMutation({
+        // Use the first image as the legacy `image` field
+        const primaryImage = uploadedPaths.length > 0 ? uploadedPaths[0] : '';
+
+        commitProductMutation({
           variables: {
             objects: [
               {
@@ -112,13 +130,58 @@ const CreateListingPage: EntryPointComponent<
                   | 'Like_new'
                   | 'Good'
                   | 'Used',
-                image: imagePath,
+                image: primaryImage,
                 userId,
                 isPublic: true,
               },
             ],
           },
-          onCompleted: () => {
+          onCompleted: (response) => {
+            const newProduct =
+              response.insertIntoProductsCollection?.records?.[0];
+            if (!newProduct) {
+              message.error('Failed to create listing.');
+              return;
+            }
+
+            const productId = newProduct.id;
+
+            // Associate product with current community
+            if (communityId) {
+              commitCommunityMutation({
+                variables: {
+                  objects: [
+                    {
+                      productId,
+                      communityId,
+                    },
+                  ],
+                },
+                onError: (err) => {
+                  console.error(
+                    'Failed to associate product with community:',
+                    err
+                  );
+                },
+              });
+            }
+
+            // Insert product images into the product_images table
+            if (uploadedPaths.length > 0) {
+              commitImagesMutation({
+                variables: {
+                  objects: uploadedPaths.map((path, index) => ({
+                    productId,
+                    imageUrl: path,
+                    displayOrder: index,
+                  })),
+                },
+                onError: (err) => {
+                  console.error('Failed to save product images:', err);
+                },
+              });
+            }
+
             message.success('Listing created successfully!');
             navigate(`${basePath}/${Paths.Market}`);
           },
@@ -134,7 +197,16 @@ const CreateListingPage: EntryPointComponent<
         setUploading(false);
       }
     },
-    [userId, fileList, commitMutation, navigate, basePath]
+    [
+      userId,
+      fileList,
+      commitProductMutation,
+      commitCommunityMutation,
+      commitImagesMutation,
+      navigate,
+      basePath,
+      communityId,
+    ]
   );
 
   return (

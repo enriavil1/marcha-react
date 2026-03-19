@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<47e674e7115e4ffb124baecc9e5b59e3>>
+ * @generated SignedSource<<602ad18d945e87f8a8b4b54bb1881298>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -209,6 +209,34 @@ return {
                       {
                         "alias": null,
                         "args": null,
+                        "kind": "ScalarField",
+                        "name": "isPublic",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "categoryId",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "condition",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "userId",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
                         "concreteType": "Profiles",
                         "kind": "LinkedField",
                         "name": "user",
@@ -232,6 +260,62 @@ return {
                         ],
                         "storageKey": null
                       },
+                      {
+                        "alias": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "first",
+                            "value": 1
+                          },
+                          {
+                            "kind": "Literal",
+                            "name": "orderBy",
+                            "value": [
+                              {
+                                "displayOrder": "AscNullsLast"
+                              }
+                            ]
+                          }
+                        ],
+                        "concreteType": "ProductImagesConnection",
+                        "kind": "LinkedField",
+                        "name": "productImagesCollection",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "ProductImagesEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "ProductImages",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "imageUrl",
+                                    "storageKey": null
+                                  },
+                                  (v3/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
+                      },
                       (v3/*: any*/)
                     ],
                     "storageKey": null
@@ -249,12 +333,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "434e3dfb64fd16d048c2122fef5d7c57",
+    "cacheID": "7840519e9209875014efe35a21f09464",
     "id": null,
     "metadata": {},
     "name": "CommunitiesProductsContainerWrapperQuery",
     "operationKind": "query",
-    "text": "query CommunitiesProductsContainerWrapperQuery(\n  $id: BigInt\n) {\n  productsCommunitiesCollection(filter: {communityId: {eq: $id}}) {\n    __typename\n    edges {\n      node {\n        product {\n          ...ProductCardFragmentQuery\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  id\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n}\n"
+    "text": "query CommunitiesProductsContainerWrapperQuery(\n  $id: BigInt\n) {\n  productsCommunitiesCollection(filter: {communityId: {eq: $id}}) {\n    __typename\n    edges {\n      node {\n        product {\n          ...ProductCardFragmentQuery\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  id\n  isPublic\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();

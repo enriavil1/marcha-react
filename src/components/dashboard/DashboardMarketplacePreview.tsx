@@ -19,6 +19,9 @@ import type { DashboardMarketplacePreviewFragment$key } from './__generated__/Da
  * Fragment on Query that fetches the 3 most recent public marketplace listings.
  * Spread this fragment in the parent DashboardComponentQuery so the data is
  * co-located with the component that uses it.
+ *
+ * Uses productImagesCollection to get the first image from the product_images
+ * table, falling back to the legacy `image` field.
  */
 export const dashboardMarketplacePreviewFragment = graphql`
   fragment DashboardMarketplacePreviewFragment on Query {
@@ -34,6 +37,16 @@ export const dashboardMarketplacePreviewFragment = graphql`
           price
           image
           createdAt
+          productImagesCollection(
+            first: 1
+            orderBy: [{ displayOrder: AscNullsLast }]
+          ) {
+            edges {
+              node {
+                imageUrl
+              }
+            }
+          }
         }
       }
     }
@@ -69,9 +82,11 @@ const ListingRow: React.FC<ListingRowProps> = ({
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    fetchFromStorage(image, 'product-images').then((blob) => {
-      if (blob) setImageUrl(URL.createObjectURL(blob));
-    });
+    if (image) {
+      fetchFromStorage(image, 'product-images').then((blob) => {
+        if (blob) setImageUrl(URL.createObjectURL(blob));
+      });
+    }
   }, [image]);
 
   return (
@@ -204,17 +219,24 @@ const DashboardMarketplacePreview: React.FC<Props> = ({
       ) : (
         <List
           dataSource={[...listings]}
-          renderItem={(edge) => (
-            <ListingRow
-              key={edge.node.id}
-              id={edge.node.id}
-              name={edge.node.name}
-              price={edge.node.price}
-              image={edge.node.image}
-              createdAt={edge.node.createdAt}
-              onNavigate={onNavigateToListing}
-            />
-          )}
+          renderItem={(edge) => {
+            // Prefer first image from product_images, fall back to legacy field
+            const firstProductImage =
+              edge.node.productImagesCollection?.edges?.[0]?.node?.imageUrl;
+            const imagePath = firstProductImage || edge.node.image;
+
+            return (
+              <ListingRow
+                key={edge.node.id}
+                id={edge.node.id}
+                name={edge.node.name}
+                price={edge.node.price}
+                image={imagePath}
+                createdAt={edge.node.createdAt}
+                onNavigate={onNavigateToListing}
+              />
+            );
+          }}
         />
       )}
     </Card>

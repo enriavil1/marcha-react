@@ -1,4 +1,4 @@
-import { UploadOutlined } from '@ant-design/icons';
+import { PlusOutlined } from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -36,9 +36,11 @@ type CreateListingFormProps = {
   uploading: boolean;
 };
 
+const MAX_IMAGES = 5;
+
 /**
  * The listing creation form with title, description, price, category,
- * condition, and photo upload fields.
+ * condition, and multi-photo upload fields.
  */
 const CreateListingForm: React.FC<CreateListingFormProps> = ({
   categories,
@@ -119,10 +121,14 @@ const CreateListingForm: React.FC<CreateListingFormProps> = ({
         </Col>
       </Row>
 
-      <Form.Item label="Photo">
+      <Form.Item
+        label={`Photos (up to ${MAX_IMAGES})`}
+        extra="First photo will be the cover image"
+      >
         <Upload
           listType="picture-card"
-          maxCount={1}
+          maxCount={MAX_IMAGES}
+          multiple
           fileList={fileList}
           onChange={({ fileList: newFileList }) =>
             onFileListChange(newFileList)
@@ -130,9 +136,9 @@ const CreateListingForm: React.FC<CreateListingFormProps> = ({
           beforeUpload={() => false}
           accept="image/*"
         >
-          {fileList.length < 1 && (
+          {fileList.length < MAX_IMAGES && (
             <div>
-              <UploadOutlined />
+              <PlusOutlined />
               <div style={{ marginTop: 8 }}>Upload</div>
             </div>
           )}
@@ -147,7 +153,7 @@ const CreateListingForm: React.FC<CreateListingFormProps> = ({
           loading={uploading || submitting}
           style={{ width: '100%' }}
         >
-          {uploading ? 'Uploading image...' : 'Create Listing'}
+          {uploading ? 'Uploading images...' : 'Create Listing'}
         </Button>
       </Form.Item>
     </Form>

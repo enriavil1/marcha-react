@@ -5,6 +5,7 @@ import { RADIUS_MD, WHITE } from '../../design';
 import Dashboard from '../../views/dashboard/Dashboard.entrypoint';
 import CreateListing from '../../views/market/CreateListing.entrypoint';
 import Market from '../../views/market/Market.entrypoint';
+import MyListings from '../../views/market/MyListings.entrypoint';
 import ProductDetail from '../../views/market/Product.entrypoint';
 import { Paths } from '../../views/paths';
 import Profile from '../../views/profile/Profile.entrypoint';
@@ -59,13 +60,15 @@ const PortalRoutes = () => (
       {/*
        * Marketplace routes — listed as siblings (not nested) so each path is
        * matched independently. React Router v6 only renders the first match
-       * inside a <Routes>, so these three routes are mutually exclusive:
-       *   market        → browse listings
-       *   market/new    → create a listing
-       *   market/:id    → view a listing detail
+       * inside a <Routes>, so these routes are mutually exclusive:
+       *   market             → browse listings
+       *   market/new         → create a listing
+       *   market/my-listings → view own listings
+       *   market/:id         → view a listing detail
        */}
       <Route path={Paths.Market} element={<Market />} />
       <Route path={`${Paths.Market}/new`} element={<CreateListing />} />
+      <Route path={`${Paths.Market}/my-listings`} element={<MyListings />} />
       <Route path={`${Paths.Market}/:product_id`} element={<ProductDetail />} />
 
       <Route

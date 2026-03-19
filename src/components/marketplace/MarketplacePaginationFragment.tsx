@@ -3,6 +3,9 @@ import graphql from 'babel-plugin-relay/macro';
 /**
  * Relay pagination fragment for the marketplace product list.
  *
+ * Queries `productsCommunitiesCollection` to scope products to the current
+ * community. Product data is accessed through the nested `product` relation.
+ *
  * - @refetchable generates `MarketplacePaginationQuery` automatically.
  * - @connection tells Relay to merge paginated edges under a stable key so
  *   `usePaginationFragment` can append new pages to the existing list.
@@ -10,6 +13,9 @@ import graphql from 'babel-plugin-relay/macro';
  *
  * pageInfo is included so the endCursor is available in the fragment data
  * without needing `as any` casts in MarketplaceContainer.
+ *
+ * Product-level fields (name, isPublic, categoryId, condition) are fetched
+ * alongside the fragment spread to enable client-side filtering.
  */
 export const marketplacePaginationFragment = graphql`
   fragment MarketplacePaginationFragment on Query
@@ -17,18 +23,25 @@ export const marketplacePaginationFragment = graphql`
   @argumentDefinitions(
     count: { type: "Int", defaultValue: 12 }
     cursor: { type: "Cursor" }
-    filter: { type: "ProductsFilter" }
-    orderBy: { type: "[ProductsOrderBy!]" }
+    filter: { type: "ProductsCommunitiesFilter" }
+    orderBy: { type: "[ProductsCommunitiesOrderBy!]" }
   ) {
-    productsCollection(
+    productsCommunitiesCollection(
       first: $count
       after: $cursor
       filter: $filter
       orderBy: $orderBy
-    ) @connection(key: "Marketplace_productsCollection") {
+    ) @connection(key: "Marketplace_productsCommunitiesCollection") {
       edges {
         node {
-          ...ProductCardFragmentQuery
+          nodeId
+          product {
+            ...ProductCardFragmentQuery
+            name
+            isPublic
+            categoryId
+            condition
+          }
         }
       }
       pageInfo {

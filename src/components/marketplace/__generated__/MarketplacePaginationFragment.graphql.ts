@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<507b536697f0c3f8692447b35f339d9a>>
+ * @generated SignedSource<<6b9ea983fc3e3dac402893da212f17e0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,12 +9,20 @@
 // @ts-nocheck
 
 import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
+export type ProductCondition = "Good" | "Like_new" | "New" | "Used" | "%future added value";
 import { FragmentRefs } from "relay-runtime";
 export type MarketplacePaginationFragment$data = {
-  readonly productsCollection: {
+  readonly productsCommunitiesCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly " $fragmentSpreads": FragmentRefs<"ProductCardFragmentQuery">;
+        readonly nodeId: string;
+        readonly product: {
+          readonly categoryId: string | null | undefined;
+          readonly condition: ProductCondition;
+          readonly isPublic: boolean;
+          readonly name: string;
+          readonly " $fragmentSpreads": FragmentRefs<"ProductCardFragmentQuery">;
+        } | null | undefined;
       };
     }>;
     readonly pageInfo: {
@@ -31,7 +39,7 @@ export type MarketplacePaginationFragment$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = [
-  "productsCollection"
+  "productsCommunitiesCollection"
 ];
 return {
   "argumentDefinitions": [
@@ -82,7 +90,7 @@ return {
   "name": "MarketplacePaginationFragment",
   "selections": [
     {
-      "alias": "productsCollection",
+      "alias": "productsCommunitiesCollection",
       "args": [
         {
           "kind": "Variable",
@@ -95,15 +103,15 @@ return {
           "variableName": "orderBy"
         }
       ],
-      "concreteType": "ProductsConnection",
+      "concreteType": "ProductsCommunitiesConnection",
       "kind": "LinkedField",
-      "name": "__Marketplace_productsCollection_connection",
+      "name": "__Marketplace_productsCommunitiesCollection_connection",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "ProductsEdge",
+          "concreteType": "ProductsCommunitiesEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -111,15 +119,61 @@ return {
             {
               "alias": null,
               "args": null,
-              "concreteType": "Products",
+              "concreteType": "ProductsCommunities",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
               "selections": [
                 {
+                  "alias": null,
                   "args": null,
-                  "kind": "FragmentSpread",
-                  "name": "ProductCardFragmentQuery"
+                  "kind": "ScalarField",
+                  "name": "nodeId",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Products",
+                  "kind": "LinkedField",
+                  "name": "product",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "args": null,
+                      "kind": "FragmentSpread",
+                      "name": "ProductCardFragmentQuery"
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "name",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "isPublic",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "categoryId",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "condition",
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
                 },
                 {
                   "alias": null,
@@ -175,6 +229,6 @@ return {
 };
 })();
 
-(node as any).hash = "cf7c17b8ff3769edc7966dbb76103109";
+(node as any).hash = "94d4ed5af2ea144168436de2654fb102";
 
 export default node;

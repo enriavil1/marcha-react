@@ -78,7 +78,7 @@ describe('SellerInfoCard', () => {
 
 describe('ProductImageCard', () => {
   it('renders an image with the product name as alt text', () => {
-    renderWithAntd(<ProductImageCard name="Test Widget" imageBlob={null} />);
+    renderWithAntd(<ProductImageCard name="Test Widget" imageBlobs={[]} />);
     const img = screen.getByAltText('Test Widget');
     expect(img).toBeInTheDocument();
   });

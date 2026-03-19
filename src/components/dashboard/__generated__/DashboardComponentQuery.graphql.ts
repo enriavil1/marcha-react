@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8058b5bb5ce258ff16535aa3d1546818>>
+ * @generated SignedSource<<8f6af0871621cf3f89dc77e2f5ca03dd>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -424,6 +424,58 @@ return {
                     "name": "createdAt",
                     "storageKey": null
                   },
+                  {
+                    "alias": null,
+                    "args": [
+                      (v1/*: any*/),
+                      {
+                        "kind": "Literal",
+                        "name": "orderBy",
+                        "value": [
+                          {
+                            "displayOrder": "AscNullsLast"
+                          }
+                        ]
+                      }
+                    ],
+                    "concreteType": "ProductImagesConnection",
+                    "kind": "LinkedField",
+                    "name": "productImagesCollection",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "ProductImagesEdge",
+                        "kind": "LinkedField",
+                        "name": "edges",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "ProductImages",
+                            "kind": "LinkedField",
+                            "name": "node",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "imageUrl",
+                                "storageKey": null
+                              },
+                              (v13/*: any*/)
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
+                  },
                   (v13/*: any*/)
                 ],
                 "storageKey": null
@@ -437,12 +489,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c6d18e8f5878193587e25b3a8f3487d7",
+    "cacheID": "1c432d927eaf7221cbaeef6687c50326",
     "id": null,
     "metadata": {},
     "name": "DashboardComponentQuery",
     "operationKind": "query",
-    "text": "query DashboardComponentQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n  ...DashboardMarketplacePreviewFragment\n}\n\nfragment DashboardMarketplacePreviewFragment on Query {\n  productsCollection(first: 3, orderBy: [{createdAt: DescNullsLast}], filter: {isPublic: {eq: true}}) {\n    edges {\n      node {\n        id\n        name\n        price\n        image\n        createdAt\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query DashboardComponentQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n  ...DashboardMarketplacePreviewFragment\n}\n\nfragment DashboardMarketplacePreviewFragment on Query {\n  productsCollection(first: 3, orderBy: [{createdAt: DescNullsLast}], filter: {isPublic: {eq: true}}) {\n    edges {\n      node {\n        id\n        name\n        price\n        image\n        createdAt\n        productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              imageUrl\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();

@@ -1,4 +1,8 @@
-import { PlusOutlined, ShopOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  ShopOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons';
 import { Button, Card, Flex, Typography } from 'antd';
 import React from 'react';
 
@@ -12,13 +16,17 @@ import {
 
 type MarketplaceHeroProps = {
   onPostListing: () => void;
+  onMyListings: () => void;
 };
 
 /**
  * Gradient hero banner at the top of the marketplace page.
- * Contains the title, subtitle, and a "Post Listing" CTA.
+ * Contains the title, subtitle, a "My Listings" link, and a "Post Listing" CTA.
  */
-const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({ onPostListing }) => (
+const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({
+  onPostListing,
+  onMyListings,
+}) => (
   <Card
     style={{
       background: BRAND_GRADIENT,
@@ -41,20 +49,35 @@ const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({ onPostListing }) => (
           Buy and sell items within your community
         </Typography.Text>
       </div>
-      <Button
-        type="primary"
-        size="large"
-        icon={<PlusOutlined />}
-        onClick={onPostListing}
-        style={{
-          background: WHITE,
-          color: '#F06543',
-          fontWeight: 600,
-          border: 'none',
-        }}
-      >
-        Post Listing
-      </Button>
+      <Flex gap={12}>
+        <Button
+          size="large"
+          icon={<UnorderedListOutlined />}
+          onClick={onMyListings}
+          style={{
+            background: 'rgba(255,255,255,0.2)',
+            color: WHITE,
+            fontWeight: 600,
+            border: '1px solid rgba(255,255,255,0.3)',
+          }}
+        >
+          My Listings
+        </Button>
+        <Button
+          type="primary"
+          size="large"
+          icon={<PlusOutlined />}
+          onClick={onPostListing}
+          style={{
+            background: WHITE,
+            color: '#F06543',
+            fontWeight: 600,
+            border: 'none',
+          }}
+        >
+          Post Listing
+        </Button>
+      </Flex>
     </Flex>
   </Card>
 );

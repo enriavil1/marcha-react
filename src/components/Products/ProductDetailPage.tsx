@@ -34,6 +34,15 @@ const productDetailQuery = graphql`
             username
             avatarUrl
           }
+          productImagesCollection(orderBy: [{ displayOrder: AscNullsLast }]) {
+            edges {
+              node {
+                id
+                imageUrl
+                displayOrder
+              }
+            }
+          }
         }
       }
     }
@@ -55,7 +64,7 @@ const ProductDetailPage: EntryPointComponent<
 > = (props: Props): React.ReactElement => {
   const navigate = useNavigate();
 
-  const [imageBlob, setImageBlob] = useState<Blob | null>(null);
+  const [imageBlobs, setImageBlobs] = useState<Blob[]>([]);
   const [avatarBlob, setAvatarBlob] = useState<Blob | null>(null);
 
   const data = usePreloadedQuery<ProductDetailPageQuery>(
@@ -67,9 +76,23 @@ const ProductDetailPage: EntryPointComponent<
 
   useEffect(() => {
     if (product) {
-      fetchFromStorage(product.image, 'product-images').then((blob) =>
-        setImageBlob(blob)
-      );
+      // Collect image paths: prefer product_images table, fall back to legacy field
+      const productImagePaths =
+        product.productImagesCollection?.edges?.map((e) => e.node.imageUrl) ??
+        [];
+      const imagePaths =
+        productImagePaths.length > 0
+          ? productImagePaths
+          : product.image
+            ? [product.image]
+            : [];
+
+      Promise.all(
+        imagePaths.map((path) => fetchFromStorage(path, 'product-images'))
+      ).then((blobs) => {
+        setImageBlobs(blobs.filter((b): b is Blob => b != null));
+      });
+
       fetchFromStorage(product.user?.avatarUrl ?? '', 'avatars').then((blob) =>
         setAvatarBlob(blob)
       );
@@ -83,9 +106,9 @@ const ProductDetailPage: EntryPointComponent<
 
   return (
     <Row gutter={[32, 32]}>
-      {/* Product Image */}
+      {/* Product Image(s) */}
       <Col xs={24} md={12}>
-        <ProductImageCard name={product.name} imageBlob={imageBlob} />
+        <ProductImageCard name={product.name} imageBlobs={imageBlobs} />
       </Col>
 
       {/* Product Details */}

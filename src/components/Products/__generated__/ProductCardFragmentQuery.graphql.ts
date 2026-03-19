@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fcb4197419d478412f743ad5c66b2d65>>
+ * @generated SignedSource<<8812ef572d4ca6df7d8998ed8cbcfda0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,17 +9,29 @@
 // @ts-nocheck
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
+export type ProductCondition = "Good" | "Like_new" | "New" | "Used" | "%future added value";
 import { FragmentRefs } from "relay-runtime";
 export type ProductCardFragmentQuery$data = {
+  readonly categoryId: string | null | undefined;
+  readonly condition: ProductCondition;
   readonly description: string;
   readonly id: string;
   readonly image: string;
+  readonly isPublic: boolean;
   readonly name: string;
   readonly price: number;
+  readonly productImagesCollection: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly imageUrl: string;
+      };
+    }>;
+  } | null | undefined;
   readonly user: {
     readonly avatarUrl: string | null | undefined;
     readonly username: string | null | undefined;
   } | null | undefined;
+  readonly userId: string;
   readonly " $fragmentType": "ProductCardFragmentQuery";
 };
 export type ProductCardFragmentQuery$key = {
@@ -71,6 +83,34 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
+      "kind": "ScalarField",
+      "name": "isPublic",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "categoryId",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "condition",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "userId",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
       "concreteType": "Profiles",
       "kind": "LinkedField",
       "name": "user",
@@ -92,12 +132,67 @@ const node: ReaderFragment = {
         }
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "first",
+          "value": 1
+        },
+        {
+          "kind": "Literal",
+          "name": "orderBy",
+          "value": [
+            {
+              "displayOrder": "AscNullsLast"
+            }
+          ]
+        }
+      ],
+      "concreteType": "ProductImagesConnection",
+      "kind": "LinkedField",
+      "name": "productImagesCollection",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "ProductImagesEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "ProductImages",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "imageUrl",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
     }
   ],
   "type": "Products",
   "abstractKey": null
 };
 
-(node as any).hash = "119dcdc048bd82507845c10c1dd7a9a3";
+(node as any).hash = "075a3f9bd81acb81ecd9221d7fec9621";
 
 export default node;

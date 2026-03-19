@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<29f075bcc1e498308ab3ec2e12dcfad7>>
+ * @generated SignedSource<<183feb605dfa016b49797197b4c58b13>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,22 +12,15 @@ import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type FilterIs = "NOT_NULL" | "NULL" | "%future added value";
 export type OrderByDirection = "AscNullsFirst" | "AscNullsLast" | "DescNullsFirst" | "DescNullsLast" | "%future added value";
-export type ProductCondition = "Good" | "Like_new" | "New" | "Used" | "%future added value";
-export type ProductsFilter = {
-  and?: ReadonlyArray<ProductsFilter> | null | undefined;
-  categoryId?: UUIDFilter | null | undefined;
-  condition?: ProductConditionFilter | null | undefined;
+export type ProductsCommunitiesFilter = {
+  and?: ReadonlyArray<ProductsCommunitiesFilter> | null | undefined;
+  communityId?: BigIntFilter | null | undefined;
   createdAt?: DatetimeFilter | null | undefined;
-  description?: StringFilter | null | undefined;
   id?: BigIntFilter | null | undefined;
-  image?: StringFilter | null | undefined;
-  isPublic?: BooleanFilter | null | undefined;
-  name?: StringFilter | null | undefined;
   nodeId?: IDFilter | null | undefined;
-  not?: ProductsFilter | null | undefined;
-  or?: ReadonlyArray<ProductsFilter> | null | undefined;
-  price?: FloatFilter | null | undefined;
-  userId?: UUIDFilter | null | undefined;
+  not?: ProductsCommunitiesFilter | null | undefined;
+  or?: ReadonlyArray<ProductsCommunitiesFilter> | null | undefined;
+  productId?: BigIntFilter | null | undefined;
 };
 export type BigIntFilter = {
   eq?: string | null | undefined;
@@ -49,67 +42,20 @@ export type DatetimeFilter = {
   lte?: string | null | undefined;
   neq?: string | null | undefined;
 };
-export type StringFilter = {
-  eq?: string | null | undefined;
-  gt?: string | null | undefined;
-  gte?: string | null | undefined;
-  ilike?: string | null | undefined;
-  in?: ReadonlyArray<string> | null | undefined;
-  iregex?: string | null | undefined;
-  is?: FilterIs | null | undefined;
-  like?: string | null | undefined;
-  lt?: string | null | undefined;
-  lte?: string | null | undefined;
-  neq?: string | null | undefined;
-  regex?: string | null | undefined;
-  startsWith?: string | null | undefined;
-};
-export type FloatFilter = {
-  eq?: number | null | undefined;
-  gt?: number | null | undefined;
-  gte?: number | null | undefined;
-  in?: ReadonlyArray<number> | null | undefined;
-  is?: FilterIs | null | undefined;
-  lt?: number | null | undefined;
-  lte?: number | null | undefined;
-  neq?: number | null | undefined;
-};
-export type UUIDFilter = {
-  eq?: string | null | undefined;
-  in?: ReadonlyArray<string> | null | undefined;
-  is?: FilterIs | null | undefined;
-  neq?: string | null | undefined;
-};
-export type ProductConditionFilter = {
-  eq?: ProductCondition | null | undefined;
-  in?: ReadonlyArray<ProductCondition> | null | undefined;
-  is?: FilterIs | null | undefined;
-  neq?: ProductCondition | null | undefined;
-};
-export type BooleanFilter = {
-  eq?: boolean | null | undefined;
-  is?: FilterIs | null | undefined;
-};
 export type IDFilter = {
   eq?: string | null | undefined;
 };
-export type ProductsOrderBy = {
-  categoryId?: OrderByDirection | null | undefined;
-  condition?: OrderByDirection | null | undefined;
+export type ProductsCommunitiesOrderBy = {
+  communityId?: OrderByDirection | null | undefined;
   createdAt?: OrderByDirection | null | undefined;
-  description?: OrderByDirection | null | undefined;
   id?: OrderByDirection | null | undefined;
-  image?: OrderByDirection | null | undefined;
-  isPublic?: OrderByDirection | null | undefined;
-  name?: OrderByDirection | null | undefined;
-  price?: OrderByDirection | null | undefined;
-  userId?: OrderByDirection | null | undefined;
+  productId?: OrderByDirection | null | undefined;
 };
 export type MarketplacePaginationQuery$variables = {
   count?: number | null | undefined;
   cursor?: string | null | undefined;
-  filter?: ProductsFilter | null | undefined;
-  orderBy?: ReadonlyArray<ProductsOrderBy> | null | undefined;
+  filter?: ProductsCommunitiesFilter | null | undefined;
+  orderBy?: ReadonlyArray<ProductsCommunitiesOrderBy> | null | undefined;
 };
 export type MarketplacePaginationQuery$data = {
   readonly " $fragmentSpreads": FragmentRefs<"MarketplacePaginationFragment">;
@@ -211,15 +157,15 @@ return {
       {
         "alias": null,
         "args": (v3/*: any*/),
-        "concreteType": "ProductsConnection",
+        "concreteType": "ProductsCommunitiesConnection",
         "kind": "LinkedField",
-        "name": "productsCollection",
+        "name": "productsCommunitiesCollection",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ProductsEdge",
+            "concreteType": "ProductsCommunitiesEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -227,73 +173,169 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Products",
+                "concreteType": "ProductsCommunities",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "name",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "description",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "price",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "image",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Profiles",
+                    "concreteType": "Products",
                     "kind": "LinkedField",
-                    "name": "user",
+                    "name": "product",
                     "plural": false,
                     "selections": [
                       {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "avatarUrl",
+                        "name": "name",
                         "storageKey": null
                       },
                       {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "username",
+                        "name": "description",
                         "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "price",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "image",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "id",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "isPublic",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "categoryId",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "condition",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "userId",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Profiles",
+                        "kind": "LinkedField",
+                        "name": "user",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "avatarUrl",
+                            "storageKey": null
+                          },
+                          {
+                            "alias": null,
+                            "args": null,
+                            "kind": "ScalarField",
+                            "name": "username",
+                            "storageKey": null
+                          },
+                          (v4/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": [
+                          {
+                            "kind": "Literal",
+                            "name": "first",
+                            "value": 1
+                          },
+                          {
+                            "kind": "Literal",
+                            "name": "orderBy",
+                            "value": [
+                              {
+                                "displayOrder": "AscNullsLast"
+                              }
+                            ]
+                          }
+                        ],
+                        "concreteType": "ProductImagesConnection",
+                        "kind": "LinkedField",
+                        "name": "productImagesCollection",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "ProductImagesEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "ProductImages",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "imageUrl",
+                                    "storageKey": null
+                                  },
+                                  (v4/*: any*/)
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
                       },
                       (v4/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v4/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -350,23 +392,23 @@ return {
           "orderBy"
         ],
         "handle": "connection",
-        "key": "Marketplace_productsCollection",
+        "key": "Marketplace_productsCommunitiesCollection",
         "kind": "LinkedHandle",
-        "name": "productsCollection"
+        "name": "productsCommunitiesCollection"
       }
     ]
   },
   "params": {
-    "cacheID": "b30210e0cf9868cf718c28eba5e48b14",
+    "cacheID": "d14e003757243ecb7811009208ccefdb",
     "id": null,
     "metadata": {},
     "name": "MarketplacePaginationQuery",
     "operationKind": "query",
-    "text": "query MarketplacePaginationQuery(\n  $count: Int = 12\n  $cursor: Cursor\n  $filter: ProductsFilter\n  $orderBy: [ProductsOrderBy!]\n) {\n  ...MarketplacePaginationFragment_1FfpYs\n}\n\nfragment MarketplacePaginationFragment_1FfpYs on Query {\n  productsCollection(first: $count, after: $cursor, filter: $filter, orderBy: $orderBy) {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  id\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n}\n"
+    "text": "query MarketplacePaginationQuery(\n  $count: Int = 12\n  $cursor: Cursor\n  $filter: ProductsCommunitiesFilter\n  $orderBy: [ProductsCommunitiesOrderBy!]\n) {\n  ...MarketplacePaginationFragment_1FfpYs\n}\n\nfragment MarketplacePaginationFragment_1FfpYs on Query {\n  productsCommunitiesCollection(first: $count, after: $cursor, filter: $filter, orderBy: $orderBy) {\n    edges {\n      node {\n        nodeId\n        product {\n          ...ProductCardFragmentQuery\n          name\n          isPublic\n          categoryId\n          condition\n          nodeId\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  image\n  id\n  isPublic\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "cf7c17b8ff3769edc7966dbb76103109";
+(node as any).hash = "94d4ed5af2ea144168436de2654fb102";
 
 export default node;
