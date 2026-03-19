@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<28a4894528a81e058e789bdd980ccc63>>
+ * @generated SignedSource<<427ef6670687db8951442053b4e3a570>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,6 @@ export type ProductsFilter = {
   createdAt?: DatetimeFilter | null | undefined;
   description?: StringFilter | null | undefined;
   id?: BigIntFilter | null | undefined;
-  image?: StringFilter | null | undefined;
   isPublic?: BooleanFilter | null | undefined;
   name?: StringFilter | null | undefined;
   nodeId?: IDFilter | null | undefined;

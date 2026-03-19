@@ -31,6 +31,7 @@ import {
   BRAND_PRIMARY,
   COLOR_SUCCESS,
   COLOR_WARNING,
+  NEUTRAL_100,
   NEUTRAL_500,
   NEUTRAL_900,
   RADIUS_LG,
@@ -56,7 +57,6 @@ export const myListingsPageQuery = graphql`
           name
           description
           price
-          image
           condition
           categoryId
           isPublic
@@ -94,7 +94,7 @@ type ListingNode = NonNullable<
   >['edges']
 >[number]['node'];
 
-/** Derive a status label from the listing data. */
+/** Derive a status label from the listing's public flag. */
 const getStatus = (listing: ListingNode): { label: string; color: string } => {
   if (!listing.isPublic) {
     return { label: 'Unlisted', color: 'default' };
@@ -102,16 +102,15 @@ const getStatus = (listing: ListingNode): { label: string; color: string } => {
   return { label: 'Active', color: 'success' };
 };
 
+/* ── MyListingCard ──────────────────────────────────────────────────── */
+
 type ListingCardProps = {
   listing: ListingNode;
   onEdit: (listing: ListingNode) => void;
   onToggleVisibility: (listing: ListingNode) => void;
 };
 
-/**
- * A single listing card in the My Listings grid.
- * Shows image, name, price, status badge, and action buttons.
- */
+/** A single listing card showing image, name, price, status, and actions. */
 const MyListingCard: React.FC<ListingCardProps> = ({
   listing,
   onEdit,
@@ -121,27 +120,25 @@ const MyListingCard: React.FC<ListingCardProps> = ({
   const status = getStatus(listing);
 
   useEffect(() => {
-    const firstProductImage =
+    const imagePath =
       listing.productImagesCollection?.edges?.[0]?.node?.imageUrl;
-    const imagePath = firstProductImage || listing.image;
 
     if (imagePath) {
       fetchFromStorage(imagePath, 'product-images').then((blob) => {
         if (blob) setImageUrl(URL.createObjectURL(blob));
       });
     }
-  }, [listing]);
+  }, [listing.productImagesCollection]);
 
   return (
     <Card
       style={{ borderRadius: RADIUS_LG, overflow: 'hidden' }}
       styles={{ body: { padding: 0 } }}
     >
-      {/* Image */}
       <div
         style={{
           height: 180,
-          background: '#f5f5f5',
+          background: NEUTRAL_100,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -158,12 +155,11 @@ const MyListingCard: React.FC<ListingCardProps> = ({
           <Avatar
             icon={<ShopOutlined />}
             size={64}
-            style={{ backgroundColor: '#e8e8e8' }}
+            style={{ backgroundColor: NEUTRAL_100 }}
           />
         )}
       </div>
 
-      {/* Content */}
       <div style={{ padding: '12px 16px' }}>
         <Flex justify="space-between" align="start" style={{ marginBottom: 4 }}>
           <Typography.Text
@@ -205,7 +201,6 @@ const MyListingCard: React.FC<ListingCardProps> = ({
           £{listing.price.toFixed(2)}
         </Typography.Text>
 
-        {/* Actions */}
         <Flex gap={8}>
           <Button
             size="small"
@@ -229,6 +224,8 @@ const MyListingCard: React.FC<ListingCardProps> = ({
     </Card>
   );
 };
+
+/* ── MyListingsPage ─────────────────────────────────────────────────── */
 
 type Props = {
   queries: {
@@ -305,10 +302,6 @@ const MyListingsPage: EntryPointComponent<
     [commitToggle]
   );
 
-  const handleEditSuccess = useCallback(() => {
-    // The Relay store will be updated by the mutation response
-  }, []);
-
   const activeCount = listings.filter((e) => e.node.isPublic).length;
   const unlistedCount = listings.filter((e) => !e.node.isPublic).length;
 
@@ -381,7 +374,9 @@ const MyListingsPage: EntryPointComponent<
         listing={editingListing}
         categories={categories}
         onClose={() => setEditModalOpen(false)}
-        onSuccess={handleEditSuccess}
+        onSuccess={() => {
+          /* Relay store auto-updates from mutation response */
+        }}
       />
     </div>
   );

@@ -8,7 +8,6 @@ export default graphql`
         id
         name
         price
-        image
         description
         condition
         categoryId

@@ -1,7 +1,7 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useFragment } from 'react-relay';
 import { useNavigate } from 'react-router';
 
@@ -9,12 +9,12 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
   BRAND_PRIMARY,
   COLOR_SUCCESS,
-  COLOR_WARNING,
+  COLOR_SUCCESS_BG,
   NEUTRAL_100,
+  NEUTRAL_400,
   NEUTRAL_500,
   NEUTRAL_700,
   RADIUS_LG,
-  RADIUS_SM,
   SHADOW_CARD,
   WHITE,
 } from '../../design';
@@ -32,7 +32,6 @@ const productFragmentQuery = graphql`
     name
     description
     price
-    image
     id
     isPublic
     categoryId
@@ -57,19 +56,22 @@ const productFragmentQuery = graphql`
   }
 `;
 
-/** Derive a status badge from the product's public flag and price. */
-function getStatusBadge(
-  isPublic: boolean,
-  price: number
-): { label: string; color: string; bg: string } {
+/** Status badge configuration derived from product state. */
+type StatusBadge = { label: string; color: string; bg: string };
+
+function getStatusBadge(isPublic: boolean, price: number): StatusBadge {
   if (!isPublic) {
-    return { label: 'Unlisted', color: NEUTRAL_500, bg: '#f0f0f0' };
+    return { label: 'Unlisted', color: NEUTRAL_500, bg: NEUTRAL_100 };
   }
   if (price === 0) {
-    return { label: 'Free', color: COLOR_SUCCESS, bg: '#f6ffed' };
+    return { label: 'Free', color: COLOR_SUCCESS, bg: COLOR_SUCCESS_BG };
   }
-  return { label: 'Available', color: COLOR_SUCCESS, bg: '#f6ffed' };
+  return { label: 'Available', color: COLOR_SUCCESS, bg: COLOR_SUCCESS_BG };
 }
+
+/** Elevated shadow shown on hover. */
+const SHADOW_CARD_HOVER =
+  '0 8px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08)';
 
 const ProductCard = ({
   fragmentRef,
@@ -80,48 +82,63 @@ const ProductCard = ({
   const [hovered, setHovered] = useState(false);
 
   const product = useFragment(productFragmentQuery, fragmentRef);
-  const navigation = useNavigate();
+  const navigate = useNavigate();
   const { userId } = useAuth();
 
   const isOwnListing = userId != null && product.userId === userId;
 
+  /* Fetch the first product image from Supabase storage. */
   useEffect(() => {
-    const firstProductImage =
+    const imagePath =
       product.productImagesCollection?.edges?.[0]?.node?.imageUrl;
-    const imagePath = firstProductImage || product.image;
 
     if (imagePath) {
       fetchFromStorage(imagePath, 'product-images').then((blob) => {
         if (blob) setImageBlob(blob);
       });
     }
+  }, [product.productImagesCollection]);
 
+  /* Fetch the seller avatar from Supabase storage. */
+  useEffect(() => {
     if (product.user?.avatarUrl) {
       fetchFromStorage(product.user.avatarUrl, 'avatars').then((blob) => {
         if (blob) setAvatarBlob(blob);
       });
     }
-  }, [product]);
+  }, [product.user?.avatarUrl]);
 
   const status = getStatusBadge(product.isPublic, product.price);
 
-  // Seller display: prefer firstName, fall back to username
-  const user = product.user;
-  const sellerName = user?.firstName || user?.username || 'Seller';
-  const sellerLine = sellerName;
+  const sellerName =
+    product.user?.firstName || product.user?.username || 'Seller';
 
-  // Price display
   const isFree = product.price === 0;
   const priceDisplay = isFree ? 'Free' : `£${product.price}`;
   const priceColor = isFree ? COLOR_SUCCESS : BRAND_PRIMARY;
 
+  const imageUrl = useMemo(
+    () => (imageBlob ? URL.createObjectURL(imageBlob) : null),
+    [imageBlob]
+  );
+  const avatarUrl = useMemo(
+    () => (avatarBlob ? URL.createObjectURL(avatarBlob) : AVATAR_DEFAULT),
+    [avatarBlob]
+  );
+
+  const handleClick = () => {
+    if (hoverable) navigate(`${product.id}`);
+  };
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (hoverable && (e.key === 'Enter' || e.key === ' ')) {
+      navigate(`${product.id}`);
+    }
+  };
+
   const cardStyle: React.CSSProperties = {
     background: WHITE,
     borderRadius: RADIUS_LG,
-    boxShadow:
-      hovered && hoverable
-        ? '0 8px 32px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.08)'
-        : SHADOW_CARD,
+    boxShadow: hovered && hoverable ? SHADOW_CARD_HOVER : SHADOW_CARD,
     border: 'none',
     overflow: 'hidden',
     cursor: hoverable ? 'pointer' : 'default',
@@ -133,30 +150,26 @@ const ProductCard = ({
   return (
     <div
       style={cardStyle}
-      onClick={() => hoverable && navigation(`${product.id}`)}
+      onClick={handleClick}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       role={hoverable ? 'button' : undefined}
       tabIndex={hoverable ? 0 : undefined}
-      onKeyDown={(e) => {
-        if (hoverable && (e.key === 'Enter' || e.key === ' ')) {
-          navigation(`${product.id}`);
-        }
-      }}
+      onKeyDown={handleKeyDown}
     >
-      {/* ── Image area ─────────────────────────────────────────────────── */}
+      {/* ── Image area ─────────────────────────────────────────────── */}
       <div
         style={{
           position: 'relative',
           width: '100%',
-          paddingTop: '75%', // 4:3 aspect ratio
+          paddingTop: '75%',
           background: NEUTRAL_100,
           overflow: 'hidden',
         }}
       >
-        {imageBlob ? (
+        {imageUrl ? (
           <img
-            src={URL.createObjectURL(imageBlob)}
+            src={imageUrl}
             alt={product.name}
             style={{
               position: 'absolute',
@@ -167,98 +180,15 @@ const ProductCard = ({
             }}
           />
         ) : (
-          /* Placeholder icon when no image is loaded yet */
-          <div
-            style={{
-              position: 'absolute',
-              inset: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <svg
-              width="48"
-              height="48"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="3"
-                y="3"
-                width="18"
-                height="18"
-                rx="2"
-                stroke="#bfbfbf"
-                strokeWidth="1.5"
-              />
-              <circle
-                cx="8.5"
-                cy="8.5"
-                r="1.5"
-                stroke="#bfbfbf"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M3 15l5-5 4 4 3-3 6 6"
-                stroke="#bfbfbf"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </div>
+          <PlaceholderIcon />
         )}
 
-        {/* "Your listing" badge — top-left */}
-        {isOwnListing && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 8,
-              left: 8,
-              background: BRAND_PRIMARY,
-              color: WHITE,
-              borderRadius: 20,
-              padding: '3px 10px',
-              fontSize: 11,
-              fontWeight: 600,
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-              lineHeight: '18px',
-              boxShadow: '0 1px 4px rgba(0,0,0,0.18)',
-            }}
-          >
-            <UserOutlined style={{ fontSize: 10 }} />
-            Your listing
-          </div>
-        )}
-
-        {/* Status badge — top-right */}
-        <div
-          style={{
-            position: 'absolute',
-            top: 8,
-            right: 8,
-            background: status.bg,
-            color: status.color,
-            borderRadius: 20,
-            padding: '3px 10px',
-            fontSize: 11,
-            fontWeight: 600,
-            lineHeight: '18px',
-            border: `1px solid ${status.color}33`,
-          }}
-        >
-          {status.label}
-        </div>
+        {isOwnListing && <OwnerBadge />}
+        <StatusPill status={status} />
       </div>
 
-      {/* ── Card body ──────────────────────────────────────────────────── */}
+      {/* ── Card body ──────────────────────────────────────────────── */}
       <div style={{ padding: '12px 14px 14px' }}>
-        {/* Product name */}
         <Typography.Text
           strong
           style={{
@@ -276,7 +206,6 @@ const ProductCard = ({
           {product.name}
         </Typography.Text>
 
-        {/* Price */}
         <Typography.Text
           style={{
             display: 'block',
@@ -290,17 +219,10 @@ const ProductCard = ({
           {priceDisplay}
         </Typography.Text>
 
-        {/* Seller row */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 6,
-          }}
-        >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <Avatar
             size={22}
-            src={avatarBlob ? URL.createObjectURL(avatarBlob) : AVATAR_DEFAULT}
+            src={avatarUrl}
             icon={<UserOutlined />}
             style={{ flexShrink: 0 }}
           />
@@ -313,12 +235,105 @@ const ProductCard = ({
               textOverflow: 'ellipsis',
             }}
           >
-            {sellerLine}
+            {sellerName}
           </Typography.Text>
         </div>
       </div>
     </div>
   );
 };
+
+/* ── Sub-components ──────────────────────────────────────────────────── */
+
+/** Placeholder SVG shown when no product image is available. */
+const PlaceholderIcon: React.FC = () => (
+  <div
+    style={{
+      position: 'absolute',
+      inset: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}
+  >
+    <svg
+      width="48"
+      height="48"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="2"
+        stroke={NEUTRAL_400}
+        strokeWidth="1.5"
+      />
+      <circle
+        cx="8.5"
+        cy="8.5"
+        r="1.5"
+        stroke={NEUTRAL_400}
+        strokeWidth="1.5"
+      />
+      <path
+        d="M3 15l5-5 4 4 3-3 6 6"
+        stroke={NEUTRAL_400}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </div>
+);
+
+/** Orange pill badge indicating the current user owns this listing. */
+const OwnerBadge: React.FC = () => (
+  <div
+    style={{
+      position: 'absolute',
+      top: 8,
+      left: 8,
+      background: BRAND_PRIMARY,
+      color: WHITE,
+      borderRadius: 20,
+      padding: '3px 10px',
+      fontSize: 11,
+      fontWeight: 600,
+      display: 'flex',
+      alignItems: 'center',
+      gap: 4,
+      lineHeight: '18px',
+      boxShadow: '0 1px 4px rgba(0,0,0,0.18)',
+    }}
+  >
+    <UserOutlined style={{ fontSize: 10 }} />
+    Your listing
+  </div>
+);
+
+/** Availability / status pill positioned at the top-right of the image. */
+const StatusPill: React.FC<{ status: StatusBadge }> = ({ status }) => (
+  <div
+    style={{
+      position: 'absolute',
+      top: 8,
+      right: 8,
+      background: status.bg,
+      color: status.color,
+      borderRadius: 20,
+      padding: '3px 10px',
+      fontSize: 11,
+      fontWeight: 600,
+      lineHeight: '18px',
+      border: `1px solid ${status.color}33`,
+    }}
+  >
+    {status.label}
+  </div>
+);
 
 export default ProductCard;

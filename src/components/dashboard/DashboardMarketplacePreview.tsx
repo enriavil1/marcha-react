@@ -1,4 +1,3 @@
-// src/components/dashboard/DashboardMarketplacePreview.tsx
 import { ShopOutlined } from '@ant-design/icons';
 import { Avatar, Card, List, Tag, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
@@ -7,6 +6,7 @@ import { useFragment } from 'react-relay';
 
 import {
   BRAND_PRIMARY,
+  NEUTRAL_100,
   NEUTRAL_500,
   NEUTRAL_900,
   RADIUS_LG,
@@ -17,11 +17,7 @@ import type { DashboardMarketplacePreviewFragment$key } from './__generated__/Da
 
 /**
  * Fragment on Query that fetches the 3 most recent public marketplace listings.
- * Spread this fragment in the parent DashboardComponentQuery so the data is
- * co-located with the component that uses it.
- *
- * Uses productImagesCollection to get the first image from the product_images
- * table, falling back to the legacy `image` field.
+ * Uses productImagesCollection to get the cover image from the product_images table.
  */
 export const dashboardMarketplacePreviewFragment = graphql`
   fragment DashboardMarketplacePreviewFragment on Query {
@@ -35,7 +31,6 @@ export const dashboardMarketplacePreviewFragment = graphql`
           id
           name
           price
-          image
           createdAt
           productImagesCollection(
             first: 1
@@ -63,38 +58,36 @@ type ListingRowProps = {
   id: string;
   name: string;
   price: number;
-  image: string;
+  imagePath: string | undefined;
   createdAt: string;
   onNavigate: (id: string) => void;
 };
 
-/**
- * A single compact listing row: thumbnail | name + price | optional New badge.
- */
+/** A single compact listing row: thumbnail | name + price | optional New badge. */
 const ListingRow: React.FC<ListingRowProps> = ({
   id,
   name,
   price,
-  image,
+  imagePath,
   createdAt,
   onNavigate,
 }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (image) {
-      fetchFromStorage(image, 'product-images').then((blob) => {
+    if (imagePath) {
+      fetchFromStorage(imagePath, 'product-images').then((blob) => {
         if (blob) setImageUrl(URL.createObjectURL(blob));
       });
     }
-  }, [image]);
+  }, [imagePath]);
 
   return (
     <List.Item
       style={{
         padding: '8px 0',
         cursor: 'pointer',
-        borderBottom: `1px solid #f0f0f0`,
+        borderBottom: `1px solid ${NEUTRAL_100}`,
       }}
       onClick={() => onNavigate(id)}
     >
@@ -107,7 +100,7 @@ const ListingRow: React.FC<ListingRowProps> = ({
             size={44}
             style={{
               borderRadius: RADIUS_SM,
-              backgroundColor: '#f5f5f5',
+              backgroundColor: NEUTRAL_100,
               flexShrink: 0,
             }}
           />
@@ -162,13 +155,7 @@ type Props = {
 
 /**
  * Dashboard right-column card showing the 3 most recent marketplace listings.
- *
- * Design spec:
- * - Section header "MARKETPLACE" (uppercase, matching other section headers)
- *   with a "Browse" link on the right
- * - 2-3 compact rows: square thumbnail | product name (bold) | price in brand
- *   orange | "New" badge for listings added within the last 7 days
- * - Hidden on mobile (controlled by the parent Col xs/lg breakpoints)
+ * Hidden on mobile (controlled by the parent Col xs/lg breakpoints).
  */
 const DashboardMarketplacePreview: React.FC<Props> = ({
   fragmentRef,
@@ -220,10 +207,8 @@ const DashboardMarketplacePreview: React.FC<Props> = ({
         <List
           dataSource={[...listings]}
           renderItem={(edge) => {
-            // Prefer first image from product_images, fall back to legacy field
-            const firstProductImage =
+            const coverImage =
               edge.node.productImagesCollection?.edges?.[0]?.node?.imageUrl;
-            const imagePath = firstProductImage || edge.node.image;
 
             return (
               <ListingRow
@@ -231,7 +216,7 @@ const DashboardMarketplacePreview: React.FC<Props> = ({
                 id={edge.node.id}
                 name={edge.node.name}
                 price={edge.node.price}
-                image={imagePath}
+                imagePath={coverImage}
                 createdAt={edge.node.createdAt}
                 onNavigate={onNavigateToListing}
               />

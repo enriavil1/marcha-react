@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import React from 'react';
+
 import { renderWithAntd } from '../../../test-utils';
 import ListingTips from '../ListingTips';
 
@@ -16,9 +17,7 @@ describe('ListingTips', () => {
 
   it('renders the condition tip', () => {
     renderWithAntd(<ListingTips />);
-    expect(
-      screen.getByText(/be honest about condition/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/be honest about condition/i)).toBeInTheDocument();
   });
 
   it('renders the pricing tip', () => {

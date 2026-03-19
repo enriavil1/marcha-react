@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e971f2b7f4d4ad5e81e3c0bbc4349a13>>
+ * @generated SignedSource<<3b6b4ac45eaee2e6c28a9241099f0e4f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,7 +21,6 @@ export type ProductDetailPageQuery$data = {
         readonly createdAt: string;
         readonly description: string;
         readonly id: string;
-        readonly image: string;
         readonly name: string;
         readonly price: number;
         readonly productImagesCollection: {
@@ -106,38 +105,31 @@ v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "image",
+  "name": "createdAt",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "createdAt",
+  "name": "condition",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "condition",
+  "name": "username",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "username",
-  "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "avatarUrl",
   "storageKey": null
 },
-v11 = [
+v10 = [
   {
     "kind": "Literal",
     "name": "orderBy",
@@ -148,21 +140,21 @@ v11 = [
     ]
   }
 ],
-v12 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "imageUrl",
   "storageKey": null
 },
-v13 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "displayOrder",
   "storageKey": null
 },
-v14 = {
+v13 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -206,7 +198,6 @@ return {
                   (v5/*: any*/),
                   (v6/*: any*/),
                   (v7/*: any*/),
-                  (v8/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -216,14 +207,14 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
-                      (v9/*: any*/),
-                      (v10/*: any*/)
+                      (v8/*: any*/),
+                      (v9/*: any*/)
                     ],
                     "storageKey": null
                   },
                   {
                     "alias": null,
-                    "args": (v11/*: any*/),
+                    "args": (v10/*: any*/),
                     "concreteType": "ProductImagesConnection",
                     "kind": "LinkedField",
                     "name": "productImagesCollection",
@@ -246,8 +237,8 @@ return {
                             "plural": false,
                             "selections": [
                               (v2/*: any*/),
-                              (v12/*: any*/),
-                              (v13/*: any*/)
+                              (v11/*: any*/),
+                              (v12/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -306,7 +297,6 @@ return {
                   (v5/*: any*/),
                   (v6/*: any*/),
                   (v7/*: any*/),
-                  (v8/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -316,15 +306,15 @@ return {
                     "plural": false,
                     "selections": [
                       (v2/*: any*/),
+                      (v8/*: any*/),
                       (v9/*: any*/),
-                      (v10/*: any*/),
-                      (v14/*: any*/)
+                      (v13/*: any*/)
                     ],
                     "storageKey": null
                   },
                   {
                     "alias": null,
-                    "args": (v11/*: any*/),
+                    "args": (v10/*: any*/),
                     "concreteType": "ProductImagesConnection",
                     "kind": "LinkedField",
                     "name": "productImagesCollection",
@@ -347,9 +337,9 @@ return {
                             "plural": false,
                             "selections": [
                               (v2/*: any*/),
+                              (v11/*: any*/),
                               (v12/*: any*/),
-                              (v13/*: any*/),
-                              (v14/*: any*/)
+                              (v13/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -359,7 +349,7 @@ return {
                     ],
                     "storageKey": "productImagesCollection(orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
                   },
-                  (v14/*: any*/)
+                  (v13/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -372,16 +362,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "535e2aff67c05ba7c2cc361fb21eac73",
+    "cacheID": "3a6b634c9e957bf731e8a7fc6f788aa1",
     "id": null,
     "metadata": {},
     "name": "ProductDetailPageQuery",
     "operationKind": "query",
-    "text": "query ProductDetailPageQuery(\n  $id: BigInt\n) {\n  productsCollection(filter: {id: {eq: $id}}) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        image\n        createdAt\n        condition\n        user {\n          id\n          username\n          avatarUrl\n          nodeId\n        }\n        productImagesCollection(orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              id\n              imageUrl\n              displayOrder\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query ProductDetailPageQuery(\n  $id: BigInt\n) {\n  productsCollection(filter: {id: {eq: $id}}) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        createdAt\n        condition\n        user {\n          id\n          username\n          avatarUrl\n          nodeId\n        }\n        productImagesCollection(orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              id\n              imageUrl\n              displayOrder\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "c88a36e5687a69bc9eab79141275e9e2";
+(node as any).hash = "c04536825ebbe7ad61d81591b502d281";
 
 export default node;

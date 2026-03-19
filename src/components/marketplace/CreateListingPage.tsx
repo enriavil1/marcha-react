@@ -85,6 +85,30 @@ const CreateListingPage: EntryPointComponent<
       InsertProductImagesMutation
     );
 
+  /** Upload images to Supabase storage and return their storage paths. */
+  const uploadImages = async (): Promise<string[]> => {
+    const paths: string[] = [];
+
+    for (const file of fileList) {
+      if (file.originFileObj) {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${userId}/${crypto.randomUUID()}.${fileExt}`;
+
+        const { error: uploadError } = await supabase.storage
+          .from('product-images')
+          .upload(fileName, file.originFileObj, {
+            upsert: false,
+            contentType: file.originFileObj.type,
+          });
+
+        if (uploadError) throw uploadError;
+        paths.push(fileName);
+      }
+    }
+
+    return paths;
+  };
+
   const handleSubmit = useCallback(
     async (values: ListingFormValues) => {
       if (!userId) {
@@ -94,28 +118,7 @@ const CreateListingPage: EntryPointComponent<
 
       setUploading(true);
       try {
-        // Upload all images to Supabase storage
-        const uploadedPaths: string[] = [];
-
-        for (const file of fileList) {
-          if (file.originFileObj) {
-            const fileExt = file.name.split('.').pop();
-            const fileName = `${userId}/${crypto.randomUUID()}.${fileExt}`;
-
-            const { error: uploadError } = await supabase.storage
-              .from('product-images')
-              .upload(fileName, file.originFileObj, {
-                upsert: false,
-                contentType: file.originFileObj.type,
-              });
-
-            if (uploadError) throw uploadError;
-            uploadedPaths.push(fileName);
-          }
-        }
-
-        // Use the first image as the legacy `image` field
-        const primaryImage = uploadedPaths.length > 0 ? uploadedPaths[0] : '';
+        const uploadedPaths = await uploadImages();
 
         commitProductMutation({
           variables: {
@@ -130,7 +133,6 @@ const CreateListingPage: EntryPointComponent<
                   | 'Like_new'
                   | 'Good'
                   | 'Used',
-                image: primaryImage,
                 userId,
                 isPublic: true,
               },
@@ -146,16 +148,11 @@ const CreateListingPage: EntryPointComponent<
 
             const productId = newProduct.id;
 
-            // Associate product with current community
+            /* Associate product with the current community. */
             if (communityId) {
               commitCommunityMutation({
                 variables: {
-                  objects: [
-                    {
-                      productId,
-                      communityId,
-                    },
-                  ],
+                  objects: [{ productId, communityId }],
                 },
                 onError: (err) => {
                   console.error(
@@ -166,7 +163,7 @@ const CreateListingPage: EntryPointComponent<
               });
             }
 
-            // Insert product images into the product_images table
+            /* Insert product images into the product_images table. */
             if (uploadedPaths.length > 0) {
               commitImagesMutation({
                 variables: {

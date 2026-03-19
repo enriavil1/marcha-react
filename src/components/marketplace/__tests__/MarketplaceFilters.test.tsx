@@ -1,7 +1,8 @@
-import { screen, fireEvent, waitFor, render } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { ConfigProvider } from 'antd';
 import React from 'react';
 import { MemoryRouter, useSearchParams } from 'react-router-dom';
+
 import { marchaTheme } from '../../../design';
 import MarketplaceFilters from '../MarketplaceFilters';
 
@@ -26,7 +27,7 @@ function renderFilters(initialEntries: string[] = ['/']) {
         <SearchParamsCapture />
         <MarketplaceFilters categories={categories} />
       </MemoryRouter>
-    </ConfigProvider>,
+    </ConfigProvider>
   );
 }
 
@@ -35,24 +36,23 @@ describe('MarketplaceFilters', () => {
     capturedSearchParams = new URLSearchParams();
   });
 
-  it('renders search input, category select, and condition select', () => {
+  it('renders search input and category pill buttons', () => {
     renderFilters();
-    expect(
-      screen.getByPlaceholderText('Search listings...'),
-    ).toBeInTheDocument();
-    expect(screen.getByText('Category')).toBeInTheDocument();
-    expect(screen.getByText('Condition')).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Search items...')).toBeInTheDocument();
+    expect(screen.getByText('All')).toBeInTheDocument();
+    expect(screen.getByText('Electronics')).toBeInTheDocument();
+    expect(screen.getByText('Furniture')).toBeInTheDocument();
   });
 
   it('populates search input from URL params', () => {
     renderFilters(['/?q=bike']);
-    const input = screen.getByPlaceholderText('Search listings...');
+    const input = screen.getByPlaceholderText('Search items...');
     expect(input).toHaveValue('bike');
   });
 
   it('updates the q search param when typing in the search input', async () => {
     renderFilters();
-    const input = screen.getByPlaceholderText('Search listings...');
+    const input = screen.getByPlaceholderText('Search items...');
     fireEvent.change(input, { target: { value: 'laptop' } });
     await waitFor(() => {
       expect(capturedSearchParams.get('q')).toBe('laptop');
@@ -61,36 +61,26 @@ describe('MarketplaceFilters', () => {
 
   it('clears the cursor param when a filter changes', async () => {
     renderFilters(['/?q=old&cursor=abc123']);
-    const input = screen.getByPlaceholderText('Search listings...');
+    const input = screen.getByPlaceholderText('Search items...');
     fireEvent.change(input, { target: { value: 'new' } });
     await waitFor(() => {
       expect(capturedSearchParams.get('cursor')).toBeNull();
     });
   });
 
-  it('shows Clear Filters button when filters are active', () => {
-    renderFilters(['/?q=bike']);
-    expect(
-      screen.getByRole('button', { name: /clear filters/i }),
-    ).toBeInTheDocument();
-  });
-
-  it('does not show Clear Filters button when no filters are active', () => {
+  it('sets category param when a category pill is clicked', async () => {
     renderFilters();
-    expect(
-      screen.queryByRole('button', { name: /clear filters/i }),
-    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByText('Electronics'));
+    await waitFor(() => {
+      expect(capturedSearchParams.get('category')).toBe('cat-1');
+    });
   });
 
-  it('clears all params when Clear Filters is clicked', async () => {
-    renderFilters(['/?q=bike&category=cat-1&condition=New']);
-    fireEvent.click(
-      screen.getByRole('button', { name: /clear filters/i }),
-    );
+  it('clears category param when "All" pill is clicked', async () => {
+    renderFilters(['/?category=cat-1']);
+    fireEvent.click(screen.getByText('All'));
     await waitFor(() => {
-      expect(capturedSearchParams.get('q')).toBeNull();
       expect(capturedSearchParams.get('category')).toBeNull();
-      expect(capturedSearchParams.get('condition')).toBeNull();
     });
   });
 });

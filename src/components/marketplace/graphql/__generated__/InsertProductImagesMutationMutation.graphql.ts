@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<95f32c7195a6ac80ff6b113c1e0a0f2f>>
+ * @generated SignedSource<<870f8d6245f06b494e7427093cd93a18>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,6 +10,7 @@
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
 export type ProductImagesInsertInput = {
+  createdAt?: string | null | undefined;
   displayOrder?: number | null | undefined;
   imageUrl?: string | null | undefined;
   productId?: string | null | undefined;

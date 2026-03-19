@@ -1,4 +1,5 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+
 import { useInfiniteScroll } from '../useInfiniteScroll';
 
 // ── IntersectionObserver mock ────────────────────────────────────────────────
@@ -19,21 +20,17 @@ beforeEach(() => {
     unobserve: jest.fn(),
   };
 
-  const MockObserver = jest.fn(
-    (callback: IntersectionObserverCallback) => {
-      observerCallback = callback;
-      return observerInstance;
-    },
-  );
+  const MockObserver = jest.fn((callback: IntersectionObserverCallback) => {
+    observerCallback = callback;
+    return observerInstance;
+  });
 
   (window as any).IntersectionObserver = MockObserver;
 });
 
 describe('useInfiniteScroll', () => {
   it('returns a ref object', () => {
-    const { result } = renderHook(() =>
-      useInfiniteScroll(jest.fn(), true),
-    );
+    const { result } = renderHook(() => useInfiniteScroll(jest.fn(), true));
     expect(result.current).toHaveProperty('current');
     expect(result.current.current).toBeNull();
   });
@@ -64,7 +61,7 @@ describe('useInfiniteScroll', () => {
       act(() => {
         observerCallback(
           [{ isIntersecting: true } as IntersectionObserverEntry],
-          {} as IntersectionObserver,
+          {} as IntersectionObserver
         );
       });
       expect(onLoadMore).toHaveBeenCalledTimes(1);
@@ -79,7 +76,7 @@ describe('useInfiniteScroll', () => {
       act(() => {
         observerCallback(
           [{ isIntersecting: false } as IntersectionObserverEntry],
-          {} as IntersectionObserver,
+          {} as IntersectionObserver
         );
       });
       expect(onLoadMore).not.toHaveBeenCalled();
@@ -92,7 +89,7 @@ describe('useInfiniteScroll', () => {
 
     const { rerender } = renderHook(
       ({ cb, enabled }) => useInfiniteScroll(cb, enabled),
-      { initialProps: { cb: onLoadMore1, enabled: true } },
+      { initialProps: { cb: onLoadMore1, enabled: true } }
     );
 
     // Update the callback
@@ -103,7 +100,7 @@ describe('useInfiniteScroll', () => {
       act(() => {
         observerCallback(
           [{ isIntersecting: true } as IntersectionObserverEntry],
-          {} as IntersectionObserver,
+          {} as IntersectionObserver
         );
       });
       expect(onLoadMore1).not.toHaveBeenCalled();
@@ -112,9 +109,7 @@ describe('useInfiniteScroll', () => {
   });
 
   it('disconnects observer on unmount', () => {
-    const { unmount } = renderHook(() =>
-      useInfiniteScroll(jest.fn(), true),
-    );
+    const { unmount } = renderHook(() => useInfiniteScroll(jest.fn(), true));
 
     unmount();
 

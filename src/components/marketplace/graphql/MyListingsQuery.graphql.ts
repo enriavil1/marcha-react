@@ -16,7 +16,6 @@ export default graphql`
           name
           description
           price
-          image
           condition
           categoryId
           isPublic

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<90c8a7629db635b59f4ca5b2bc4b7e0d>>
+ * @generated SignedSource<<944717118b0bdffeda4d0cec052694bc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,6 @@ export type ProductsUpdateInput = {
   condition?: ProductCondition | null | undefined;
   createdAt?: string | null | undefined;
   description?: string | null | undefined;
-  image?: string | null | undefined;
   isPublic?: boolean | null | undefined;
   name?: string | null | undefined;
   price?: number | null | undefined;
@@ -29,7 +28,6 @@ export type ProductsFilter = {
   createdAt?: DatetimeFilter | null | undefined;
   description?: StringFilter | null | undefined;
   id?: BigIntFilter | null | undefined;
-  image?: StringFilter | null | undefined;
   isPublic?: BooleanFilter | null | undefined;
   name?: StringFilter | null | undefined;
   nodeId?: IDFilter | null | undefined;
@@ -111,11 +109,10 @@ export type UpdateProductMutationMutation$data = {
   readonly updateProductsCollection: {
     readonly affectedCount: number;
     readonly records: ReadonlyArray<{
-      readonly categoryId: string | null | undefined;
+      readonly categoryId: string;
       readonly condition: ProductCondition;
       readonly description: string;
       readonly id: string;
-      readonly image: string;
       readonly isPublic: boolean;
       readonly name: string;
       readonly price: number;
@@ -193,38 +190,31 @@ v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "image",
+  "name": "description",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "description",
+  "name": "condition",
   "storageKey": null
 },
 v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "condition",
+  "name": "categoryId",
   "storageKey": null
 },
 v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "categoryId",
-  "storageKey": null
-},
-v12 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "userId",
   "storageKey": null
 },
-v13 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -266,8 +256,7 @@ return {
               (v9/*: any*/),
               (v10/*: any*/),
               (v11/*: any*/),
-              (v12/*: any*/),
-              (v13/*: any*/)
+              (v12/*: any*/)
             ],
             "storageKey": null
           }
@@ -313,7 +302,6 @@ return {
               (v10/*: any*/),
               (v11/*: any*/),
               (v12/*: any*/),
-              (v13/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -330,16 +318,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "fbf1f93e00cf983d52c816a03281b291",
+    "cacheID": "b2ac826ea39f13c2e2825f26afb9e5e6",
     "id": null,
     "metadata": {},
     "name": "UpdateProductMutationMutation",
     "operationKind": "mutation",
-    "text": "mutation UpdateProductMutationMutation(\n  $set: ProductsUpdateInput!\n  $filter: ProductsFilter!\n  $atMost: Int!\n) {\n  updateProductsCollection(set: $set, filter: $filter, atMost: $atMost) {\n    affectedCount\n    records {\n      id\n      name\n      price\n      image\n      description\n      condition\n      categoryId\n      userId\n      isPublic\n      nodeId\n    }\n  }\n}\n"
+    "text": "mutation UpdateProductMutationMutation(\n  $set: ProductsUpdateInput!\n  $filter: ProductsFilter!\n  $atMost: Int!\n) {\n  updateProductsCollection(set: $set, filter: $filter, atMost: $atMost) {\n    affectedCount\n    records {\n      id\n      name\n      price\n      description\n      condition\n      categoryId\n      userId\n      isPublic\n      nodeId\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "11fa642a56e044740c9c8c00621640d1";
+(node as any).hash = "9567daab349391bb9f0b621664de166d";
 
 export default node;

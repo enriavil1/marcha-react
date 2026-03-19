@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<70b62ac7224591734e8c740d28299805>>
+ * @generated SignedSource<<259cbce0488002cb5ed54ed7a1c9fcea>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,6 @@ export type DashboardMarketplacePreviewFragment$data = {
       readonly node: {
         readonly createdAt: string;
         readonly id: string;
-        readonly image: string;
         readonly name: string;
         readonly price: number;
         readonly productImagesCollection: {
@@ -115,13 +114,6 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "image",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
                   "name": "createdAt",
                   "storageKey": null
                 },
@@ -194,6 +186,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "5f6482eb76dd51306a1d87f448f288ad";
+(node as any).hash = "b2028cb798e901bf8b72887ec0932a1d";
 
 export default node;

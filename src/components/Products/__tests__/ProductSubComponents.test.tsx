@@ -1,5 +1,6 @@
 import { screen } from '@testing-library/react';
 import React from 'react';
+
 import { renderWithAntd } from '../../../test-utils';
 import ProductActions from '../ProductActions';
 import ProductImageCard from '../ProductImageCard';
@@ -12,14 +13,10 @@ describe('ProductActions', () => {
   it('renders Add to Cart, Save, and Share buttons', () => {
     renderWithAntd(<ProductActions />);
     expect(
-      screen.getByRole('button', { name: /add to cart/i }),
+      screen.getByRole('button', { name: /add to cart/i })
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /save/i }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /share/i }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /save/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /share/i })).toBeInTheDocument();
   });
 });
 
@@ -32,16 +29,16 @@ describe('ProductInfo', () => {
         price={49.99}
         condition="New"
         description="A brand new widget"
-      />,
+      />
     );
-    expect(screen.getByText('$49.99')).toBeInTheDocument();
+    expect(screen.getByText('£49.99')).toBeInTheDocument();
     expect(screen.getByText('New')).toBeInTheDocument();
     expect(screen.getByText('A brand new widget')).toBeInTheDocument();
   });
 
   it('renders "Product Information" and "Description" card titles', () => {
     renderWithAntd(
-      <ProductInfo price={10} condition="Good" description="Decent item" />,
+      <ProductInfo price={10} condition="Good" description="Decent item" />
     );
     expect(screen.getByText('Product Information')).toBeInTheDocument();
     expect(screen.getByText('Description')).toBeInTheDocument();
@@ -69,7 +66,7 @@ describe('SellerInfoCard', () => {
   it('renders "View Seller Profile" button', () => {
     renderWithAntd(<SellerInfoCard username="jane" avatarBlob={null} />);
     expect(
-      screen.getByRole('button', { name: /view seller profile/i }),
+      screen.getByRole('button', { name: /view seller profile/i })
     ).toBeInTheDocument();
   });
 });

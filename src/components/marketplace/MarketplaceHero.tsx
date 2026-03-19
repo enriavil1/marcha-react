@@ -8,6 +8,7 @@ import React from 'react';
 
 import {
   BRAND_GRADIENT,
+  BRAND_PRIMARY,
   OVERLAY_BORDER,
   OVERLAY_TEXT,
   RADIUS_LG,
@@ -70,7 +71,7 @@ const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({
           onClick={onPostListing}
           style={{
             background: WHITE,
-            color: '#F06543',
+            color: BRAND_PRIMARY,
             fontWeight: 600,
             border: 'none',
           }}

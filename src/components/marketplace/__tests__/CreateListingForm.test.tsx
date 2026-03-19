@@ -1,5 +1,6 @@
-import { screen, fireEvent, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
+
 import { renderWithAntd } from '../../../test-utils';
 import CreateListingForm from '../CreateListingForm';
 
@@ -25,12 +26,12 @@ describe('CreateListingForm', () => {
   it('renders all form fields', () => {
     renderWithAntd(<CreateListingForm {...defaultProps} />);
     expect(
-      screen.getByPlaceholderText('What are you selling?'),
+      screen.getByPlaceholderText('What are you selling?')
     ).toBeInTheDocument();
     expect(
       screen.getByPlaceholderText(
-        'Describe your item, including any details buyers should know',
-      ),
+        'Describe your item, including any details buyers should know'
+      )
     ).toBeInTheDocument();
     expect(screen.getByPlaceholderText('0.00')).toBeInTheDocument();
     expect(screen.getByText('Select category')).toBeInTheDocument();
@@ -60,7 +61,7 @@ describe('CreateListingForm', () => {
     });
     await waitFor(() => {
       expect(
-        screen.getByText('Please enter a description'),
+        screen.getByText('Please enter a description')
       ).toBeInTheDocument();
     });
   });

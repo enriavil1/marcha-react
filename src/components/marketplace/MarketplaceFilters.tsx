@@ -6,6 +6,7 @@ import { useSearchParams } from 'react-router-dom';
 import {
   BORDER_DEFAULT,
   BRAND_PRIMARY,
+  NEUTRAL_400,
   NEUTRAL_700,
   RADIUS_LG,
   WHITE,
@@ -62,7 +63,7 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
       {/* Full-width search bar */}
       <Input
         placeholder="Search items..."
-        prefix={<SearchOutlined style={{ color: '#bfbfbf' }} />}
+        prefix={<SearchOutlined style={{ color: NEUTRAL_400 }} />}
         value={currentQuery}
         onChange={(e) => updateParam('q', e.target.value || undefined)}
         allowClear

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6b9ea983fc3e3dac402893da212f17e0>>
+ * @generated SignedSource<<d6ca4362fc71ccb73fe24c90564c2723>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,7 +17,7 @@ export type MarketplacePaginationFragment$data = {
       readonly node: {
         readonly nodeId: string;
         readonly product: {
-          readonly categoryId: string | null | undefined;
+          readonly categoryId: string;
           readonly condition: ProductCondition;
           readonly isPublic: boolean;
           readonly name: string;

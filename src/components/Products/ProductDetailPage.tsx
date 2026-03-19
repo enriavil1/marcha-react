@@ -26,7 +26,6 @@ const productDetailQuery = graphql`
           name
           description
           price
-          image
           createdAt
           condition
           user {
@@ -74,30 +73,30 @@ const ProductDetailPage: EntryPointComponent<
 
   const product = data?.productsCollection?.edges?.[0]?.node;
 
+  /* Fetch all product images from Supabase storage. */
   useEffect(() => {
-    if (product) {
-      // Collect image paths: prefer product_images table, fall back to legacy field
-      const productImagePaths =
-        product.productImagesCollection?.edges?.map((e) => e.node.imageUrl) ??
-        [];
-      const imagePaths =
-        productImagePaths.length > 0
-          ? productImagePaths
-          : product.image
-            ? [product.image]
-            : [];
+    if (!product) return;
 
+    const imagePaths =
+      product.productImagesCollection?.edges?.map((e) => e.node.imageUrl) ?? [];
+
+    if (imagePaths.length > 0) {
       Promise.all(
         imagePaths.map((path) => fetchFromStorage(path, 'product-images'))
       ).then((blobs) => {
         setImageBlobs(blobs.filter((b): b is Blob => b != null));
       });
+    }
+  }, [product]);
 
-      fetchFromStorage(product.user?.avatarUrl ?? '', 'avatars').then((blob) =>
+  /* Fetch the seller avatar from Supabase storage. */
+  useEffect(() => {
+    if (product?.user?.avatarUrl) {
+      fetchFromStorage(product.user.avatarUrl, 'avatars').then((blob) =>
         setAvatarBlob(blob)
       );
     }
-  }, [product]);
+  }, [product?.user?.avatarUrl]);
 
   if (!product) {
     navigate('/feed');
@@ -106,12 +105,10 @@ const ProductDetailPage: EntryPointComponent<
 
   return (
     <Row gutter={[32, 32]}>
-      {/* Product Image(s) */}
       <Col xs={24} md={12}>
         <ProductImageCard name={product.name} imageBlobs={imageBlobs} />
       </Col>
 
-      {/* Product Details */}
       <Col xs={24} md={12}>
         <Space direction="vertical" size="large" style={{ width: '100%' }}>
           <Title level={2} style={{ marginBottom: '8px' }}>

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<624f2c01613b01fdd63a8cfade0a68ad>>
+ * @generated SignedSource<<18a106c54360b84cc1d49b86dff4fa80>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -12,11 +12,10 @@ import { Fragment, ReaderFragment } from 'relay-runtime';
 export type ProductCondition = "Good" | "Like_new" | "New" | "Used" | "%future added value";
 import { FragmentRefs } from "relay-runtime";
 export type ProductCardFragmentQuery$data = {
-  readonly categoryId: string | null | undefined;
+  readonly categoryId: string;
   readonly condition: ProductCondition;
   readonly description: string;
   readonly id: string;
-  readonly image: string;
   readonly isPublic: boolean;
   readonly name: string;
   readonly price: number;
@@ -66,13 +65,6 @@ const node: ReaderFragment = {
       "args": null,
       "kind": "ScalarField",
       "name": "price",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "image",
       "storageKey": null
     },
     {
@@ -209,6 +201,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "fd509847c00a5e6823393288337f980f";
+(node as any).hash = "067267044d14b8306882a9eef8c6d2c9";
 
 export default node;

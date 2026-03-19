@@ -2,6 +2,7 @@ import { PlusOutlined } from '@ant-design/icons';
 import { Button, Empty } from 'antd';
 import React, { Suspense } from 'react';
 
+import { NEUTRAL_100, RADIUS_LG } from '../../design';
 import ProductCard from '../Products/ProductCard';
 import type { ProductCardFragmentQuery$key } from '../Products/__generated__/ProductCardFragmentQuery.graphql';
 
@@ -70,8 +71,8 @@ const MarketplaceProductGrid: React.FC<MarketplaceProductGridProps> = ({
             fallback={
               <div
                 style={{
-                  borderRadius: 12,
-                  background: '#f0f0f0',
+                  borderRadius: RADIUS_LG,
+                  background: NEUTRAL_100,
                   paddingTop: '75%',
                   position: 'relative',
                 }}

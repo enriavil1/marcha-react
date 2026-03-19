@@ -2,7 +2,9 @@ import { render, screen } from '@testing-library/react';
 import { ConfigProvider } from 'antd';
 import React from 'react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
+
 import { marchaTheme } from '../../../design';
+import MarketplaceContainer from '../MarketplaceContainer';
 
 // ── Mocks ────────────────────────────────────────────────────────────────────
 
@@ -51,8 +53,6 @@ jest.mock('../../../hooks/useInfiniteScroll', () => ({
   useInfiniteScroll: jest.fn(() => ({ current: null })),
 }));
 
-import MarketplaceContainer from '../MarketplaceContainer';
-
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 const mockFragmentRef = {} as any;
@@ -61,7 +61,7 @@ const mockCategories = [{ id: 'cat-1', name: 'Electronics' }];
 function renderContainer(
   hasNext = true,
   isLoadingNext = false,
-  edges: any[] = [],
+  edges: any[] = []
 ) {
   mockUsePaginationFragment.mockReturnValue({
     data: {
@@ -90,7 +90,7 @@ function renderContainer(
           />
         </Routes>
       </MemoryRouter>
-    </ConfigProvider>,
+    </ConfigProvider>
   );
 }
 
@@ -134,7 +134,7 @@ describe('MarketplaceContainer', () => {
   it('does not show loading indicator when isLoadingNext is false', () => {
     renderContainer(true, false);
     expect(
-      screen.queryByText(/loading more listings/i),
+      screen.queryByText(/loading more listings/i)
     ).not.toBeInTheDocument();
   });
 
@@ -161,7 +161,7 @@ describe('MarketplaceContainer', () => {
             />
           </Routes>
         </MemoryRouter>
-      </ConfigProvider>,
+      </ConfigProvider>
     );
 
     expect(screen.getByTestId('edge-count')).toHaveTextContent('0');

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0edc7597c497d5b8117889c89d27ef3d>>
+ * @generated SignedSource<<6ab532b1ab1d8460f7aa66eb9be3f835>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,7 +15,6 @@ export type ProductsInsertInput = {
   condition?: ProductCondition | null | undefined;
   createdAt?: string | null | undefined;
   description?: string | null | undefined;
-  image?: string | null | undefined;
   isPublic?: boolean | null | undefined;
   name?: string | null | undefined;
   price?: number | null | undefined;
@@ -28,11 +27,10 @@ export type InsertProductMutationMutation$data = {
   readonly insertIntoProductsCollection: {
     readonly affectedCount: number;
     readonly records: ReadonlyArray<{
-      readonly categoryId: string | null | undefined;
+      readonly categoryId: string;
       readonly condition: ProductCondition;
       readonly description: string;
       readonly id: string;
-      readonly image: string;
       readonly isPublic: boolean;
       readonly name: string;
       readonly price: number;
@@ -92,38 +90,31 @@ v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "image",
+  "name": "description",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "description",
+  "name": "condition",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "condition",
+  "name": "categoryId",
   "storageKey": null
 },
 v9 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "categoryId",
-  "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "userId",
   "storageKey": null
 },
-v11 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -161,8 +152,7 @@ return {
               (v7/*: any*/),
               (v8/*: any*/),
               (v9/*: any*/),
-              (v10/*: any*/),
-              (v11/*: any*/)
+              (v10/*: any*/)
             ],
             "storageKey": null
           }
@@ -204,7 +194,6 @@ return {
               (v8/*: any*/),
               (v9/*: any*/),
               (v10/*: any*/),
-              (v11/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -221,16 +210,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f9ecadf4edd415b3ee1b627c08a88119",
+    "cacheID": "ec238852da81f95ac650a96439c91f92",
     "id": null,
     "metadata": {},
     "name": "InsertProductMutationMutation",
     "operationKind": "mutation",
-    "text": "mutation InsertProductMutationMutation(\n  $objects: [ProductsInsertInput!]!\n) {\n  insertIntoProductsCollection(objects: $objects) {\n    affectedCount\n    records {\n      id\n      name\n      price\n      image\n      description\n      condition\n      categoryId\n      userId\n      isPublic\n      nodeId\n    }\n  }\n}\n"
+    "text": "mutation InsertProductMutationMutation(\n  $objects: [ProductsInsertInput!]!\n) {\n  insertIntoProductsCollection(objects: $objects) {\n    affectedCount\n    records {\n      id\n      name\n      price\n      description\n      condition\n      categoryId\n      userId\n      isPublic\n      nodeId\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "c65ded89cba14d8a6da3f6621aa2b84a";
+(node as any).hash = "b09fa284622af798df40d3b766281241";
 
 export default node;
