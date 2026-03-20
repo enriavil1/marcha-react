@@ -18,7 +18,6 @@ export default graphql`
           price
           condition
           categoryId
-          isPublic
           createdAt
           productImagesCollection(
             first: 1

@@ -9,20 +9,6 @@ import {
 import MarketplaceContainer from './MarketplaceContainer';
 import type { MarketplaceWrapperQueryQuery } from './__generated__/MarketplaceWrapperQueryQuery.graphql';
 
-/**
- * Root query for the marketplace page.
- *
- * Queries `productsCommunitiesCollection` filtered by communityId to scope
- * products to the current community. Product data is accessed through the
- * nested `product` relation in the pagination fragment.
- *
- * $count / $cursor are forwarded into the @refetchable pagination fragment
- * via @arguments so Relay knows the initial page size and starting cursor.
- * $filter / $orderBy are product filter and sort, driven by URL search params.
- *
- * categoriesCollection is fetched here (non-paginated) to populate the
- * category filter dropdown.
- */
 export const marketplaceWrapperQuery = graphql`
   query MarketplaceWrapperQueryQuery(
     $count: Int

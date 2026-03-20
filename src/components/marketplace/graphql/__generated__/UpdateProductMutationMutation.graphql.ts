@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<944717118b0bdffeda4d0cec052694bc>>
+ * @generated SignedSource<<a0b9d6ed2ad4f44c318ac2765f12485e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,6 @@ export type ProductsUpdateInput = {
   condition?: ProductCondition | null | undefined;
   createdAt?: string | null | undefined;
   description?: string | null | undefined;
-  isPublic?: boolean | null | undefined;
   name?: string | null | undefined;
   price?: number | null | undefined;
   userId?: string | null | undefined;
@@ -28,7 +27,6 @@ export type ProductsFilter = {
   createdAt?: DatetimeFilter | null | undefined;
   description?: StringFilter | null | undefined;
   id?: BigIntFilter | null | undefined;
-  isPublic?: BooleanFilter | null | undefined;
   name?: StringFilter | null | undefined;
   nodeId?: IDFilter | null | undefined;
   not?: ProductsFilter | null | undefined;
@@ -93,10 +91,6 @@ export type ProductConditionFilter = {
   is?: FilterIs | null | undefined;
   neq?: ProductCondition | null | undefined;
 };
-export type BooleanFilter = {
-  eq?: boolean | null | undefined;
-  is?: FilterIs | null | undefined;
-};
 export type IDFilter = {
   eq?: string | null | undefined;
 };
@@ -113,7 +107,6 @@ export type UpdateProductMutationMutation$data = {
       readonly condition: ProductCondition;
       readonly description: string;
       readonly id: string;
-      readonly isPublic: boolean;
       readonly name: string;
       readonly price: number;
       readonly userId: string;
@@ -213,13 +206,6 @@ v11 = {
   "kind": "ScalarField",
   "name": "userId",
   "storageKey": null
-},
-v12 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "isPublic",
-  "storageKey": null
 };
 return {
   "fragment": {
@@ -255,8 +241,7 @@ return {
               (v8/*: any*/),
               (v9/*: any*/),
               (v10/*: any*/),
-              (v11/*: any*/),
-              (v12/*: any*/)
+              (v11/*: any*/)
             ],
             "storageKey": null
           }
@@ -301,7 +286,6 @@ return {
               (v9/*: any*/),
               (v10/*: any*/),
               (v11/*: any*/),
-              (v12/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -318,16 +302,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b2ac826ea39f13c2e2825f26afb9e5e6",
+    "cacheID": "1e1a724f04466816fc8001fdccdc381f",
     "id": null,
     "metadata": {},
     "name": "UpdateProductMutationMutation",
     "operationKind": "mutation",
-    "text": "mutation UpdateProductMutationMutation(\n  $set: ProductsUpdateInput!\n  $filter: ProductsFilter!\n  $atMost: Int!\n) {\n  updateProductsCollection(set: $set, filter: $filter, atMost: $atMost) {\n    affectedCount\n    records {\n      id\n      name\n      price\n      description\n      condition\n      categoryId\n      userId\n      isPublic\n      nodeId\n    }\n  }\n}\n"
+    "text": "mutation UpdateProductMutationMutation(\n  $set: ProductsUpdateInput!\n  $filter: ProductsFilter!\n  $atMost: Int!\n) {\n  updateProductsCollection(set: $set, filter: $filter, atMost: $atMost) {\n    affectedCount\n    records {\n      id\n      name\n      price\n      description\n      condition\n      categoryId\n      userId\n      nodeId\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "9567daab349391bb9f0b621664de166d";
+(node as any).hash = "39177b9140de70ce97a61e204b773361";
 
 export default node;

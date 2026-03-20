@@ -27,8 +27,6 @@ const MarketplaceEntryPoint = createEntryPoint({
     )
   ),
   getPreloadProps(params: EntryPointParams) {
-    // Build the ProductsCommunitiesFilter from URL search params.
-    // The primary filter is communityId to scope products to the current community.
     const filter: Record<string, unknown> = {};
 
     if (params.communityId) {

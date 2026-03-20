@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8a23276456fe82fbb87c1d49cd769dbf>>
+ * @generated SignedSource<<a416de9dbd4fb33b9d8217e21133715c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -29,7 +29,6 @@ export type MyListingsQueryQuery$data = {
         readonly createdAt: string;
         readonly description: string;
         readonly id: string;
-        readonly isPublic: boolean;
         readonly name: string;
         readonly price: number;
         readonly productImagesCollection: {
@@ -124,17 +123,10 @@ v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "isPublic",
-  "storageKey": null
-},
-v9 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v10 = [
+v9 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -150,14 +142,14 @@ v10 = [
     ]
   }
 ],
-v11 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "imageUrl",
   "storageKey": null
 },
-v12 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -202,10 +194,9 @@ return {
                   (v6/*: any*/),
                   (v7/*: any*/),
                   (v8/*: any*/),
-                  (v9/*: any*/),
                   {
                     "alias": null,
-                    "args": (v10/*: any*/),
+                    "args": (v9/*: any*/),
                     "concreteType": "ProductImagesConnection",
                     "kind": "LinkedField",
                     "name": "productImagesCollection",
@@ -227,7 +218,7 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v11/*: any*/)
+                              (v10/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -287,10 +278,9 @@ return {
                   (v6/*: any*/),
                   (v7/*: any*/),
                   (v8/*: any*/),
-                  (v9/*: any*/),
                   {
                     "alias": null,
-                    "args": (v10/*: any*/),
+                    "args": (v9/*: any*/),
                     "concreteType": "ProductImagesConnection",
                     "kind": "LinkedField",
                     "name": "productImagesCollection",
@@ -312,8 +302,8 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v11/*: any*/),
-                              (v12/*: any*/)
+                              (v10/*: any*/),
+                              (v11/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -323,7 +313,7 @@ return {
                     ],
                     "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
                   },
-                  (v12/*: any*/)
+                  (v11/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -336,16 +326,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ab18a7feeefae517b3f6995fdef22115",
+    "cacheID": "fb148e6665f5a996f9e70f4276d5226e",
     "id": null,
     "metadata": {},
     "name": "MyListingsQueryQuery",
     "operationKind": "query",
-    "text": "query MyListingsQueryQuery(\n  $userId: UUIDFilter!\n) {\n  productsCollection(filter: {userId: $userId}, orderBy: [{createdAt: DescNullsLast}]) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        condition\n        categoryId\n        isPublic\n        createdAt\n        productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              imageUrl\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query MyListingsQueryQuery(\n  $userId: UUIDFilter!\n) {\n  productsCollection(filter: {userId: $userId}, orderBy: [{createdAt: DescNullsLast}]) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        condition\n        categoryId\n        createdAt\n        productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              imageUrl\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "12cd0f8f1d3113c145e5726781ea5218";
+(node as any).hash = "713599cd884cc519196a8fcb1b825292";
 
 export default node;

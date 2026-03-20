@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6ab532b1ab1d8460f7aa66eb9be3f835>>
+ * @generated SignedSource<<6c80b1e4200c9a344f6d7d20421209fe>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,7 +15,6 @@ export type ProductsInsertInput = {
   condition?: ProductCondition | null | undefined;
   createdAt?: string | null | undefined;
   description?: string | null | undefined;
-  isPublic?: boolean | null | undefined;
   name?: string | null | undefined;
   price?: number | null | undefined;
   userId?: string | null | undefined;
@@ -31,7 +30,6 @@ export type InsertProductMutationMutation$data = {
       readonly condition: ProductCondition;
       readonly description: string;
       readonly id: string;
-      readonly isPublic: boolean;
       readonly name: string;
       readonly price: number;
       readonly userId: string;
@@ -113,13 +111,6 @@ v9 = {
   "kind": "ScalarField",
   "name": "userId",
   "storageKey": null
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "isPublic",
-  "storageKey": null
 };
 return {
   "fragment": {
@@ -151,8 +142,7 @@ return {
               (v6/*: any*/),
               (v7/*: any*/),
               (v8/*: any*/),
-              (v9/*: any*/),
-              (v10/*: any*/)
+              (v9/*: any*/)
             ],
             "storageKey": null
           }
@@ -193,7 +183,6 @@ return {
               (v7/*: any*/),
               (v8/*: any*/),
               (v9/*: any*/),
-              (v10/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -210,16 +199,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ec238852da81f95ac650a96439c91f92",
+    "cacheID": "2a3732bdd94d6d2c1c915ee83c72bb4e",
     "id": null,
     "metadata": {},
     "name": "InsertProductMutationMutation",
     "operationKind": "mutation",
-    "text": "mutation InsertProductMutationMutation(\n  $objects: [ProductsInsertInput!]!\n) {\n  insertIntoProductsCollection(objects: $objects) {\n    affectedCount\n    records {\n      id\n      name\n      price\n      description\n      condition\n      categoryId\n      userId\n      isPublic\n      nodeId\n    }\n  }\n}\n"
+    "text": "mutation InsertProductMutationMutation(\n  $objects: [ProductsInsertInput!]!\n) {\n  insertIntoProductsCollection(objects: $objects) {\n    affectedCount\n    records {\n      id\n      name\n      price\n      description\n      condition\n      categoryId\n      userId\n      nodeId\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "b09fa284622af798df40d3b766281241";
+(node as any).hash = "83d508631291ab71c273f42b716dc135";
 
 export default node;

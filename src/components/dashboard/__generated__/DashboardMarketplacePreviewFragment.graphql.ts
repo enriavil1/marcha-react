@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<259cbce0488002cb5ed54ed7a1c9fcea>>
+ * @generated SignedSource<<9b386aa68b1a233682a91d40a32a0baf>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,19 +11,21 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type DashboardMarketplacePreviewFragment$data = {
-  readonly productsCollection: {
+  readonly productsCommunitiesCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly createdAt: string;
-        readonly id: string;
-        readonly name: string;
-        readonly price: number;
-        readonly productImagesCollection: {
-          readonly edges: ReadonlyArray<{
-            readonly node: {
-              readonly imageUrl: string;
-            };
-          }>;
+        readonly product: {
+          readonly createdAt: string;
+          readonly id: string;
+          readonly name: string;
+          readonly price: number;
+          readonly productImagesCollection: {
+            readonly edges: ReadonlyArray<{
+              readonly node: {
+                readonly imageUrl: string;
+              };
+            }>;
+          } | null | undefined;
         } | null | undefined;
       };
     }>;
@@ -36,7 +38,13 @@ export type DashboardMarketplacePreviewFragment$key = {
 };
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "communityId"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "DashboardMarketplacePreviewFragment",
@@ -45,13 +53,15 @@ const node: ReaderFragment = {
       "alias": null,
       "args": [
         {
-          "kind": "Literal",
-          "name": "filter",
-          "value": {
-            "isPublic": {
-              "eq": true
+          "fields": [
+            {
+              "kind": "Variable",
+              "name": "communityId",
+              "variableName": "communityId"
             }
-          }
+          ],
+          "kind": "ObjectValue",
+          "name": "filter"
         },
         {
           "kind": "Literal",
@@ -68,15 +78,15 @@ const node: ReaderFragment = {
           ]
         }
       ],
-      "concreteType": "ProductsConnection",
+      "concreteType": "ProductsCommunitiesConnection",
       "kind": "LinkedField",
-      "name": "productsCollection",
+      "name": "productsCommunitiesCollection",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "ProductsEdge",
+          "concreteType": "ProductsCommunitiesEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -84,7 +94,7 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
-              "concreteType": "Products",
+              "concreteType": "ProductsCommunities",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
@@ -92,85 +102,96 @@ const node: ReaderFragment = {
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "id",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "name",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "price",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "createdAt",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": [
-                    {
-                      "kind": "Literal",
-                      "name": "first",
-                      "value": 1
-                    },
-                    {
-                      "kind": "Literal",
-                      "name": "orderBy",
-                      "value": [
-                        {
-                          "displayOrder": "AscNullsLast"
-                        }
-                      ]
-                    }
-                  ],
-                  "concreteType": "ProductImagesConnection",
+                  "concreteType": "Products",
                   "kind": "LinkedField",
-                  "name": "productImagesCollection",
+                  "name": "product",
                   "plural": false,
                   "selections": [
                     {
                       "alias": null,
                       "args": null,
-                      "concreteType": "ProductImagesEdge",
+                      "kind": "ScalarField",
+                      "name": "id",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "name",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "price",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "createdAt",
+                      "storageKey": null
+                    },
+                    {
+                      "alias": null,
+                      "args": [
+                        {
+                          "kind": "Literal",
+                          "name": "first",
+                          "value": 1
+                        },
+                        {
+                          "kind": "Literal",
+                          "name": "orderBy",
+                          "value": [
+                            {
+                              "displayOrder": "AscNullsLast"
+                            }
+                          ]
+                        }
+                      ],
+                      "concreteType": "ProductImagesConnection",
                       "kind": "LinkedField",
-                      "name": "edges",
-                      "plural": true,
+                      "name": "productImagesCollection",
+                      "plural": false,
                       "selections": [
                         {
                           "alias": null,
                           "args": null,
-                          "concreteType": "ProductImages",
+                          "concreteType": "ProductImagesEdge",
                           "kind": "LinkedField",
-                          "name": "node",
-                          "plural": false,
+                          "name": "edges",
+                          "plural": true,
                           "selections": [
                             {
                               "alias": null,
                               "args": null,
-                              "kind": "ScalarField",
-                              "name": "imageUrl",
+                              "concreteType": "ProductImages",
+                              "kind": "LinkedField",
+                              "name": "node",
+                              "plural": false,
+                              "selections": [
+                                {
+                                  "alias": null,
+                                  "args": null,
+                                  "kind": "ScalarField",
+                                  "name": "imageUrl",
+                                  "storageKey": null
+                                }
+                              ],
                               "storageKey": null
                             }
                           ],
                           "storageKey": null
                         }
                       ],
-                      "storageKey": null
+                      "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
                     }
                   ],
-                  "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
+                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -179,13 +200,13 @@ const node: ReaderFragment = {
           "storageKey": null
         }
       ],
-      "storageKey": "productsCollection(filter:{\"isPublic\":{\"eq\":true}},first:3,orderBy:[{\"createdAt\":\"DescNullsLast\"}])"
+      "storageKey": null
     }
   ],
   "type": "Query",
   "abstractKey": null
 };
 
-(node as any).hash = "b2028cb798e901bf8b72887ec0932a1d";
+(node as any).hash = "fad02f42f60123a1273ff29a36e60f9b";
 
 export default node;

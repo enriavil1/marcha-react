@@ -1,49 +1,30 @@
 import {
   ArrowLeftOutlined,
   EditOutlined,
-  EyeInvisibleOutlined,
-  EyeOutlined,
   ShopOutlined,
 } from '@ant-design/icons';
-import {
-  Avatar,
-  Button,
-  Card,
-  Col,
-  Empty,
-  Flex,
-  Row,
-  Tag,
-  Typography,
-  message,
-} from 'antd';
+import { Avatar, Button, Card, Col, Empty, Flex, Row, Typography } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   EntryPointComponent,
   PreloadedQuery,
-  useMutation,
   usePreloadedQuery,
 } from 'react-relay';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import {
   BRAND_PRIMARY,
-  COLOR_SUCCESS,
-  COLOR_WARNING,
   NEUTRAL_100,
   NEUTRAL_500,
   NEUTRAL_900,
   RADIUS_LG,
-  RADIUS_SM,
 } from '../../design';
 import fetchFromStorage from '../../utils/fetch_from_storage';
 import { Paths } from '../../views/paths';
 import EditListingModal from './EditListingModal';
 import type { ListingData } from './EditListingModal';
 import type { MyListingsPageQuery } from './__generated__/MyListingsPageQuery.graphql';
-import UpdateProductMutation from './graphql/UpdateProductMutation.graphql';
-import type { UpdateProductMutationMutation } from './graphql/__generated__/UpdateProductMutationMutation.graphql';
 
 export const myListingsPageQuery = graphql`
   query MyListingsPageQuery($userId: UUIDFilter!) {
@@ -59,7 +40,6 @@ export const myListingsPageQuery = graphql`
           price
           condition
           categoryId
-          isPublic
           createdAt
           productImagesCollection(
             first: 1
@@ -94,30 +74,13 @@ type ListingNode = NonNullable<
   >['edges']
 >[number]['node'];
 
-/** Derive a status label from the listing's public flag. */
-const getStatus = (listing: ListingNode): { label: string; color: string } => {
-  if (!listing.isPublic) {
-    return { label: 'Unlisted', color: 'default' };
-  }
-  return { label: 'Active', color: 'success' };
-};
-
-/* ── MyListingCard ──────────────────────────────────────────────────── */
-
 type ListingCardProps = {
   listing: ListingNode;
   onEdit: (listing: ListingNode) => void;
-  onToggleVisibility: (listing: ListingNode) => void;
 };
 
-/** A single listing card showing image, name, price, status, and actions. */
-const MyListingCard: React.FC<ListingCardProps> = ({
-  listing,
-  onEdit,
-  onToggleVisibility,
-}) => {
+const MyListingCard: React.FC<ListingCardProps> = ({ listing, onEdit }) => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const status = getStatus(listing);
 
   useEffect(() => {
     const imagePath =
@@ -174,19 +137,6 @@ const MyListingCard: React.FC<ListingCardProps> = ({
           >
             {listing.name}
           </Typography.Text>
-          <Tag
-            color={status.color}
-            style={{
-              fontSize: 11,
-              padding: '0 6px',
-              lineHeight: '18px',
-              borderRadius: RADIUS_SM,
-              marginLeft: 8,
-              flexShrink: 0,
-            }}
-          >
-            {status.label}
-          </Tag>
         </Flex>
 
         <Typography.Text
@@ -210,22 +160,11 @@ const MyListingCard: React.FC<ListingCardProps> = ({
           >
             Edit
           </Button>
-          <Button
-            size="small"
-            icon={listing.isPublic ? <EyeInvisibleOutlined /> : <EyeOutlined />}
-            onClick={() => onToggleVisibility(listing)}
-            style={{ flex: 1 }}
-            type={listing.isPublic ? 'default' : 'primary'}
-          >
-            {listing.isPublic ? 'Unlist' : 'Re-list'}
-          </Button>
         </Flex>
       </div>
     </Card>
   );
 };
-
-/* ── MyListingsPage ─────────────────────────────────────────────────── */
 
 type Props = {
   queries: {
@@ -261,10 +200,6 @@ const MyListingsPage: EntryPointComponent<
     null
   );
 
-  const [commitToggle] = useMutation<UpdateProductMutationMutation>(
-    UpdateProductMutation
-  );
-
   const handleEdit = useCallback((listing: ListingNode) => {
     setEditingListing({
       id: listing.id,
@@ -273,37 +208,9 @@ const MyListingsPage: EntryPointComponent<
       price: listing.price,
       condition: listing.condition,
       categoryId: listing.categoryId ?? null,
-      isPublic: listing.isPublic,
     });
     setEditModalOpen(true);
   }, []);
-
-  const handleToggleVisibility = useCallback(
-    (listing: ListingNode) => {
-      const newIsPublic = !listing.isPublic;
-      commitToggle({
-        variables: {
-          set: { isPublic: newIsPublic },
-          filter: { id: { eq: listing.id } },
-          atMost: 1,
-        },
-        onCompleted: () => {
-          message.success(
-            newIsPublic
-              ? 'Listing is now visible in the marketplace.'
-              : 'Listing has been unlisted.'
-          );
-        },
-        onError: (err) => {
-          message.error(`Failed to update listing: ${err.message}`);
-        },
-      });
-    },
-    [commitToggle]
-  );
-
-  const activeCount = listings.filter((e) => e.node.isPublic).length;
-  const unlistedCount = listings.filter((e) => !e.node.isPublic).length;
 
   return (
     <div>
@@ -323,16 +230,6 @@ const MyListingsPage: EntryPointComponent<
           </Typography.Title>
           <Typography.Text style={{ color: NEUTRAL_500, fontSize: 13 }}>
             {listings.length} listing{listings.length !== 1 ? 's' : ''} total
-            {activeCount > 0 && (
-              <span style={{ color: COLOR_SUCCESS, marginLeft: 8 }}>
-                {activeCount} active
-              </span>
-            )}
-            {unlistedCount > 0 && (
-              <span style={{ color: COLOR_WARNING, marginLeft: 8 }}>
-                {unlistedCount} unlisted
-              </span>
-            )}
           </Typography.Text>
         </div>
         <Button
@@ -359,11 +256,7 @@ const MyListingsPage: EntryPointComponent<
         <Row gutter={[16, 16]}>
           {listings.map((edge) => (
             <Col xs={24} sm={12} md={8} lg={6} key={edge.node.id}>
-              <MyListingCard
-                listing={edge.node}
-                onEdit={handleEdit}
-                onToggleVisibility={handleToggleVisibility}
-              />
+              <MyListingCard listing={edge.node} onEdit={handleEdit} />
             </Col>
           ))}
         </Row>
@@ -375,7 +268,7 @@ const MyListingsPage: EntryPointComponent<
         categories={categories}
         onClose={() => setEditModalOpen(false)}
         onSuccess={() => {
-          /* Relay store auto-updates from mutation response */
+          return;
         }}
       />
     </div>

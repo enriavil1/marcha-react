@@ -1,5 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Input } from 'antd';
+import { Flex, Input } from 'antd';
 import React, { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
@@ -21,12 +21,6 @@ type Props = {
   categories: Category[];
 };
 
-/**
- * Marketplace filter bar matching the design:
- * - Full-width search input
- * - Horizontal scrollable pill buttons: "All" (filled orange when active),
- *   then category names (outlined grey when inactive)
- */
 const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -60,7 +54,6 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
 
   return (
     <div style={{ marginBottom: 8 }}>
-      {/* Full-width search bar */}
       <Input
         placeholder="Search items..."
         prefix={<SearchOutlined style={{ color: NEUTRAL_400 }} />}
@@ -75,11 +68,9 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
         }}
       />
 
-      {/* Horizontally scrollable category pills */}
-      <div
+      <Flex
+        gap={8}
         style={{
-          display: 'flex',
-          gap: 8,
           overflowX: 'auto',
           paddingBottom: 4,
           scrollbarWidth: 'none',
@@ -115,7 +106,7 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
             </button>
           );
         })}
-      </div>
+      </Flex>
     </div>
   );
 };

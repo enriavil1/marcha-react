@@ -15,30 +15,29 @@ import {
 import fetchFromStorage from '../../utils/fetch_from_storage';
 import type { DashboardMarketplacePreviewFragment$key } from './__generated__/DashboardMarketplacePreviewFragment.graphql';
 
-/**
- * Fragment on Query that fetches the 3 most recent public marketplace listings.
- * Uses productImagesCollection to get the cover image from the product_images table.
- */
 export const dashboardMarketplacePreviewFragment = graphql`
-  fragment DashboardMarketplacePreviewFragment on Query {
-    productsCollection(
+  fragment DashboardMarketplacePreviewFragment on Query
+  @argumentDefinitions(communityId: { type: "BigIntFilter" }) {
+    productsCommunitiesCollection(
       first: 3
       orderBy: [{ createdAt: DescNullsLast }]
-      filter: { isPublic: { eq: true } }
+      filter: { communityId: $communityId }
     ) {
       edges {
         node {
-          id
-          name
-          price
-          createdAt
-          productImagesCollection(
-            first: 1
-            orderBy: [{ displayOrder: AscNullsLast }]
-          ) {
-            edges {
-              node {
-                imageUrl
+          product {
+            id
+            name
+            price
+            createdAt
+            productImagesCollection(
+              first: 1
+              orderBy: [{ displayOrder: AscNullsLast }]
+            ) {
+              edges {
+                node {
+                  imageUrl
+                }
               }
             }
           }
@@ -63,7 +62,6 @@ type ListingRowProps = {
   onNavigate: (id: string) => void;
 };
 
-/** A single compact listing row: thumbnail | name + price | optional New badge. */
 const ListingRow: React.FC<ListingRowProps> = ({
   id,
   name,
@@ -153,17 +151,13 @@ type Props = {
   onNavigateToListing: (id: string) => void;
 };
 
-/**
- * Dashboard right-column card showing the 3 most recent marketplace listings.
- * Hidden on mobile (controlled by the parent Col xs/lg breakpoints).
- */
 const DashboardMarketplacePreview: React.FC<Props> = ({
   fragmentRef,
   onBrowse,
   onNavigateToListing,
 }) => {
   const data = useFragment(dashboardMarketplacePreviewFragment, fragmentRef);
-  const listings = data.productsCollection?.edges ?? [];
+  const listings = data.productsCommunitiesCollection?.edges ?? [];
 
   return (
     <Card
@@ -207,17 +201,21 @@ const DashboardMarketplacePreview: React.FC<Props> = ({
         <List
           dataSource={[...listings]}
           renderItem={(edge) => {
+            const product = edge.node.product;
+            if (product == null) return null;
+
+            console.log('here');
             const coverImage =
-              edge.node.productImagesCollection?.edges?.[0]?.node?.imageUrl;
+              product.productImagesCollection?.edges?.[0]?.node?.imageUrl;
 
             return (
               <ListingRow
-                key={edge.node.id}
-                id={edge.node.id}
-                name={edge.node.name}
-                price={edge.node.price}
+                key={product.id}
+                id={product.id}
+                name={product.name}
+                price={product.price}
                 imagePath={coverImage}
-                createdAt={edge.node.createdAt}
+                createdAt={product.createdAt}
                 onNavigate={onNavigateToListing}
               />
             );

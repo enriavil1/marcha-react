@@ -38,7 +38,6 @@ export const marketplacePaginationFragment = graphql`
           product {
             ...ProductCardFragmentQuery
             name
-            isPublic
             categoryId
             condition
           }

@@ -1,4 +1,3 @@
-// src/components/dashboard/Dashboard.tsx
 import {
   DollarCircleOutlined,
   FileTextOutlined,
@@ -75,8 +74,7 @@ const dashboardComponentQuery = graphql`
         }
       }
     }
-    # Co-locate the marketplace preview data via fragment spread so the
-    # DashboardMarketplacePreview component owns its own data requirements.
+
     ...DashboardMarketplacePreviewFragment
   }
 `;
@@ -336,14 +334,6 @@ const Dashboard: EntryPointComponent<
           </Card>
         </Col>
 
-        {/*
-         * ── Right column: Recent Messages + Marketplace + Upcoming Events ──
-         *
-         * xs={24} means this stacks below the main content on mobile.
-         * lg={8}  means it sits alongside on desktop (≥992 px).
-         * The mobile design does not show the marketplace preview in the right
-         * column — it is accessible via the bottom-nav "Market" tab instead.
-         */}
         <Col xs={24} lg={8}>
           <Card
             title="Recent Messages"
@@ -363,11 +353,6 @@ const Dashboard: EntryPointComponent<
             />
           </Card>
 
-          {/*
-           * Marketplace preview — uses a Relay fragment to co-locate its own
-           * data requirements with the component. The fragment is spread into
-           * dashboardComponentQuery above so it's fetched in the same request.
-           */}
           <DashboardMarketplacePreview
             fragmentRef={data}
             onBrowse={() => navigate(`${basePath}/${Paths.Market}`)}

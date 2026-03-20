@@ -12,7 +12,6 @@ export default graphql`
         condition
         categoryId
         userId
-        isPublic
       }
     }
   }

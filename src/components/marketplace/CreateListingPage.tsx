@@ -134,7 +134,6 @@ const CreateListingPage: EntryPointComponent<
                   | 'Good'
                   | 'Used',
                 userId,
-                isPublic: true,
               },
             ],
           },

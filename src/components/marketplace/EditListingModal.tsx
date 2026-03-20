@@ -27,7 +27,6 @@ export type ListingData = {
   price: number;
   condition: string | null;
   categoryId: string | null;
-  isPublic: boolean;
 };
 
 type EditListingModalProps = {
@@ -38,10 +37,6 @@ type EditListingModalProps = {
   onSuccess: () => void;
 };
 
-/**
- * Modal for editing an existing listing.
- * Pre-fills the form with existing data and submits an update mutation.
- */
 const EditListingModal: React.FC<EditListingModalProps> = ({
   open,
   listing,
@@ -103,7 +98,6 @@ const EditListingModal: React.FC<EditListingModalProps> = ({
       confirmLoading={isMutating}
       okText="Save Changes"
       width={600}
-      destroyOnClose
     >
       <Form form={form} layout="vertical" requiredMark="optional">
         <Form.Item

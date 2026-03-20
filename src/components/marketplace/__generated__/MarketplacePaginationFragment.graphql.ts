@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d6ca4362fc71ccb73fe24c90564c2723>>
+ * @generated SignedSource<<22595b24cf686a4ca0c30b4cd3f64a41>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,6 @@ export type MarketplacePaginationFragment$data = {
         readonly product: {
           readonly categoryId: string;
           readonly condition: ProductCondition;
-          readonly isPublic: boolean;
           readonly name: string;
           readonly " $fragmentSpreads": FragmentRefs<"ProductCardFragmentQuery">;
         } | null | undefined;
@@ -155,13 +154,6 @@ return {
                       "alias": null,
                       "args": null,
                       "kind": "ScalarField",
-                      "name": "isPublic",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
                       "name": "categoryId",
                       "storageKey": null
                     },
@@ -229,6 +221,6 @@ return {
 };
 })();
 
-(node as any).hash = "94d4ed5af2ea144168436de2654fb102";
+(node as any).hash = "fc730dbf70705d16a8d75fc8b1ca214c";
 
 export default node;

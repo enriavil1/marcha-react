@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5c5525f6e8337db8617dd5814a33e41d>>
+ * @generated SignedSource<<3e1b84dbd5ef38c7e85ba320eed959a8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -203,13 +203,6 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "isPublic",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "categoryId",
                         "storageKey": null
                       },
@@ -340,12 +333,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "25e7e7332dee15506c6b105a37a31b4f",
+    "cacheID": "ed1cc742c275d916e4db6944aebe42a9",
     "id": null,
     "metadata": {},
     "name": "CommunitiesProductsContainerWrapperQuery",
     "operationKind": "query",
-    "text": "query CommunitiesProductsContainerWrapperQuery(\n  $id: BigInt\n) {\n  productsCommunitiesCollection(filter: {communityId: {eq: $id}}) {\n    __typename\n    edges {\n      node {\n        product {\n          ...ProductCardFragmentQuery\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  id\n  isPublic\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    firstName\n    lastName\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query CommunitiesProductsContainerWrapperQuery(\n  $id: BigInt\n) {\n  productsCommunitiesCollection(filter: {communityId: {eq: $id}}) {\n    __typename\n    edges {\n      node {\n        product {\n          ...ProductCardFragmentQuery\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  id\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    firstName\n    lastName\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();

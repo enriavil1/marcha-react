@@ -57,15 +57,6 @@ const PortalRoutes = () => (
         element={<div>Noticeboard - Coming Soon</div>}
       />
 
-      {/*
-       * Marketplace routes — listed as siblings (not nested) so each path is
-       * matched independently. React Router v6 only renders the first match
-       * inside a <Routes>, so these routes are mutually exclusive:
-       *   market             → browse listings
-       *   market/new         → create a listing
-       *   market/my-listings → view own listings
-       *   market/:id         → view a listing detail
-       */}
       <Route path={Paths.Market} element={<Market />} />
       <Route path={`${Paths.Market}/new`} element={<CreateListing />} />
       <Route path={`${Paths.Market}/my-listings`} element={<MyListings />} />

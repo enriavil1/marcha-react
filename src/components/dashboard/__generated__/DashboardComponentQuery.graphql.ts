@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ecd3020729f6ac9b95d84d8175012572>>
+ * @generated SignedSource<<b57ea1a639b7c6fde41c8ce10ac6bec0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -363,13 +363,15 @@ return {
         "alias": null,
         "args": [
           {
-            "kind": "Literal",
-            "name": "filter",
-            "value": {
-              "isPublic": {
-                "eq": true
+            "fields": [
+              {
+                "kind": "Literal",
+                "name": "communityId",
+                "value": null
               }
-            }
+            ],
+            "kind": "ObjectValue",
+            "name": "filter"
           },
           {
             "kind": "Literal",
@@ -386,15 +388,15 @@ return {
             ]
           }
         ],
-        "concreteType": "ProductsConnection",
+        "concreteType": "ProductsCommunitiesConnection",
         "kind": "LinkedField",
-        "name": "productsCollection",
+        "name": "productsCommunitiesCollection",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ProductsEdge",
+            "concreteType": "ProductsCommunitiesEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -402,78 +404,90 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Products",
+                "concreteType": "ProductsCommunities",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v8/*: any*/),
-                  (v9/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "price",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "createdAt",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": [
-                      (v1/*: any*/),
-                      {
-                        "kind": "Literal",
-                        "name": "orderBy",
-                        "value": [
-                          {
-                            "displayOrder": "AscNullsLast"
-                          }
-                        ]
-                      }
-                    ],
-                    "concreteType": "ProductImagesConnection",
+                    "concreteType": "Products",
                     "kind": "LinkedField",
-                    "name": "productImagesCollection",
+                    "name": "product",
                     "plural": false,
                     "selections": [
+                      (v8/*: any*/),
+                      (v9/*: any*/),
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "ProductImagesEdge",
+                        "kind": "ScalarField",
+                        "name": "price",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "createdAt",
+                        "storageKey": null
+                      },
+                      {
+                        "alias": null,
+                        "args": [
+                          (v1/*: any*/),
+                          {
+                            "kind": "Literal",
+                            "name": "orderBy",
+                            "value": [
+                              {
+                                "displayOrder": "AscNullsLast"
+                              }
+                            ]
+                          }
+                        ],
+                        "concreteType": "ProductImagesConnection",
                         "kind": "LinkedField",
-                        "name": "edges",
-                        "plural": true,
+                        "name": "productImagesCollection",
+                        "plural": false,
                         "selections": [
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "ProductImages",
+                            "concreteType": "ProductImagesEdge",
                             "kind": "LinkedField",
-                            "name": "node",
-                            "plural": false,
+                            "name": "edges",
+                            "plural": true,
                             "selections": [
                               {
                                 "alias": null,
                                 "args": null,
-                                "kind": "ScalarField",
-                                "name": "imageUrl",
+                                "concreteType": "ProductImages",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "kind": "ScalarField",
+                                    "name": "imageUrl",
+                                    "storageKey": null
+                                  },
+                                  (v13/*: any*/)
+                                ],
                                 "storageKey": null
-                              },
-                              (v13/*: any*/)
+                              }
                             ],
                             "storageKey": null
                           }
                         ],
-                        "storageKey": null
-                      }
+                        "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
+                      },
+                      (v13/*: any*/)
                     ],
-                    "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
+                    "storageKey": null
                   },
                   (v13/*: any*/)
                 ],
@@ -483,17 +497,17 @@ return {
             "storageKey": null
           }
         ],
-        "storageKey": "productsCollection(filter:{\"isPublic\":{\"eq\":true}},first:3,orderBy:[{\"createdAt\":\"DescNullsLast\"}])"
+        "storageKey": "productsCommunitiesCollection(filter:{\"communityId\":null},first:3,orderBy:[{\"createdAt\":\"DescNullsLast\"}])"
       }
     ]
   },
   "params": {
-    "cacheID": "678c882d6c69826ec0515a76eb7c1eb7",
+    "cacheID": "c7e400a7a322684fb64be824d3f881d1",
     "id": null,
     "metadata": {},
     "name": "DashboardComponentQuery",
     "operationKind": "query",
-    "text": "query DashboardComponentQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n  ...DashboardMarketplacePreviewFragment\n}\n\nfragment DashboardMarketplacePreviewFragment on Query {\n  productsCollection(first: 3, orderBy: [{createdAt: DescNullsLast}], filter: {isPublic: {eq: true}}) {\n    edges {\n      node {\n        id\n        name\n        price\n        createdAt\n        productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              imageUrl\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query DashboardComponentQuery(\n  $communityId: BigIntFilter!\n) {\n  profilesCollection(first: 1) {\n    edges {\n      node {\n        firstName\n        lastName\n        avatarUrl\n        nodeId\n      }\n    }\n  }\n  communityUsersCollection(filter: {communityId: $communityId, status: {eq: ACCEPTED}}, first: 1) {\n    edges {\n      node {\n        communityId\n        community {\n          id\n          name\n          description\n          address\n          image\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n  ...DashboardMarketplacePreviewFragment\n}\n\nfragment DashboardMarketplacePreviewFragment on Query {\n  productsCommunitiesCollection(first: 3, orderBy: [{createdAt: DescNullsLast}], filter: {}) {\n    edges {\n      node {\n        product {\n          id\n          name\n          price\n          createdAt\n          productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n            edges {\n              node {\n                imageUrl\n                nodeId\n              }\n            }\n          }\n          nodeId\n        }\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();

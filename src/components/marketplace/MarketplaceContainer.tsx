@@ -24,17 +24,6 @@ type Props = {
   categories: Category[];
 };
 
-/**
- * Orchestrator for the marketplace browse page.
- *
- * Composes the hero banner, filter bar, paginated product grid, and
- * infinite-scroll sentinel into a single layout.
- *
- * The pagination fragment now queries productsCommunitiesCollection,
- * so each edge contains a ProductsCommunities node with a nested `product`.
- * Client-side filtering is applied for search, category, and condition
- * since the join table doesn't support product-level filters.
- */
 const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
   const { communityId } = useParams<{ communityId: string }>();
   const navigate = useNavigate();
@@ -59,7 +48,6 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
     return rawEdges.filter((edge) => {
       const product = edge.node.product;
       if (!product) return false;
-      if (!product.isPublic) return false;
       if (q && !product.name.toLowerCase().includes(q)) return false;
       if (categoryFilter && product.categoryId !== categoryFilter) return false;
       if (conditionFilter && product.condition !== conditionFilter)
@@ -68,7 +56,6 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
     });
   }, [rawEdges, q, categoryFilter, conditionFilter]);
 
-  // ── Infinite scroll ───────────────────────────────────────────────────
   const handleLoadNext = useCallback(() => {
     if (!hasNext || isLoadingNext) return;
 
@@ -122,10 +109,10 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
         onCreateListing={navigateToNewListing}
       />
 
-      {/* Sentinel — triggers next-page fetch when it enters the viewport */}
-      {hasNext && <div ref={sentinelRef} style={{ height: 1 }} />}
+      {hasNext && !isLoadingNext && (
+        <div ref={sentinelRef} style={{ height: 1 }} />
+      )}
 
-      {/* Loading indicator while the next page is in-flight */}
       {isLoadingNext && (
         <Flex justify="center" align="center" style={{ marginTop: 24 }}>
           <Spin size="small" />

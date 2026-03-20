@@ -33,7 +33,6 @@ const productFragmentQuery = graphql`
     description
     price
     id
-    isPublic
     categoryId
     condition
     userId
@@ -59,13 +58,11 @@ const productFragmentQuery = graphql`
 /** Status badge configuration derived from product state. */
 type StatusBadge = { label: string; color: string; bg: string };
 
-function getStatusBadge(isPublic: boolean, price: number): StatusBadge {
-  if (!isPublic) {
-    return { label: 'Unlisted', color: NEUTRAL_500, bg: NEUTRAL_100 };
-  }
+function getStatusBadge(price: number): StatusBadge {
   if (price === 0) {
     return { label: 'Free', color: COLOR_SUCCESS, bg: COLOR_SUCCESS_BG };
   }
+
   return { label: 'Available', color: COLOR_SUCCESS, bg: COLOR_SUCCESS_BG };
 }
 
@@ -108,7 +105,7 @@ const ProductCard = ({
     }
   }, [product.user?.avatarUrl]);
 
-  const status = getStatusBadge(product.isPublic, product.price);
+  const status = getStatusBadge(product.price);
 
   const sellerName =
     product.user?.firstName || product.user?.username || 'Seller';

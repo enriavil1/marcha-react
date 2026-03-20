@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a7aa4c2eda6832ba42a19eb1c0d7e92c>>
+ * @generated SignedSource<<abefca7a6a0e57ce953b334123e7986e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -219,13 +219,6 @@ return {
                         "alias": null,
                         "args": null,
                         "kind": "ScalarField",
-                        "name": "isPublic",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
                         "name": "categoryId",
                         "storageKey": null
                       },
@@ -406,16 +399,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9035a5ea71d464bfd12fd76474422f18",
+    "cacheID": "11bca0d9abe9ffe12f99229aa1614abf",
     "id": null,
     "metadata": {},
     "name": "MarketplacePaginationQuery",
     "operationKind": "query",
-    "text": "query MarketplacePaginationQuery(\n  $count: Int = 12\n  $cursor: Cursor\n  $filter: ProductsCommunitiesFilter\n  $orderBy: [ProductsCommunitiesOrderBy!]\n) {\n  ...MarketplacePaginationFragment_1FfpYs\n}\n\nfragment MarketplacePaginationFragment_1FfpYs on Query {\n  productsCommunitiesCollection(first: $count, after: $cursor, filter: $filter, orderBy: $orderBy) {\n    edges {\n      node {\n        nodeId\n        product {\n          ...ProductCardFragmentQuery\n          name\n          isPublic\n          categoryId\n          condition\n          nodeId\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  id\n  isPublic\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    firstName\n    lastName\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query MarketplacePaginationQuery(\n  $count: Int = 12\n  $cursor: Cursor\n  $filter: ProductsCommunitiesFilter\n  $orderBy: [ProductsCommunitiesOrderBy!]\n) {\n  ...MarketplacePaginationFragment_1FfpYs\n}\n\nfragment MarketplacePaginationFragment_1FfpYs on Query {\n  productsCommunitiesCollection(first: $count, after: $cursor, filter: $filter, orderBy: $orderBy) {\n    edges {\n      node {\n        nodeId\n        product {\n          ...ProductCardFragmentQuery\n          name\n          categoryId\n          condition\n          nodeId\n        }\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  id\n  categoryId\n  condition\n  userId\n  user {\n    avatarUrl\n    username\n    firstName\n    lastName\n    nodeId\n  }\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "94d4ed5af2ea144168436de2654fb102";
+(node as any).hash = "fc730dbf70705d16a8d75fc8b1ca214c";
 
 export default node;
