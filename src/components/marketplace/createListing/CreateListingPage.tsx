@@ -114,9 +114,20 @@ const CreateListingPage: EntryPointComponent<
         return;
       }
 
+      // Validate that at least one image was uploaded
+      if (fileList.length === 0) {
+        message.error('Please upload at least one image for your listing.');
+        return;
+      }
+
       setUploading(true);
       try {
         const uploadedPaths = await uploadImages();
+
+        if (uploadedPaths.length === 0) {
+          message.error('Failed to upload images. Please try again.');
+          return;
+        }
 
         if (communityId == null) {
           message.error('Failed to create listing');
@@ -162,21 +173,19 @@ const CreateListingPage: EntryPointComponent<
               },
             });
 
-            // Only insert images if the user uploaded any
-            if (uploadedPaths.length > 0) {
-              commitImagesMutation({
-                variables: {
-                  objects: uploadedPaths.map((path, index) => ({
-                    productId,
-                    imageUrl: path,
-                    displayOrder: index,
-                  })),
-                },
-                onError: (err) => {
-                  console.error('Failed to save product images:', err);
-                },
-              });
-            }
+            // Insert the uploaded images (guaranteed to have at least one)
+            commitImagesMutation({
+              variables: {
+                objects: uploadedPaths.map((path, index) => ({
+                  productId,
+                  imageUrl: path,
+                  displayOrder: index,
+                })),
+              },
+              onError: (err) => {
+                console.error('Failed to save product images:', err);
+              },
+            });
 
             message.success('Listing created successfully!');
             navigate(`${basePath}/${Paths.Market}`);
