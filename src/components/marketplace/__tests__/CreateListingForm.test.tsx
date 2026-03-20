@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import React from 'react';
 
 import { renderWithAntd } from '../../../test-utils';
-import CreateListingForm from '../CreateListingForm';
+import CreateListingForm from '../createListing/CreateListingForm';
 
 const categories = [
   { id: 'cat-1', name: 'Electronics' },

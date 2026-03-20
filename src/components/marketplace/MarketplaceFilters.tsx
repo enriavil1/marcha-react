@@ -1,16 +1,9 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Flex, Input } from 'antd';
+import { Button, Flex, Input } from 'antd';
 import React, { useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import {
-  BORDER_DEFAULT,
-  BRAND_PRIMARY,
-  NEUTRAL_400,
-  NEUTRAL_700,
-  RADIUS_LG,
-  WHITE,
-} from '../../design';
+import { NEUTRAL_400, RADIUS_LG } from '../../design';
 
 type Category = {
   id: string;
@@ -21,6 +14,13 @@ type Props = {
   categories: Category[];
 };
 
+/**
+ * Marketplace search bar and category pill filter row.
+ *
+ * The search bar is full-width above the category pills.
+ * The "All" pill is filled (primary) when active; category pills are outlined
+ * when inactive and filled when selected — matching the design.
+ */
 const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -36,6 +36,7 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
         } else {
           next.delete(key);
         }
+        // Reset pagination cursor when filters change
         next.delete('cursor');
         return next;
       });
@@ -43,67 +44,44 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
     [setSearchParams]
   );
 
-  const handleCategorySelect = useCallback(
-    (categoryId: string) => {
-      updateParam('category', categoryId || undefined);
-    },
-    [updateParam]
-  );
-
   const allCategories = [{ id: '', name: 'All' }, ...categories];
 
   return (
     <div style={{ marginBottom: 8 }}>
+      {/* Full-width search bar */}
       <Input
         placeholder="Search items..."
         prefix={<SearchOutlined style={{ color: NEUTRAL_400 }} />}
         value={currentQuery}
         onChange={(e) => updateParam('q', e.target.value || undefined)}
         allowClear
-        style={{
-          borderRadius: RADIUS_LG,
-          marginBottom: 12,
-          height: 40,
-          fontSize: 14,
-        }}
+        style={{ borderRadius: RADIUS_LG, marginBottom: 12, height: 40 }}
       />
 
+      {/* Horizontally scrollable category pill row */}
       <Flex
         gap={8}
         style={{
           overflowX: 'auto',
           paddingBottom: 4,
+          // Hide scrollbar cross-browser while keeping scroll functionality
           scrollbarWidth: 'none',
           msOverflowStyle: 'none',
         }}
       >
-        <style>{`
-          .marketplace-category-pills::-webkit-scrollbar { display: none; }
-        `}</style>
         {allCategories.map((cat) => {
           const isActive = currentCategory === cat.id;
           return (
-            <button
+            <Button
               key={cat.id}
-              onClick={() => handleCategorySelect(cat.id)}
-              style={{
-                flexShrink: 0,
-                padding: '6px 16px',
-                borderRadius: 20,
-                border: isActive ? 'none' : `1.5px solid ${BORDER_DEFAULT}`,
-                background: isActive ? BRAND_PRIMARY : WHITE,
-                color: isActive ? WHITE : NEUTRAL_700,
-                fontSize: 13,
-                fontWeight: isActive ? 600 : 400,
-                cursor: 'pointer',
-                lineHeight: '20px',
-                transition: 'background 0.15s, color 0.15s, border 0.15s',
-                outline: 'none',
-                whiteSpace: 'nowrap',
-              }}
+              type={isActive ? 'primary' : 'default'}
+              shape="round"
+              size="small"
+              onClick={() => updateParam('category', cat.id || undefined)}
+              style={{ flexShrink: 0, fontWeight: isActive ? 600 : 400 }}
             >
               {cat.name}
-            </button>
+            </Button>
           );
         })}
       </Flex>

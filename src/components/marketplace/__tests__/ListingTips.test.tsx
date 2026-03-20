@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import React from 'react';
 
 import { renderWithAntd } from '../../../test-utils';
-import ListingTips from '../ListingTips';
+import ListingTips from '../createListing/ListingTips';
 
 describe('ListingTips', () => {
   it('renders the "Listing Tips" title', () => {

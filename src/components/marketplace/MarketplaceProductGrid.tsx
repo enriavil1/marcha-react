@@ -1,8 +1,8 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, Empty } from 'antd';
+import { Button, Col, Empty, Row, Skeleton } from 'antd';
 import React, { Suspense } from 'react';
 
-import { NEUTRAL_100, RADIUS_LG } from '../../design';
+import { RADIUS_LG } from '../../design';
 import ProductCard from '../Products/ProductCard';
 import type { ProductCardFragmentQuery$key } from '../Products/__generated__/ProductCardFragmentQuery.graphql';
 
@@ -21,12 +21,26 @@ type MarketplaceProductGridProps = {
 };
 
 /**
+ * Skeleton placeholder that mirrors the ProductCard shape while the card
+ * content is loading via Suspense.
+ */
+const CardSkeleton: React.FC = () => (
+  <div style={{ borderRadius: RADIUS_LG, overflow: 'hidden' }}>
+    <Skeleton.Image active style={{ width: '100%', height: 160 }} />
+    <div style={{ padding: '12px 14px' }}>
+      <Skeleton active paragraph={{ rows: 2 }} title={false} />
+    </div>
+  </div>
+);
+
+/**
  * Responsive product card grid.
  *
- * Desktop: 4 columns  (≥ 768 px)
- * Mobile:  2 columns  (< 768 px)
+ * Desktop (≥ lg): 4 columns
+ * Tablet  (sm–md): 2 columns
+ * Mobile  (xs):   2 columns
  *
- * Cards have equal-width columns with a 16 px gap, matching the design.
+ * Uses antd Row/Col so the layout integrates with the rest of the antd grid.
  */
 const MarketplaceProductGrid: React.FC<MarketplaceProductGridProps> = ({
   edges,
@@ -49,44 +63,18 @@ const MarketplaceProductGrid: React.FC<MarketplaceProductGridProps> = ({
   }
 
   return (
-    <>
-      <style>{`
-        .marketplace-grid {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 16px;
-          margin-top: 16px;
-        }
-        @media (max-width: 767px) {
-          .marketplace-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-          }
-        }
-      `}</style>
-      <div className="marketplace-grid">
-        {validEdges.map((edge, i) => (
-          <Suspense
-            key={i}
-            fallback={
-              <div
-                style={{
-                  borderRadius: RADIUS_LG,
-                  background: NEUTRAL_100,
-                  paddingTop: '75%',
-                  position: 'relative',
-                }}
-              />
-            }
-          >
+    <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+      {validEdges.map((edge, i) => (
+        <Col key={i} xs={12} sm={12} md={8} lg={6}>
+          <Suspense fallback={<CardSkeleton />}>
             <ProductCard
               fragmentRef={edge.node.product as ProductCardFragmentQuery$key}
               hoverable
             />
           </Suspense>
-        ))}
-      </div>
-    </>
+        </Col>
+      ))}
+    </Row>
   );
 };
 

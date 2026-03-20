@@ -6,7 +6,7 @@ import {
   useRelayEnvironment,
 } from 'react-relay';
 
-import MyListingsPageQuery from '../../components/marketplace/__generated__/MyListingsPageQuery.graphql';
+import MyListingsPageQuery from '../../components/marketplace/myListings/__generated__/MyListingsPageQuery.graphql';
 import { useAuth } from '../../contexts/AuthContext';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';

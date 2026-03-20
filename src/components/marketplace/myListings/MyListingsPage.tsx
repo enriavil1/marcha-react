@@ -1,30 +1,22 @@
-import {
-  ArrowLeftOutlined,
-  EditOutlined,
-  ShopOutlined,
-} from '@ant-design/icons';
-import { Avatar, Button, Card, Col, Empty, Flex, Row, Typography } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Button, Col, Empty, Flex, Row, Typography, message } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   EntryPointComponent,
   PreloadedQuery,
+  useMutation,
   usePreloadedQuery,
 } from 'react-relay';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import {
-  BRAND_PRIMARY,
-  NEUTRAL_100,
-  NEUTRAL_500,
-  NEUTRAL_900,
-  RADIUS_LG,
-} from '../../../design';
-import fetchFromStorage from '../../../utils/fetch_from_storage';
+import { NEUTRAL_500 } from '../../../design';
 import { Paths } from '../../../views/paths';
 import EditListingModal, { ListingData } from '../EditListingModal';
-import { MyListingsPageQuery } from '../__generated__/MyListingsPageQuery.graphql';
+import UpdateProductMutation from '../graphql/UpdateProductMutation.graphql';
+import type { UpdateProductMutationMutation } from '../graphql/__generated__/UpdateProductMutationMutation.graphql';
 import MyListingCard, { ListingNode } from './MyListingCard';
+import { MyListingsPageQuery } from './__generated__/MyListingsPageQuery.graphql';
 
 export const myListingsPageQuery = graphql`
   query MyListingsPageQuery($userId: UUIDFilter!) {
@@ -40,6 +32,7 @@ export const myListingsPageQuery = graphql`
           price
           condition
           categoryId
+          isPublic
           createdAt
           productImagesCollection(
             first: 1
@@ -99,6 +92,11 @@ const MyListingsPage: EntryPointComponent<
   const [editingListing, setEditingListing] = useState<ListingData | null>(
     null
   );
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+
+  const [commitUpdate] = useMutation<UpdateProductMutationMutation>(
+    UpdateProductMutation
+  );
 
   const handleEdit = useCallback((listing: ListingNode) => {
     setEditingListing({
@@ -111,6 +109,32 @@ const MyListingsPage: EntryPointComponent<
     });
     setEditModalOpen(true);
   }, []);
+
+  const handleToggleVisibility = useCallback(
+    (listing: ListingNode) => {
+      const newIsPublic = !listing.isPublic;
+      setTogglingId(listing.id);
+
+      commitUpdate({
+        variables: {
+          set: { isPublic: newIsPublic },
+          filter: { id: { eq: listing.id } },
+          atMost: 1,
+        },
+        onCompleted: () => {
+          message.success(
+            newIsPublic ? 'Listing is now active.' : 'Listing unlisted.'
+          );
+          setTogglingId(null);
+        },
+        onError: (err) => {
+          message.error(`Failed to update listing: ${err.message}`);
+          setTogglingId(null);
+        },
+      });
+    },
+    [commitUpdate]
+  );
 
   return (
     <div>
@@ -156,7 +180,12 @@ const MyListingsPage: EntryPointComponent<
         <Row gutter={[16, 16]}>
           {listings.map((edge) => (
             <Col xs={24} sm={12} md={8} lg={6} key={edge.node.id}>
-              <MyListingCard listing={edge.node} onEdit={handleEdit} />
+              <MyListingCard
+                listing={edge.node}
+                onEdit={handleEdit}
+                onToggleVisibility={handleToggleVisibility}
+                isTogglingVisibility={togglingId === edge.node.id}
+              />
             </Col>
           ))}
         </Row>
@@ -168,7 +197,7 @@ const MyListingsPage: EntryPointComponent<
         categories={categories}
         onClose={() => setEditModalOpen(false)}
         onSuccess={() => {
-          return;
+          setEditModalOpen(false);
         }}
       />
     </div>

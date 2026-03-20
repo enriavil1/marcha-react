@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<dd924ff0f680a2a682b1d82170678c60>>
+ * @generated SignedSource<<51fac6932169fba220ee60b37711e517>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -38,6 +38,7 @@ export type MyListingsPageQuery$data = {
         readonly createdAt: string;
         readonly description: string;
         readonly id: string;
+        readonly isPublic: boolean;
         readonly name: string;
         readonly price: number;
         readonly productImagesCollection: {
@@ -132,10 +133,17 @@ v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "isPublic",
+  "storageKey": null
+},
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "createdAt",
   "storageKey": null
 },
-v9 = [
+v10 = [
   {
     "kind": "Literal",
     "name": "first",
@@ -151,21 +159,21 @@ v9 = [
     ]
   }
 ],
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "imageUrl",
   "storageKey": null
 },
-v11 = {
+v12 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "nodeId",
   "storageKey": null
 },
-v12 = {
+v13 = {
   "alias": null,
   "args": null,
   "concreteType": "CategoriesConnection",
@@ -191,7 +199,7 @@ v12 = {
           "selections": [
             (v2/*: any*/),
             (v3/*: any*/),
-            (v11/*: any*/)
+            (v12/*: any*/)
           ],
           "storageKey": null
         }
@@ -239,9 +247,10 @@ return {
                   (v6/*: any*/),
                   (v7/*: any*/),
                   (v8/*: any*/),
+                  (v9/*: any*/),
                   {
                     "alias": null,
-                    "args": (v9/*: any*/),
+                    "args": (v10/*: any*/),
                     "concreteType": "ProductImagesConnection",
                     "kind": "LinkedField",
                     "name": "productImagesCollection",
@@ -263,7 +272,7 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v10/*: any*/)
+                              (v11/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -282,7 +291,7 @@ return {
         ],
         "storageKey": null
       },
-      (v12/*: any*/)
+      (v13/*: any*/)
     ],
     "type": "Query",
     "abstractKey": null
@@ -324,9 +333,10 @@ return {
                   (v6/*: any*/),
                   (v7/*: any*/),
                   (v8/*: any*/),
+                  (v9/*: any*/),
                   {
                     "alias": null,
-                    "args": (v9/*: any*/),
+                    "args": (v10/*: any*/),
                     "concreteType": "ProductImagesConnection",
                     "kind": "LinkedField",
                     "name": "productImagesCollection",
@@ -348,8 +358,8 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v10/*: any*/),
-                              (v11/*: any*/)
+                              (v11/*: any*/),
+                              (v12/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -359,7 +369,7 @@ return {
                     ],
                     "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
                   },
-                  (v11/*: any*/)
+                  (v12/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -369,20 +379,20 @@ return {
         ],
         "storageKey": null
       },
-      (v12/*: any*/)
+      (v13/*: any*/)
     ]
   },
   "params": {
-    "cacheID": "bb459c03d65e97bd165047232acd8ddb",
+    "cacheID": "e587ff5aa3f576e7d47eb28c41fae630",
     "id": null,
     "metadata": {},
     "name": "MyListingsPageQuery",
     "operationKind": "query",
-    "text": "query MyListingsPageQuery(\n  $userId: UUIDFilter!\n) {\n  productsCollection(filter: {userId: $userId}, orderBy: [{createdAt: DescNullsLast}]) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        condition\n        categoryId\n        createdAt\n        productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              imageUrl\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n  categoriesCollection {\n    edges {\n      node {\n        id\n        name\n        nodeId\n      }\n    }\n  }\n}\n"
+    "text": "query MyListingsPageQuery(\n  $userId: UUIDFilter!\n) {\n  productsCollection(filter: {userId: $userId}, orderBy: [{createdAt: DescNullsLast}]) {\n    edges {\n      node {\n        id\n        name\n        description\n        price\n        condition\n        categoryId\n        isPublic\n        createdAt\n        productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n          edges {\n            node {\n              imageUrl\n              nodeId\n            }\n          }\n        }\n        nodeId\n      }\n    }\n  }\n  categoriesCollection {\n    edges {\n      node {\n        id\n        name\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "5b9885ab86b994d3db8de98522c50add";
+(node as any).hash = "050f8a847ecc75ffa0de96553310f94c";
 
 export default node;
