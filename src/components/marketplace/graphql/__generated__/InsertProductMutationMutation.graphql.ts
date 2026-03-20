@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6c80b1e4200c9a344f6d7d20421209fe>>
+ * @generated SignedSource<<6176618c4e84243fee4afc8b6bb0f8f3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,7 @@ export type ProductsInsertInput = {
   condition?: ProductCondition | null | undefined;
   createdAt?: string | null | undefined;
   description?: string | null | undefined;
+  isPublic?: boolean | null | undefined;
   name?: string | null | undefined;
   price?: number | null | undefined;
   userId?: string | null | undefined;

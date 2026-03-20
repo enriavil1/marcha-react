@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4c4620473d039d3fad1a0545cdc4fce3>>
+ * @generated SignedSource<<427ef6670687db8951442053b4e3a570>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,6 +18,7 @@ export type ProductsFilter = {
   createdAt?: DatetimeFilter | null | undefined;
   description?: StringFilter | null | undefined;
   id?: BigIntFilter | null | undefined;
+  isPublic?: BooleanFilter | null | undefined;
   name?: StringFilter | null | undefined;
   nodeId?: IDFilter | null | undefined;
   not?: ProductsFilter | null | undefined;
@@ -81,6 +82,10 @@ export type ProductConditionFilter = {
   in?: ReadonlyArray<ProductCondition> | null | undefined;
   is?: FilterIs | null | undefined;
   neq?: ProductCondition | null | undefined;
+};
+export type BooleanFilter = {
+  eq?: boolean | null | undefined;
+  is?: FilterIs | null | undefined;
 };
 export type IDFilter = {
   eq?: string | null | undefined;
