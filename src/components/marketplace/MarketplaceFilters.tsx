@@ -1,10 +1,11 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Flex, Input } from 'antd';
+import { Flex, Input, Select } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { NEUTRAL_400, RADIUS_LG } from '../../design';
 import { useDebounce } from '../../hooks/useDebounce';
+import { CONDITIONS } from './constants';
 
 type Category = {
   id: string;
@@ -16,43 +17,37 @@ type Props = {
 };
 
 /**
- * Marketplace search bar and category pill filter row.
+ * Marketplace search bar and dropdown filters.
  *
- * The search bar is full-width above the category pills.
- * The "All" pill is filled (primary) when active; category pills are outlined
- * when inactive and filled when selected — matching the design.
+ * The search bar is full-width. Below it, category and condition filters
+ * are implemented as antd Select components with allowClear.
  *
  * Search is debounced (400 ms) before writing to the URL so that the
- * entrypoint only re-fetches the query after the user stops typing, rather
- * than on every keystroke.
+ * entrypoint only re-fetches the query after the user stops typing.
  *
- * Category and condition filters write to the URL immediately (no debounce
- * needed since they are single-click selections).
- *
- * The Market entrypoint reads all filter values from the URL and passes them
- * as variables to the Relay query — Supabase performs the actual filtering.
+ * Category and condition filters write to the URL immediately on change.
+ * Clearing a Select component removes the corresponding param from the URL.
  */
 const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   // The URL is the source of truth for filters.
   const urlQuery = searchParams.get('q') ?? '';
-  const currentCategory = searchParams.get('category') ?? '';
+  const currentCategory = searchParams.get('category') ?? undefined;
+  const currentCondition = searchParams.get('condition') ?? undefined;
 
-  // Local state for the search input so the UI responds instantly while
-  // the debounced value propagates to the URL (and triggers a re-fetch).
+  // Local state for the search input so the UI responds instantly.
   const [inputValue, setInputValue] = useState(urlQuery);
 
-  // Sync local input state when the URL changes externally (e.g. back/forward).
+  // Sync local input state when the URL changes externally.
   useEffect(() => {
     setInputValue(urlQuery);
   }, [urlQuery]);
 
-  // Debounced version of the input — only updates after 400 ms of inactivity.
+  // Debounced version of the input.
   const debouncedQuery = useDebounce(inputValue, 400);
 
-  // Write the debounced search value to the URL, which triggers the entrypoint
-  // to reload the query with the new filter variable.
+  // Write the debounced search value to the URL.
   useEffect(() => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
@@ -61,7 +56,6 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
       } else {
         next.delete('q');
       }
-      // Reset pagination cursor whenever the search changes.
       next.delete('cursor');
       return next;
     });
@@ -76,7 +70,6 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
         } else {
           next.delete(key);
         }
-        // Reset pagination cursor when filters change.
         next.delete('cursor');
         return next;
       });
@@ -84,11 +77,14 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
     [setSearchParams]
   );
 
-  const allCategories = [{ id: '', name: 'All' }, ...categories];
+  const categoryOptions = categories.map((cat) => ({
+    label: cat.name,
+    value: cat.id,
+  }));
 
   return (
-    <div style={{ marginBottom: 8 }}>
-      {/* Full-width search bar — local state for instant feedback, debounced URL write */}
+    <div style={{ marginBottom: 16 }}>
+      {/* Full-width search bar */}
       <Input
         placeholder="Search items..."
         prefix={<SearchOutlined style={{ color: NEUTRAL_400 }} />}
@@ -99,32 +95,24 @@ const MarketplaceFilters = ({ categories }: Props): React.ReactElement => {
         style={{ borderRadius: RADIUS_LG, marginBottom: 12, height: 40 }}
       />
 
-      {/* Horizontally scrollable category pill row */}
-      <Flex
-        gap={8}
-        style={{
-          overflowX: 'auto',
-          paddingBottom: 4,
-          // Hide scrollbar cross-browser while keeping scroll functionality
-          scrollbarWidth: 'none',
-          msOverflowStyle: 'none',
-        }}
-      >
-        {allCategories.map((cat) => {
-          const isActive = currentCategory === cat.id;
-          return (
-            <Button
-              key={cat.id}
-              type={isActive ? 'primary' : 'default'}
-              shape="round"
-              size="small"
-              onClick={() => updateParam('category', cat.id || undefined)}
-              style={{ flexShrink: 0, fontWeight: isActive ? 600 : 400 }}
-            >
-              {cat.name}
-            </Button>
-          );
-        })}
+      {/* Dropdown filters for Category and Condition */}
+      <Flex gap={12} wrap="wrap">
+        <Select
+          placeholder="All Categories"
+          allowClear
+          value={currentCategory}
+          onChange={(val) => updateParam('category', val)}
+          options={categoryOptions}
+          style={{ minWidth: 160, flex: 1 }}
+        />
+        <Select
+          placeholder="All Conditions"
+          allowClear
+          value={currentCondition}
+          onChange={(val) => updateParam('condition', val)}
+          options={CONDITIONS as unknown as { label: string; value: string }[]}
+          style={{ minWidth: 160, flex: 1 }}
+        />
       </Flex>
     </div>
   );
