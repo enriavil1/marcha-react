@@ -204,7 +204,6 @@ const DashboardMarketplacePreview: React.FC<Props> = ({
             const product = edge.node.product;
             if (product == null) return null;
 
-            console.log('here');
             const coverImage =
               product.productImagesCollection?.edges?.[0]?.node?.imageUrl;
 

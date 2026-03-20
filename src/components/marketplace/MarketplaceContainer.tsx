@@ -96,7 +96,7 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
   );
 
   return (
-    <div>
+    <Flex vertical>
       <MarketplaceHero
         onPostListing={navigateToNewListing}
         onMyListings={navigateToMyListings}
@@ -121,7 +121,7 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
           </Typography.Text>
         </Flex>
       )}
-    </div>
+    </Flex>
   );
 };
 

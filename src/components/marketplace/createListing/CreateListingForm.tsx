@@ -12,7 +12,7 @@ import {
 import type { UploadFile } from 'antd/es/upload/interface';
 import React from 'react';
 
-import { CONDITIONS } from './constants';
+import { CONDITIONS } from '../constants';
 
 type Category = {
   id: string;

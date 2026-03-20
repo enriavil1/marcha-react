@@ -6,13 +6,13 @@ import {
   useRelayEnvironment,
 } from 'react-relay';
 
-import CreateListingPageQuery from '../../components/marketplace/__generated__/CreateListingPageQuery.graphql';
+import CreateListingPageQuery from '../../components/marketplace/createListing/__generated__/CreateListingPageQuery.graphql';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
 
 const CreateListingEntryPoint = createEntryPoint({
   root: JSResource('CreateListingPage', () =>
-    import('../../components/marketplace/CreateListingPage').then(
+    import('../../components/marketplace/createListing/CreateListingPage').then(
       (module) => module.default
     )
   ),

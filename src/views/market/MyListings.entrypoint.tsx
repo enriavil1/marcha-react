@@ -5,7 +5,6 @@ import {
   useEntryPointLoader,
   useRelayEnvironment,
 } from 'react-relay';
-import { useParams } from 'react-router-dom';
 
 import MyListingsPageQuery from '../../components/marketplace/__generated__/MyListingsPageQuery.graphql';
 import { useAuth } from '../../contexts/AuthContext';
@@ -18,7 +17,7 @@ type EntryPointParams = {
 
 const MyListingsEntryPoint = createEntryPoint({
   root: JSResource('MyListingsPage', () =>
-    import('../../components/marketplace/MyListingsPage').then(
+    import('../../components/marketplace/myListings/MyListingsPage').then(
       (module) => module.default
     )
   ),

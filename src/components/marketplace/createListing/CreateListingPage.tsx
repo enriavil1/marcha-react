@@ -1,5 +1,5 @@
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Row, Typography, message } from 'antd';
+import { Button, Card, Col, Flex, Row, Typography, message } from 'antd';
 import type { UploadFile } from 'antd/es/upload/interface';
 import graphql from 'babel-plugin-relay/macro';
 import React, { useCallback, useState } from 'react';
@@ -11,20 +11,19 @@ import {
 } from 'react-relay';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { useAuth } from '../../contexts/AuthContext';
-import { RADIUS_LG } from '../../design';
-import { supabase } from '../../lib/supabase';
-import { Paths } from '../../views/paths';
-import CreateListingForm from './CreateListingForm';
-import type { ListingFormValues } from './CreateListingForm';
+import { useAuth } from '../../../contexts/AuthContext';
+import { RADIUS_LG } from '../../../design';
+import { supabase } from '../../../lib/supabase';
+import { Paths } from '../../../views/paths';
+import InsertProductCommunityMutation from '../graphql/InsertProductCommunityMutation.graphql';
+import InsertProductMutation from '../graphql/InsertProductMutation.graphql';
+import InsertProductImagesMutation from '../graphql/InsertProductMutation.graphql';
+import { InsertProductCommunityMutationMutation } from '../graphql/__generated__/InsertProductCommunityMutationMutation.graphql';
+import { InsertProductImagesMutationMutation } from '../graphql/__generated__/InsertProductImagesMutationMutation.graphql';
+import { InsertProductMutationMutation } from '../graphql/__generated__/InsertProductMutationMutation.graphql';
+import CreateListingForm, { ListingFormValues } from './CreateListingForm';
 import ListingTips from './ListingTips';
-import type { CreateListingPageQuery } from './__generated__/CreateListingPageQuery.graphql';
-import InsertProductCommunityMutation from './graphql/InsertProductCommunityMutation.graphql';
-import InsertProductImagesMutation from './graphql/InsertProductImagesMutation.graphql';
-import InsertProductMutation from './graphql/InsertProductMutation.graphql';
-import type { InsertProductCommunityMutationMutation } from './graphql/__generated__/InsertProductCommunityMutationMutation.graphql';
-import type { InsertProductImagesMutationMutation } from './graphql/__generated__/InsertProductImagesMutationMutation.graphql';
-import type { InsertProductMutationMutation } from './graphql/__generated__/InsertProductMutationMutation.graphql';
+import { CreateListingPageQuery } from './__generated__/CreateListingPageQuery.graphql';
 
 export const createListingCategoriesQuery = graphql`
   query CreateListingPageQuery {
@@ -85,7 +84,6 @@ const CreateListingPage: EntryPointComponent<
       InsertProductImagesMutation
     );
 
-  /** Upload images to Supabase storage and return their storage paths. */
   const uploadImages = async (): Promise<string[]> => {
     const paths: string[] = [];
 
@@ -120,6 +118,16 @@ const CreateListingPage: EntryPointComponent<
       try {
         const uploadedPaths = await uploadImages();
 
+        if (communityId == null) {
+          message.error('Failed to create listing');
+          return;
+        }
+
+        if (uploadedPaths.length == 0) {
+          message.error('Failed to create listing: could not upload images');
+          return;
+        }
+
         commitProductMutation({
           variables: {
             objects: [
@@ -147,36 +155,30 @@ const CreateListingPage: EntryPointComponent<
 
             const productId = newProduct.id;
 
-            /* Associate product with the current community. */
-            if (communityId) {
-              commitCommunityMutation({
-                variables: {
-                  objects: [{ productId, communityId }],
-                },
-                onError: (err) => {
-                  console.error(
-                    'Failed to associate product with community:',
-                    err
-                  );
-                },
-              });
-            }
+            commitCommunityMutation({
+              variables: {
+                objects: [{ productId, communityId }],
+              },
+              onError: (err) => {
+                console.error(
+                  'Failed to associate product with community:',
+                  err
+                );
+              },
+            });
 
-            /* Insert product images into the product_images table. */
-            if (uploadedPaths.length > 0) {
-              commitImagesMutation({
-                variables: {
-                  objects: uploadedPaths.map((path, index) => ({
-                    productId,
-                    imageUrl: path,
-                    displayOrder: index,
-                  })),
-                },
-                onError: (err) => {
-                  console.error('Failed to save product images:', err);
-                },
-              });
-            }
+            commitImagesMutation({
+              variables: {
+                objects: uploadedPaths.map((path, index) => ({
+                  productId,
+                  imageUrl: path,
+                  displayOrder: index,
+                })),
+              },
+              onError: (err) => {
+                console.error('Failed to save product images:', err);
+              },
+            });
 
             message.success('Listing created successfully!');
             navigate(`${basePath}/${Paths.Market}`);
@@ -206,7 +208,7 @@ const CreateListingPage: EntryPointComponent<
   );
 
   return (
-    <div>
+    <Flex>
       <Button
         type="text"
         icon={<ArrowLeftOutlined />}
@@ -236,7 +238,7 @@ const CreateListingPage: EntryPointComponent<
           <ListingTips />
         </Col>
       </Row>
-    </div>
+    </Flex>
   );
 };
 

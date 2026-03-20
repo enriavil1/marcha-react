@@ -84,7 +84,6 @@ const ProductCard = ({
 
   const isOwnListing = userId != null && product.userId === userId;
 
-  /* Fetch the first product image from Supabase storage. */
   useEffect(() => {
     const imagePath =
       product.productImagesCollection?.edges?.[0]?.node?.imageUrl;
@@ -96,7 +95,6 @@ const ProductCard = ({
     }
   }, [product.productImagesCollection]);
 
-  /* Fetch the seller avatar from Supabase storage. */
   useEffect(() => {
     if (product.user?.avatarUrl) {
       fetchFromStorage(product.user.avatarUrl, 'avatars').then((blob) => {
@@ -104,15 +102,6 @@ const ProductCard = ({
       });
     }
   }, [product.user?.avatarUrl]);
-
-  const status = getStatusBadge(product.price);
-
-  const sellerName =
-    product.user?.firstName || product.user?.username || 'Seller';
-
-  const isFree = product.price === 0;
-  const priceDisplay = isFree ? 'Free' : `£${product.price}`;
-  const priceColor = isFree ? COLOR_SUCCESS : BRAND_PRIMARY;
 
   const imageUrl = useMemo(
     () => (imageBlob ? URL.createObjectURL(imageBlob) : null),
@@ -143,6 +132,15 @@ const ProductCard = ({
     transition: 'box-shadow 0.2s ease, transform 0.2s ease',
     width: '100%',
   };
+
+  const status = getStatusBadge(product.price);
+
+  const sellerName =
+    product.user?.firstName || product.user?.username || 'Seller';
+
+  const isFree = product.price === 0;
+  const priceDisplay = isFree ? 'Free' : `£${product.price}`;
+  const priceColor = isFree ? COLOR_SUCCESS : BRAND_PRIMARY;
 
   return (
     <div

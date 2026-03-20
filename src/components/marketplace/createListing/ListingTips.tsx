@@ -1,7 +1,7 @@
 import { Card, Typography } from 'antd';
 import React from 'react';
 
-import { RADIUS_LG } from '../../design';
+import { RADIUS_LG } from '../../../design';
 
 /**
  * Sidebar card with helpful tips for creating a listing.
