@@ -13,8 +13,8 @@ export const marketplaceWrapperQuery = graphql`
   query MarketplaceWrapperQueryQuery(
     $count: Int
     $cursor: Cursor
-    $filter: ProductsCommunitiesFilter
-    $orderBy: [ProductsCommunitiesOrderBy!]
+    $filter: ProductsFilter
+    $orderBy: [ProductsOrderBy!]
   ) {
     ...MarketplacePaginationFragment
       @arguments(

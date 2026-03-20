@@ -1,5 +1,5 @@
 import { Flex, Spin, Typography } from 'antd';
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback } from 'react';
 import { usePaginationFragment } from 'react-relay';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
@@ -24,10 +24,20 @@ type Props = {
   categories: Category[];
 };
 
+/**
+ * Marketplace browse container.
+ *
+ * All filtering (search, category, condition) is performed server-side by
+ * Supabase via the `ProductsFilter` variables passed to the Relay query.
+ * The Market entrypoint reads filter values from the URL and passes them as
+ * query variables — this component simply renders the pre-filtered results.
+ *
+ * No client-side filtering logic exists here.
+ */
 const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
   const { communityId } = useParams<{ communityId: string }>();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
   const basePath = `/portal/${communityId}`;
 
   const { data, loadNext, hasNext, isLoadingNext } = usePaginationFragment<
@@ -35,34 +45,15 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
     MarketplacePaginationFragment$key
   >(marketplacePaginationFragment, fragmentRef);
 
-  const rawEdges = data.productsCommunitiesCollection?.edges ?? [];
-
-  // ── Client-side filtering ─────────────────────────────────────────────
-  // Since productsCommunitiesCollection doesn't support product-level filters,
-  // we apply search, category, and condition filters on the client side.
-  const q = searchParams.get('q')?.toLowerCase() ?? '';
-  const categoryFilter = searchParams.get('category') ?? '';
-  const conditionFilter = searchParams.get('condition') ?? '';
-
-  const edges = useMemo(() => {
-    return rawEdges.filter((edge) => {
-      const product = edge.node.product;
-      if (!product) return false;
-      if (q && !product.name.toLowerCase().includes(q)) return false;
-      if (categoryFilter && product.categoryId !== categoryFilter) return false;
-      if (conditionFilter && product.condition !== conditionFilter)
-        return false;
-      return true;
-    });
-  }, [rawEdges, q, categoryFilter, conditionFilter]);
+  // Edges are already filtered server-side — no client-side filtering needed.
+  const edges = data.productsCollection?.edges ?? [];
 
   const handleLoadNext = useCallback(() => {
     if (!hasNext || isLoadingNext) return;
 
     loadNext(PAGE_SIZE, {
       onComplete: () => {
-        const endCursor =
-          data.productsCommunitiesCollection?.pageInfo?.endCursor;
+        const endCursor = data.productsCollection?.pageInfo?.endCursor;
         if (endCursor) {
           setSearchParams((prev) => {
             const next = new URLSearchParams(prev);
@@ -76,7 +67,7 @@ const MarketplaceContainer: React.FC<Props> = ({ fragmentRef, categories }) => {
     hasNext,
     isLoadingNext,
     loadNext,
-    data.productsCommunitiesCollection,
+    data.productsCollection,
     setSearchParams,
   ]);
 

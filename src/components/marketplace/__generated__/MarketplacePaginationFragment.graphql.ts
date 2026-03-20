@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<22595b24cf686a4ca0c30b4cd3f64a41>>
+ * @generated SignedSource<<507b536697f0c3f8692447b35f339d9a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,19 +9,12 @@
 // @ts-nocheck
 
 import { ReaderFragment, RefetchableFragment } from 'relay-runtime';
-export type ProductCondition = "Good" | "Like_new" | "New" | "Used" | "%future added value";
 import { FragmentRefs } from "relay-runtime";
 export type MarketplacePaginationFragment$data = {
-  readonly productsCommunitiesCollection: {
+  readonly productsCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly nodeId: string;
-        readonly product: {
-          readonly categoryId: string;
-          readonly condition: ProductCondition;
-          readonly name: string;
-          readonly " $fragmentSpreads": FragmentRefs<"ProductCardFragmentQuery">;
-        } | null | undefined;
+        readonly " $fragmentSpreads": FragmentRefs<"ProductCardFragmentQuery">;
       };
     }>;
     readonly pageInfo: {
@@ -38,7 +31,7 @@ export type MarketplacePaginationFragment$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = [
-  "productsCommunitiesCollection"
+  "productsCollection"
 ];
 return {
   "argumentDefinitions": [
@@ -89,7 +82,7 @@ return {
   "name": "MarketplacePaginationFragment",
   "selections": [
     {
-      "alias": "productsCommunitiesCollection",
+      "alias": "productsCollection",
       "args": [
         {
           "kind": "Variable",
@@ -102,15 +95,15 @@ return {
           "variableName": "orderBy"
         }
       ],
-      "concreteType": "ProductsCommunitiesConnection",
+      "concreteType": "ProductsConnection",
       "kind": "LinkedField",
-      "name": "__Marketplace_productsCommunitiesCollection_connection",
+      "name": "__Marketplace_productsCollection_connection",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "ProductsCommunitiesEdge",
+          "concreteType": "ProductsEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -118,54 +111,15 @@ return {
             {
               "alias": null,
               "args": null,
-              "concreteType": "ProductsCommunities",
+              "concreteType": "Products",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
               "selections": [
                 {
-                  "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "nodeId",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Products",
-                  "kind": "LinkedField",
-                  "name": "product",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "args": null,
-                      "kind": "FragmentSpread",
-                      "name": "ProductCardFragmentQuery"
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "name",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "categoryId",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "condition",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
+                  "kind": "FragmentSpread",
+                  "name": "ProductCardFragmentQuery"
                 },
                 {
                   "alias": null,
@@ -221,6 +175,6 @@ return {
 };
 })();
 
-(node as any).hash = "fc730dbf70705d16a8d75fc8b1ca214c";
+(node as any).hash = "cf7c17b8ff3769edc7966dbb76103109";
 
 export default node;

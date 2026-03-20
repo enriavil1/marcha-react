@@ -6,13 +6,12 @@ import { RADIUS_LG } from '../../design';
 import ProductCard from '../Products/ProductCard';
 import type { ProductCardFragmentQuery$key } from '../Products/__generated__/ProductCardFragmentQuery.graphql';
 
+/**
+ * Each edge from `productsCollection` has a `node` that is a `Products`
+ * object and directly spreads `ProductCardFragmentQuery`.
+ */
 type Edge = {
-  readonly node: {
-    readonly product:
-      | (ProductCardFragmentQuery$key & { readonly name: string })
-      | null
-      | undefined;
-  };
+  readonly node: ProductCardFragmentQuery$key;
 };
 
 type MarketplaceProductGridProps = {
@@ -41,14 +40,13 @@ const CardSkeleton: React.FC = () => (
  * Mobile  (xs):   2 columns
  *
  * Uses antd Row/Col so the layout integrates with the rest of the antd grid.
+ * Products are pre-filtered server-side — no client-side filtering here.
  */
 const MarketplaceProductGrid: React.FC<MarketplaceProductGridProps> = ({
   edges,
   onCreateListing,
 }) => {
-  const validEdges = edges.filter((edge) => edge.node.product != null);
-
-  if (validEdges.length === 0) {
+  if (edges.length === 0) {
     return (
       <Empty description="No listings found" style={{ padding: '48px 0' }}>
         <Button
@@ -64,13 +62,10 @@ const MarketplaceProductGrid: React.FC<MarketplaceProductGridProps> = ({
 
   return (
     <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
-      {validEdges.map((edge, i) => (
+      {edges.map((edge, i) => (
         <Col key={i} xs={12} sm={12} md={8} lg={6}>
           <Suspense fallback={<CardSkeleton />}>
-            <ProductCard
-              fragmentRef={edge.node.product as ProductCardFragmentQuery$key}
-              hoverable
-            />
+            <ProductCard fragmentRef={edge.node} hoverable />
           </Suspense>
         </Col>
       ))}

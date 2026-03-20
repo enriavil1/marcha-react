@@ -8,6 +8,10 @@ import {
 import { useParams, useSearchParams } from 'react-router-dom';
 
 import MarketplaceWrapperQueryQuery from '../../components/marketplace/__generated__/MarketplaceWrapperQueryQuery.graphql';
+import type {
+  ProductConditionFilter,
+  ProductsFilter,
+} from '../../components/marketplace/__generated__/MarketplaceWrapperQueryQuery.graphql';
 import { PAGE_SIZE } from '../../components/marketplace/constants';
 import { createEntryPoint } from '../../utils/create_entrypoint';
 import JSResource from '../../utils/make_resource';
@@ -27,11 +31,33 @@ const MarketplaceEntryPoint = createEntryPoint({
     )
   ),
   getPreloadProps(params: EntryPointParams) {
-    const filter: Record<string, unknown> = {};
+    // Build the server-side ProductsFilter from URL params.
+    // All filtering is done by Supabase — no client-side filtering needed.
+    const filterClauses: ProductsFilter[] = [];
 
-    if (params.communityId) {
-      filter.communityId = { eq: params.communityId };
+    // Always show only active (public) listings in the browse view.
+    filterClauses.push({ isPublic: { eq: true } });
+
+    // Case-insensitive name search using pg_graphql ilike.
+    if (params.q) {
+      filterClauses.push({ name: { ilike: `%${params.q}%` } });
     }
+
+    // Exact UUID match for category.
+    if (params.category) {
+      filterClauses.push({ categoryId: { eq: params.category } });
+    }
+
+    // Exact enum match for condition.
+    if (params.condition) {
+      const conditionFilter: ProductConditionFilter = {
+        eq: params.condition as ProductConditionFilter['eq'],
+      };
+      filterClauses.push({ condition: conditionFilter });
+    }
+
+    const filter: ProductsFilter =
+      filterClauses.length === 1 ? filterClauses[0] : { and: filterClauses };
 
     return {
       queries: {
@@ -40,7 +66,7 @@ const MarketplaceEntryPoint = createEntryPoint({
           variables: {
             count: PAGE_SIZE,
             cursor: params.cursor ?? null,
-            filter: Object.keys(filter).length > 0 ? filter : undefined,
+            filter,
             orderBy: [{ createdAt: 'DescNullsLast' }],
           },
         },
