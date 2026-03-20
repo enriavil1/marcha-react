@@ -85,15 +85,18 @@ const MyListingCard: React.FC<ListingCardProps> = ({
       }}
     >
       {imageLoading ? (
-        <Skeleton.Image
-          active
+        <div
           style={{
             position: 'absolute',
             inset: 0,
-            width: '100%',
-            height: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'inherit',
           }}
-        />
+        >
+          <Skeleton.Image active style={{ width: '100%', height: '100%' }} />
+        </div>
       ) : imageUrl ? (
         <img
           src={imageUrl}

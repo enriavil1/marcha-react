@@ -16,8 +16,8 @@ import { RADIUS_LG } from '../../../design';
 import { supabase } from '../../../lib/supabase';
 import { Paths } from '../../../views/paths';
 import InsertProductCommunityMutation from '../graphql/InsertProductCommunityMutation.graphql';
+import InsertProductImagesMutation from '../graphql/InsertProductImagesMutation.graphql';
 import InsertProductMutation from '../graphql/InsertProductMutation.graphql';
-import InsertProductImagesMutation from '../graphql/InsertProductMutation.graphql';
 import { InsertProductCommunityMutationMutation } from '../graphql/__generated__/InsertProductCommunityMutationMutation.graphql';
 import { InsertProductImagesMutationMutation } from '../graphql/__generated__/InsertProductImagesMutationMutation.graphql';
 import { InsertProductMutationMutation } from '../graphql/__generated__/InsertProductMutationMutation.graphql';
@@ -123,11 +123,6 @@ const CreateListingPage: EntryPointComponent<
           return;
         }
 
-        if (uploadedPaths.length == 0) {
-          message.error('Failed to create listing: could not upload images');
-          return;
-        }
-
         commitProductMutation({
           variables: {
             objects: [
@@ -167,18 +162,21 @@ const CreateListingPage: EntryPointComponent<
               },
             });
 
-            commitImagesMutation({
-              variables: {
-                objects: uploadedPaths.map((path, index) => ({
-                  productId,
-                  imageUrl: path,
-                  displayOrder: index,
-                })),
-              },
-              onError: (err) => {
-                console.error('Failed to save product images:', err);
-              },
-            });
+            // Only insert images if the user uploaded any
+            if (uploadedPaths.length > 0) {
+              commitImagesMutation({
+                variables: {
+                  objects: uploadedPaths.map((path, index) => ({
+                    productId,
+                    imageUrl: path,
+                    displayOrder: index,
+                  })),
+                },
+                onError: (err) => {
+                  console.error('Failed to save product images:', err);
+                },
+              });
+            }
 
             message.success('Listing created successfully!');
             navigate(`${basePath}/${Paths.Market}`);
