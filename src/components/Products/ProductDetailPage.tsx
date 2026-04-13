@@ -39,7 +39,16 @@ const productDetailQuery = graphql`
           name
           description
           price
-          image
+          productImagesCollection(
+            first: 5
+            orderBy: [{ displayOrder: AscNullsLast }]
+          ) {
+            edges {
+              node {
+                imageUrl
+              }
+            }
+          }
           createdAt
           condition
           user {
@@ -82,9 +91,13 @@ const ProductDetailPage: EntryPointComponent<
 
   useEffect(() => {
     if (product) {
-      fetchFromStorage(product.image, 'product-images').then((blob) =>
-        setImageBlob(blob)
-      );
+      const firstImg =
+        product.productImagesCollection?.edges?.[0]?.node?.imageUrl;
+      if (firstImg) {
+        fetchFromStorage(firstImg, 'product-images').then((blob) =>
+          setImageBlob(blob)
+        );
+      }
       fetchFromStorage(product.user?.avatarUrl ?? '', 'avatars').then((blob) =>
         setAvatarBlob(blob)
       );

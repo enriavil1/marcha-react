@@ -17,8 +17,17 @@ const productFragmentQuery = graphql`
     name
     description
     price
-    image
     id
+    productImagesCollection(
+      first: 1
+      orderBy: [{ displayOrder: AscNullsLast }]
+    ) {
+      edges {
+        node {
+          imageUrl
+        }
+      }
+    }
     user {
       avatarUrl
       username
@@ -33,10 +42,15 @@ const ProductCard = ({ fragmentRef, hoverable }: Props): React.ReactElement => {
   const product = useFragment(productFragmentQuery, fragmentRef);
   const navigation = useNavigate();
 
+  const firstImageUrl =
+    product.productImagesCollection?.edges?.[0]?.node?.imageUrl;
+
   useEffect(() => {
-    fetchFromStorage(product.image, 'product-images').then((blob) =>
-      setImageBlob(blob ?? imageBlob)
-    );
+    if (firstImageUrl) {
+      fetchFromStorage(firstImageUrl, 'product-images').then((blob) =>
+        setImageBlob(blob ?? imageBlob)
+      );
+    }
 
     if (product.user?.avatarUrl) {
       fetchFromStorage(product.user.avatarUrl, 'avatars').then((blob) =>

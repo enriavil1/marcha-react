@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<cad5ea9c1ff5899d1ff3fe478dc0d138>>
+ * @generated SignedSource<<c0b97416ee8fd631a27a87e777ba2491>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,46 +10,25 @@
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type CommunitiesCardFragmentQuery$data = {
-  readonly address: string;
+export type NoticeCardFragment$data = {
+  readonly body: string;
+  readonly createdAt: string;
   readonly id: string;
-  readonly image: string | null | undefined;
-  readonly name: string;
-  readonly nodeId: string;
-  readonly " $fragmentType": "CommunitiesCardFragmentQuery";
+  readonly pinned: boolean;
+  readonly title: string;
+  readonly " $fragmentType": "NoticeCardFragment";
 };
-export type CommunitiesCardFragmentQuery$key = {
-  readonly " $data"?: CommunitiesCardFragmentQuery$data;
-  readonly " $fragmentSpreads": FragmentRefs<"CommunitiesCardFragmentQuery">;
+export type NoticeCardFragment$key = {
+  readonly " $data"?: NoticeCardFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"NoticeCardFragment">;
 };
 
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "CommunitiesCardFragmentQuery",
+  "name": "NoticeCardFragment",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "address",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "image",
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -61,14 +40,35 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "nodeId",
+      "name": "title",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "body",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "pinned",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "createdAt",
       "storageKey": null
     }
   ],
-  "type": "Communities",
+  "type": "Notices",
   "abstractKey": null
 };
 
-(node as any).hash = "1ad8154c18ac9b674356b9a434592b5d";
+(node as any).hash = "e7a9603b91155abdd7cba74d2b1fd554";
 
 export default node;

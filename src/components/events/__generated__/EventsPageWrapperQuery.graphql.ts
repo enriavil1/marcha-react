@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ba88139868281a0d42d30bef6d4d2974>>
+ * @generated SignedSource<<563e377dc69fbecbacb3538041f06d69>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,23 +10,93 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type ProductsContainerWrapperQuery$variables = Record<PropertyKey, never>;
-export type ProductsContainerWrapperQuery$data = {
-  readonly productsCollection: {
+export type FilterIs = "NOT_NULL" | "NULL" | "%future added value";
+export type BigIntFilter = {
+  eq?: string | null | undefined;
+  gt?: string | null | undefined;
+  gte?: string | null | undefined;
+  in?: ReadonlyArray<string> | null | undefined;
+  is?: FilterIs | null | undefined;
+  lt?: string | null | undefined;
+  lte?: string | null | undefined;
+  neq?: string | null | undefined;
+};
+export type DatetimeFilter = {
+  eq?: string | null | undefined;
+  gt?: string | null | undefined;
+  gte?: string | null | undefined;
+  in?: ReadonlyArray<string> | null | undefined;
+  is?: FilterIs | null | undefined;
+  lt?: string | null | undefined;
+  lte?: string | null | undefined;
+  neq?: string | null | undefined;
+};
+export type EventsPageWrapperQuery$variables = {
+  communityId: BigIntFilter;
+  upcomingFilter: DatetimeFilter;
+};
+export type EventsPageWrapperQuery$data = {
+  readonly eventsCollection: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly " $fragmentSpreads": FragmentRefs<"ProductCardFragmentQuery">;
+        readonly " $fragmentSpreads": FragmentRefs<"EventCardFragment">;
       };
     }>;
   } | null | undefined;
 };
-export type ProductsContainerWrapperQuery = {
-  response: ProductsContainerWrapperQuery$data;
-  variables: ProductsContainerWrapperQuery$variables;
+export type EventsPageWrapperQuery = {
+  response: EventsPageWrapperQuery$data;
+  variables: EventsPageWrapperQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "communityId"
+  },
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "upcomingFilter"
+  }
+],
+v1 = [
+  {
+    "fields": [
+      {
+        "kind": "Variable",
+        "name": "communityId",
+        "variableName": "communityId"
+      },
+      {
+        "kind": "Variable",
+        "name": "eventDate",
+        "variableName": "upcomingFilter"
+      }
+    ],
+    "kind": "ObjectValue",
+    "name": "filter"
+  },
+  {
+    "kind": "Literal",
+    "name": "orderBy",
+    "value": [
+      {
+        "eventDate": "AscNullsLast"
+      }
+    ]
+  }
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -35,23 +105,23 @@ var v0 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "ProductsContainerWrapperQuery",
+    "name": "EventsPageWrapperQuery",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "ProductsConnection",
+        "args": (v1/*: any*/),
+        "concreteType": "EventsConnection",
         "kind": "LinkedField",
-        "name": "productsCollection",
+        "name": "eventsCollection",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ProductsEdge",
+            "concreteType": "EventsEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -59,7 +129,7 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Products",
+                "concreteType": "Events",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
@@ -67,7 +137,7 @@ return {
                   {
                     "args": null,
                     "kind": "FragmentSpread",
-                    "name": "ProductCardFragmentQuery"
+                    "name": "EventCardFragment"
                   }
                 ],
                 "storageKey": null
@@ -84,22 +154,22 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "ProductsContainerWrapperQuery",
+    "name": "EventsPageWrapperQuery",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "ProductsConnection",
+        "args": (v1/*: any*/),
+        "concreteType": "EventsConnection",
         "kind": "LinkedField",
-        "name": "productsCollection",
+        "name": "eventsCollection",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "ProductsEdge",
+            "concreteType": "EventsEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -107,16 +177,17 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Products",
+                "concreteType": "Events",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "name",
+                    "name": "title",
                     "storageKey": null
                   },
                   {
@@ -130,43 +201,35 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "price",
+                    "name": "eventDate",
                     "storageKey": null
                   },
                   {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "id",
+                    "name": "location",
                     "storageKey": null
                   },
                   {
                     "alias": null,
-                    "args": [
-                      {
-                        "kind": "Literal",
-                        "name": "first",
-                        "value": 1
-                      },
-                      {
-                        "kind": "Literal",
-                        "name": "orderBy",
-                        "value": [
-                          {
-                            "displayOrder": "AscNullsLast"
-                          }
-                        ]
-                      }
-                    ],
-                    "concreteType": "ProductImagesConnection",
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "maxAttendees",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "EventRsvpsConnection",
                     "kind": "LinkedField",
-                    "name": "productImagesCollection",
+                    "name": "eventRsvpsCollection",
                     "plural": false,
                     "selections": [
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "ProductImagesEdge",
+                        "concreteType": "EventRsvpsEdge",
                         "kind": "LinkedField",
                         "name": "edges",
                         "plural": true,
@@ -174,19 +237,13 @@ return {
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "ProductImages",
+                            "concreteType": "EventRsvps",
                             "kind": "LinkedField",
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "imageUrl",
-                                "storageKey": null
-                              },
-                              (v0/*: any*/)
+                              (v2/*: any*/),
+                              (v3/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -194,35 +251,9 @@ return {
                         "storageKey": null
                       }
                     ],
-                    "storageKey": "productImagesCollection(first:1,orderBy:[{\"displayOrder\":\"AscNullsLast\"}])"
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "Profiles",
-                    "kind": "LinkedField",
-                    "name": "user",
-                    "plural": false,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "avatarUrl",
-                        "storageKey": null
-                      },
-                      {
-                        "alias": null,
-                        "args": null,
-                        "kind": "ScalarField",
-                        "name": "username",
-                        "storageKey": null
-                      },
-                      (v0/*: any*/)
-                    ],
                     "storageKey": null
                   },
-                  (v0/*: any*/)
+                  (v3/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -235,16 +266,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "20391b66c20df7c2929c24623aeb7e34",
+    "cacheID": "7dc70be16daa3c268e39ad3a264d6e66",
     "id": null,
     "metadata": {},
-    "name": "ProductsContainerWrapperQuery",
+    "name": "EventsPageWrapperQuery",
     "operationKind": "query",
-    "text": "query ProductsContainerWrapperQuery {\n  productsCollection {\n    edges {\n      node {\n        ...ProductCardFragmentQuery\n        nodeId\n      }\n    }\n  }\n}\n\nfragment ProductCardFragmentQuery on Products {\n  name\n  description\n  price\n  id\n  productImagesCollection(first: 1, orderBy: [{displayOrder: AscNullsLast}]) {\n    edges {\n      node {\n        imageUrl\n        nodeId\n      }\n    }\n  }\n  user {\n    avatarUrl\n    username\n    nodeId\n  }\n}\n"
+    "text": "query EventsPageWrapperQuery(\n  $communityId: BigIntFilter!\n  $upcomingFilter: DatetimeFilter!\n) {\n  eventsCollection(filter: {communityId: $communityId, eventDate: $upcomingFilter}, orderBy: [{eventDate: AscNullsLast}]) {\n    edges {\n      node {\n        ...EventCardFragment\n        nodeId\n      }\n    }\n  }\n}\n\nfragment EventCardFragment on Events {\n  id\n  title\n  description\n  eventDate\n  location\n  maxAttendees\n  eventRsvpsCollection {\n    edges {\n      node {\n        id\n        nodeId\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "ff5e9c6aedc4cabb6df976ded11512cf";
+(node as any).hash = "08f6f2798107e9d405ad7e8ef44a695c";
 
 export default node;
